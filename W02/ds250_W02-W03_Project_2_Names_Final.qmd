@@ -1,0 +1,694 @@
+---
+title: "Client Report - W02 Project 1: What's in a name?"
+subtitle: "Course DS 250"
+author: "Scott LeFoll"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import pandasql as psql
+import matplotlib.pyplot as plt
+
+from pandasql import sqldf
+from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from altair import Chart, X, Y, Axis, SortField
+
+
+```
+
+
+## Elevator pitch
+
+You can tell a lot from a civilization from it's language, and one of the most 
+important aspects of language is the words that are used to represent people. A 
+name is the essence of a thing, and the trends in child names over the last 
+century tell a story about the evolutin of our culture. What were the most 
+common names during the Great Depression? What about in the Civil Rights era? 
+In this project I will show visualizations that compare the relative prominence 
+of names over time, and I will also show how the popularity of names has 
+changed over time.
+
+```{python}
+#| label: project data
+#| code-summary: Read and format project data
+# Include and execute your code here
+#read in url to df
+url = 'https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv'
+dat = pd.read_csv(url)
+
+
+# %%
+dat.head(-5)
+
+```
+
+
+
+## GRAND QUESTION 1
+
+How does your name at your birth year compare to its use historically?
+
+
+
+```{python}
+#| label: TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the total number of occurrences for 'Scott' in 1964 across all states
+q = "SELECT name, year, SUM(total) as new_total_for_1964 FROM dat WHERE NAME = 'Scott' and YEAR = 1964"
+dat_1964 = sqldf(q, globals())
+dat_1964
+
+mydat = dat_1964.head(1000)\
+    .sum()\
+    .reset_index()\
+    .tail(10)
+display(mydat)
+
+```
+
+
+
+```{python}
+#| label: CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the total number of occurrences for 'Scott' in 1964 across all states
+
+alt.Chart(dat_1964)\
+    .encode(x="name", y="new_total_for_1964")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+    
+```
+
+
+```{python}
+#| label: TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Scott' in 1964 for each state, plus total
+
+q = "SELECT * FROM dat WHERE NAME = 'Scott' AND year = 1964"
+dat1964 = sqldf(q, globals())
+dat1964
+# mydat = dat1964.head(1000)\
+#     .sum()\
+#     .reset_index()\
+#     .tail(51)
+# display(mydat)
+
+```
+
+
+
+
+```{python}
+#| label: CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Scott' in 1964 for each state, plus total
+alt.Chart(dat_1964)\
+    .encode(x="name", y=0)\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+
+```
+
+
+```{python}
+#| label: TABLE3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the min state for occurences of 'Scott' in 1964
+
+q = "SELECT * FROM dat WHERE NAME = 'Scott' AND year = 1964"
+dat3 = sqldf(q, globals())
+dat3.drop(["year", "Total"], axis = 1, inplace = True)
+dat4
+minvalue_series = dat3.min(axis = 1)
+minvalue_series
+
+```
+
+
+
+```{python}
+#| label: CHART3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the min state for occurences of 'Scott' in 1964
+
+
+alt.Chart(dat3)\
+    .encode(x="name", y="AK")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+```
+
+
+```{python}
+#| label: TABLE4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the max state for occurences of 'Scott' in 1964
+q = "SELECT * FROM dat WHERE NAME = 'Scott' AND year = 1964"
+dat3 = sqldf(q, globals())
+dat3.drop(["year", "Total"], axis = 1, inplace = True)
+dat3
+maxvalue_series = dat3.max(axis = 1)
+maxvalue_series
+
+```
+
+
+
+```{python}
+#| label: CHART4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the max state for occurences of 'Scott' in 1964
+alt.Chart(dat3)\
+    .encode(x="name", y="CA")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+```
+
+
+```{python}
+#| label: TABLE1B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Scott' for all years across all states
+q = "SELECT name, year, SUM(total) as sum_total FROM dat WHERE NAME = 'Scott'"
+dat3 = sqldf(q, globals())
+ 
+dat_all_years_total = dat3.groupby('name').sum() 
+dat_all_years_total
+
+mydat = dat_all_years_total.head(1000)\
+    .sum()\
+    .reset_index()\
+    .tail(51)
+display(mydat)
+
+```
+
+
+
+```{python}
+#| label: CHART1B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Scott' for all years across all states
+alt.Chart(dat_1964)\
+    .encode(x="name", y="year")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+
+
+```
+
+
+
+```{python}
+#| label: TABLE2B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# All occurrences of 'Scott' for all years (1906 - 2015) by state, Plus total
+# q = """SELECT SUM(AK) as ak, SUM(AL) as al, SUM(AR) as ar, SUM(AZ) as az, SUM(CA) as ca, SUM(CO) as co, SUM(CT) as ct, SUM(DC) as dc, SUM(DE) as de, SUM(FL) as fl, SUM(GA) as ga, SUM(HI), SUM(IA), SUM(ID), SUM(IL), SUM('IN'), SUM(KS), SUM(KY), SUM(LA), SUM(MA), SUM(MD), SUM(ME), SUM(MI), SUM(MN), SUM(MO), SUM(MS), SUM(MT), SUM(NC), SUM(ND), SUM(NE), SUM(NH), SUM(NJ), SUM(NM), SUM(NV), SUM(NY), SUM(OH), SUM(OK), SUM('OR'), SUM(PA), SUM(RI), SUM(SC), SUM(SD), SUM(TN), SUM(TX), SUM(UT), SUM(VA), SUM(VT), SUM(WA), SUM(WI), SUM(WV), SUM(WY) FROM dat WHERE NAME = 'Scott'"""
+
+q = "SELECT * FROM dat WHERE NAME = 'Scott'"
+dat3 = sqldf(q, globals())
+ 
+dat_all_years_total = dat3.groupby('name').sum().reset_index()
+
+# dat3
+dat_all_years_total
+
+mydat = dat_all_years_total.head(1000)\
+    .sum()\
+    .reset_index()\
+    .tail(51)
+display(mydat)
+
+
+```
+
+
+```
+
+
+```
+```{python}
+#| label: CHART2B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Scott' for all years for each state, plus total
+
+alt.Chart(mydat)\
+    .encode(x="name", y="sum()")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+
+```
+
+
+
+
+```{python}
+#| label: TABLE3B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the min value per state for occurences of 'Scott'
+
+q = "SELECT * FROM dat WHERE NAME = 'Scott'
+dat3 = sqldf(q, globals())
+dat3.drop(["year", "Total"], axis = 1, inplace = True)
+dat4
+minvalue_series = dat3.min(axis = 1)
+minvalue_series
+
+```
+
+
+
+```{python}
+#| label: CHART3B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the min value per state for occurences of 'Scott'
+
+
+alt.Chart(dat3)\
+    .encode(x="name", y="AK")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+```
+
+
+```{python}
+#| label: TABLE4B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the max value in each state for occurences of 'Scott'
+q = "SELECT * FROM dat WHERE NAME = 'Scott'"
+dat3 = sqldf(q, globals())
+dat3.drop(["year", "Total"], axis = 1, inplace = True)
+dat3
+maxvalue_series = dat3.max(axis = 1)
+maxvalue_series
+
+```
+
+
+
+```{python}
+#| label: CHART4B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the max value in each state for occurences of 'Scott'
+alt.Chart(dat3)\
+    .encode(x="name", y="CA")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+```
+
+
+
+_include figures in chunks and discuss your findings in the figure._
+
+
+
+```{python}
+#| label: TABLE5B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+#compute the average annual occurrence of 'Scott' across all states for all years in data set
+# q = "SELECT ROUND(ROUND(SUM(TOTAL))/COUNT(DISTINCT year)) as avg_total FROM dat WHERE NAME = 'Scott' "
+q = """SELECT ROUND(AVG(AK)) as ak, ROUND(AVG(AL)) as al, ROUND(AVG(AR)) as ar, ROUND(AVG(AZ)) as az, ROUND(AVG(CA)) as ca, ROUND(AVG(CO)) as co, ROUND(AVG(CT)) as ct, ROUND(AVG(DC)) as dc, ROUND(AVG(DE)) as de, ROUND(AVG(FL)) as fl, ROUND(AVG(GA)) as ga, ROUND(AVG(HI)), ROUND(AVG(IA)), ROUND(AVG(ID)), ROUND(AVG(IL)), ROUND(AVG('IN')), ROUND(AVG(KS)), ROUND(AVG(KY)), ROUND(AVG(LA)), ROUND(AVG(MA)), ROUND(AVG(MD)), ROUND(AVG(ME)), ROUND(AVG(MI)), ROUND(AVG(MN)), ROUND(AVG(MO)), ROUND(AVG(MS)), ROUND(AVG(MT)), ROUND(AVG(NC)), ROUND(AVG(ND)), ROUND(AVG(NE)), ROUND(AVG(NH)), ROUND(AVG(NJ)), ROUND(AVG(NM)), ROUND(AVG(NV)), ROUND(AVG(NY)), ROUND(AVG(OH)), ROUND(AVG(OK)), ROUND(AVG('OR')), ROUND(AVG(PA)), ROUND(AVG(RI)), ROUND(AVG(SC)), ROUND(AVG(SD)), ROUND(AVG(TN)), ROUND(AVG(TX)), ROUND(AVG(UT)), ROUND(AVG(VA)), ROUND(AVG(VT)), ROUND(AVG(WA)), ROUND(AVG(WI)), ROUND(AVG(WV)), ROUND(AVG(WY)) FROM dat WHERE NAME = 'Scott'"""
+
+dat2 = sqldf(q, globals())
+dat2
+
+# #what is group by and agg
+# dat_total = dat.groupby('name').agg(n = ('Total', 'sum')).reset_index()
+# print(dat_total
+#     .query('n in [@dat_total.n.max(), @dat_total.n.min()]')
+#     .to_markdown(index = False, floatfmt=".0f"))
+
+
+```
+
+
+
+
+```{python}
+#| label: CHART5B
+#| code-summary: Read and format data
+# Include and e
+# xecute your code here
+
+#show the average annual occurrence of 'Scott' across all states for all years in data set
+
+
+# #what is group by and agg
+# dat_total = dat.groupby('name').agg(n = ('Total', 'sum')).reset_index()
+# print(dat_total
+#     .query('n in [@dat_total.n.max(), @dat_total.n.min()]')
+#     .to_markdown(index = False, floatfmt=".0f"))
+
+
+```
+
+
+
+
+## GRAND QUESTION 2
+
+If you talked to someone named Brittany on the phone, what is your guess of 
+his or her age? What ages would you not guess?
+
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# q = "SELECT ROUND(ROUND(SUM(TOTAL))/COUNT(DISTINCT year)) as avg_total FROM dat WHERE NAME = 'Brittany' "
+q = "SELECT year, name, total FROM dat WHERE name = 'Brittany'"
+sqldf(q, globals())
+
+# Born 1985 - 1994
+
+# alt.Chart(dat4.head(200))\
+#     .encode(x = "name", y = avg_total)
+#     .mark_bar()
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ2 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ2 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+# mydat = dat.head(1000)\
+#     .groupby('year')\
+#     .sum()\
+#     .reset_index()\
+#     .tail(10)\
+#     .filter(["year", "AK","AR"])
+
+# display(mydat)
+
+```
+
+
+## GRAND QUESTION 3
+
+Mary, Martha, Peter, and Paul are all Christian names. From 1920 - 2000, 
+compare the name usage of each of the four names. What trends do you notice?
+
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+q = "SELECT year, name, total FROM dat WHERE name = 'Mary' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+
+```
+
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# year with least total occurrence of Mary across the U.S.
+q = "SELECT year, name, MIN(total) FROM dat WHERE name = 'Mary' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+# pd.unique(dat.query('name == "Mary"').year).min()
+```
+
+
+
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# year with greatest total occurrence of Mary across the U.S.
+q = "SELECT year, name, MAX(total) FROM dat WHERE name = 'Mary' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+# pd.unique(dat.query('name == "Mary"').year).min()
+```
+
+
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Total occurence of Mary 1920 to 2000
+q = "SELECT ROUND(SUM(total)) FROM dat WHERE name = 'Mary' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+# pd.unique(dat.query('name == "Mary"').year).min()
+```
+
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Average annual occurence of Mary 1920 to 1940
+q = "SELECT ROUND(AVG(total)) FROM dat WHERE name = 'Mary' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+# pd.unique(dat.query('name == "Mary"').year).min()
+```
+
+
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ3 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+q = "SELECT year, name, total FROM dat WHERE name = 'Martha' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+
+# alt.Chart(dat.head(200))\
+#     .encode(x = "year", y = "Scott")\
+#     .mark_bar()
+```
+
+
+
+```{python}
+#| label: GQ3A chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+q = "SELECT year, name, total FROM dat WHERE name = 'Peter' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+
+# alt.Chart(dat.head(200))\
+#     .encode(x = "year", y = "Scott")\
+#     .mark_bar()
+```
+
+
+
+```{python}
+#| label: GQ3B table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+q = "SELECT year, name, total FROM dat WHERE name = 'Paul' AND year BETWEEN 1920 AND 2000"
+sqldf(q, globals())
+
+# mydat = dat.head(1000)\
+#     .groupby('year')\
+#     .sum()\
+#     .reset_index()\
+#     .tail(10)\
+#     .filter(["year", "Scott"])
+
+# display(mydat)
+
+```
+
+
+## GRAND QUESTION 4
+
+Think of a unique name from a famous movie. Plot the usage of that name and
+see how changes line up with the movie release. Does it look like the movie 
+had an effect on usage?
+
+
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ4
+#| code-summary: Read and format data
+# Include and execute your code here
+#  Star Wars release dates 77, 80, 83, 99, 02, 05, 15, 17, 19
+q = "SELECT year, name, total FROM dat WHERE name = 'Luke' AND year BETWEEN 1960 AND 2000"
+sqldf(q, globals())
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ4 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+q = "SELECT year, name, total FROM dat WHERE name = 'Leia' AND year BETWEEN 1960 AND 2000"
+sqldf(q, globals())
+
+# alt.Chart(dat.head(200))\
+#     .encode(x = "name", y = "AK")\
+#     .mark_bar()
+```
+
+
+```{python}
+#| label: GQ4 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

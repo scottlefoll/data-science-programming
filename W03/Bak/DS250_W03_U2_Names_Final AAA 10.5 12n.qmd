@@ -1,0 +1,923 @@
+---
+title: "Client Report - W02 Project 1: What's in a name?"
+subtitle: "Course DS 250"
+author: "Scott LeFoll"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import pandasql as psql
+import matplotlib.pyplot as plt
+
+from pandasql import sqldf
+from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from altair import Chart, X, Y, Axis, SortField
+
+c_cp = ["#335C67", "#fff3b0", "#e09f3e", "#9e2a2b", "#540b0e"] 
+#https://coolors.co/335c67-fff3b0-e09f3e-9e2a2b-540b0e
+```
+
+
+## Elevator pitch
+
+You can tell a lot about a civilization from it's language, and one of the most important aspects of language are the words that we used to represent people. A name is the essence of a thing, and the trends in child names over the last century tell a story about the evolution of our culture. In this project I will show visualizations that compare the relative prominence 
+of names over time, and I will also show how the popularity of names has 
+changed over time.
+
+```{python}
+#| label: project data
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+#read in url to df
+url = 'https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv'
+dat = pd.read_csv(url)
+#  Show some data
+dat.tail(-5)
+
+```
+
+
+
+## GRAND QUESTION 1
+
+How does your name at your birth year compare to its use historically?
+
+The name 'Scott' showed 26,177 occurrences in the year 1964, with the largest geographic areas of usage in the Mid-west and West. Historically, the name showed minimal usage throughout the 20th century until the 1950's, when it began to appear in popular culture. The greatest spike in usage for 'Scott' appears in the mid-1960's, with the largest years being 1963 - 1966, including my own birth year. There was at least one very popular 'hit' song in 1963 that featured the name prominently, and the name was also used in a popular television show in 1964. The name 'Scott' has been used in popular culture since the 1950's, but it was not until the 1960's that it became a popular name for children. Starting in 1972 - 1973 the name began to decline in popularity, and it has been on a steady decline since then. The name 'Scott' is currently ranked 1,000th in popularity.
+
+
+GQ1 TABLE 1A -  showing the occurrence of the name 'Scott' in each U.S. state for the year 1964:
+
+```{python}
+#| label: TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here\
+
+# query the larger data file for name and year
+mydat = dat.query('name == "Scott" & year == 1964')
+# melt the data so that states become rows instead of columns
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+mydat_melt.drop(columns=['name'], inplace=True)
+mydat_melt.drop(columns=['year'], inplace=True)
+
+#  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+
+# Get indexe where variable column equals 'Total'
+indexState = mydat_melt[mydat_melt['State'] == 'Total'].index 
+# Delete these row indexes from dataFrame
+mydat_melt.drop(indexState , inplace=True)
+
+Markdown(mydat_melt.to_markdown(index=False))
+```
+
+GQ1 CHART 1A -  showing the occurrence of the name 'Scott' in each U.S. state for the year 1964:
+
+```{python}
+#| label: CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the total number of occurrences for 'Scott' in 1964 across all states
+
+alt.Chart(mydat_melt, title="Occurrences of the name 'Scott' in U.S. States in 1964")\
+    .encode(x="State:N", y="Total:Q")\
+    .mark_bar(width = 10)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+    
+```
+
+GQ1 TABLE 2A -  showing the total occurrences of the name 'Scott' in all U.S. states for the year 1964:
+
+```{python}
+#| label: TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Scott' in 1964 for each state, plus total
+mydat_sum = mydat[["name","year","Total"]]
+Markdown(mydat_sum.to_markdown(index=False))
+
+# mydat_sum = mydat_melt['Total'].sum()
+# mydat_sum
+# Markdown(mydat_sum.to_markdown(index=False))
+
+
+```
+
+
+GQ1 CHART 2A -  showing the total occurrences of the name 'Scott' in all U.S. states for the year 1964:
+
+```{python}
+#| label: CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Scott' in 1964 for each state, plus total
+alt.Chart(mydat_sum, title="Total occurrences of the name 'Scott' in the U.S. in 1964")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=200,
+        height=300
+
+    )
+
+
+```
+
+GQ1 TABLE 3A -  showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: TABLE3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the 5 min states for occurences of 'Scott' in 1964
+
+mydat_min = mydat_melt.nsmallest(5,'Total')
+# mydat_min
+Markdown(mydat_min.to_markdown(index=False))
+```
+
+GQ1 CHART 3A -  showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: CHART3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Chart the 5 min states for occurences of 'Scott' in 1964
+
+alt.Chart(mydat_min, title="Five U.S. States with the least occurrences of the name 'Scott' in the U.S. in 1964")\
+    .encode(x="State:N", y="Total:Q")\
+    .mark_bar(width = 20)\
+    .properties(
+        width=400,
+        height=300
+
+    )
+
+
+```
+
+GQ1 TABLE 4A - Table showing the 5 states with the most occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+
+```{python}
+#| label: TABLE4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the max 5 states for occurences of 'Scott' in 1964
+
+mydat_max = mydat_melt.nlargest(5,'Total')
+mydat_max
+Markdown(mydat_max.to_markdown(index=False))
+```
+
+GQ1 CHART 4A - Table showing the 5 states with the most occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: CHART4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Chart the max 5 states for occurences of 'Scott' in 1964
+
+alt.Chart(mydat_max, title="Five U.S. States with the largest occurrences of the name 'Scott' in the U.S. in 1964")\
+    .encode(x="State:N", y="Total:Q")\
+    .mark_bar(width = 20)\
+    .properties(
+        width=400,
+        height=300
+
+    )
+```
+
+
+GQ1 TABLE 1B - showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: TABLE1B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Scott' for all U.S. States for each year from 1910 - 2015 
+
+# # compute the total number of occurrences for 'Scott' for all years across all states
+mydat = dat.query('name == "Scott" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+
+```
+
+GQ1 CHART 1B - showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: CHART1B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Scott' for all years for each state, plus total
+
+alt.Chart(mydat_melt, title="Occurrences of the name 'Scott' accross all U.S. States from 1910 to 2015")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=1100,
+        height=300
+
+    )
+
+
+```
+
+
+GQ1 TABLE 2B - showing the total historical occurrences of the name 'Scott' for all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: TABLE2B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Scott' for all years for each state
+mydat = dat.query('name == "Scott" & year > 1880')
+
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+
+#  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.groupby('State').Total.sum().reset_index()
+
+# Get index where variable column equals 'Total'
+indexState = mydat_melt[mydat_melt['State'] == 'Total'].index 
+# Delete these row indexes from dataFrame
+mydat_melt.drop(indexState , inplace=True)
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+```
+
+GQ1 CHART 2B - showing the total historical occurrences of the name 'Scott' for all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: CHART2B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Scott' for all years across all states
+alt.Chart(mydat_melt, title="Total occurrence of the name 'Scott' accross each U.S. State from 1910 to 2015")\
+    .encode(x="State:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+
+
+```
+
+GQ1 TABLE 3B - showing the states with the least historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: TABLE3B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the 5 min states for occurences of 'Scott' across all years
+
+mydat_min = mydat_melt.nsmallest(5,'Total')
+mydat_min
+
+```
+
+GQ1 CHART 3B - showing the states with the least historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: CHART3B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Chart the 5 min states for occurences of 'Scott'  across all years
+
+alt.Chart(mydat_min, title="Five U.S. States with the least occurrences of the name 'Scott' in the U.S. from 1910 - 1915")\
+    .encode(x="State:N", y="Total:Q")\
+    .mark_bar(width = 20)\
+    .properties(
+        width=400,
+        height=300
+
+    )
+
+
+```
+
+GQ1 TABLE 4B - showing the states with the most historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: TABLE4B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the max 5 states for occurences of 'Scott' in 1964
+
+mydat_max = mydat_melt.nlargest(5,'Total')
+mydat_max
+
+```
+
+
+GQ1 CHART 4B - showing the states with the most historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: CHART4B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Chart the max 5 states for occurences of 'Scott' in 1964
+
+alt.Chart(mydat_max, title="Five U.S. States with the largest occurrences of the name 'Scott' in the U.S. from 1910 - 1915")\
+    .encode(x="State:N", y="Total:Q")\
+    .mark_bar(width = 20)\
+    .properties(
+        width=400,
+        height=300
+
+    )
+```
+
+
+
+_include figures in chunks and discuss your findings in the figure._
+
+
+## GRAND QUESTION 2
+
+If you talked to someone named Brittany on the phone, what is your guess of 
+his or her age? What ages would you not guess?
+
+_type your results and analysis here_
+
+Based upon the data my best guess would be 1985 to 1998 for a birth year. The name 'Brittany' showed very little occurrence until the rise of the pop music star "Brittany Spears," and rose and fell with her popularity. The name shows dramatic increase in usage in 1985, and then a dramatic decrease starting in 1998. 
+
+GQ2 TABLE 1A - showing the total historical occurrences of the name 'Brittany' for each year across all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Brittany' for all U.S. States for each year from 1910 - 2015 
+
+mydat = dat.query('name == "Brittany" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+GQ2 CHART 1A - showing the total historical occurrences of the name 'Brittany' for each year across all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 CHART1A
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(mydat_melt, title="Annual occurrence of the name 'Brittany' in the U.S. across all states from 1910 - 1915")\
+    .encode(x = "year:N", y = "Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=1100,
+        height=300
+
+    )
+```
+
+GQ2 TABLE 2A - showing the total occurrences of the name 'Brittany' in each U.S. state for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Brittany' for all years for each state
+mydat = dat.query('name == "Brittany" & year > 1880')
+
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+
+#  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.groupby('State').Total.sum().reset_index()
+
+# Get index where variable column equals 'Total'
+indexState = mydat_melt[mydat_melt['State'] == 'Total'].index 
+# Delete these row indexes from dataFrame
+mydat_melt.drop(indexState , inplace=True)
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+```
+
+GQ2 CHART 2A - showing the total occurrences of the name 'Brittany' in each U.S. state for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Brittany' for all years across all states
+alt.Chart(mydat_melt, title="Total occurrence of the name 'Brittany' accross each U.S. State from 1910 to 2015")\
+    .encode(x="State:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+
+
+```
+
+
+## GRAND QUESTION 3
+
+Mary, Martha, Peter, and Paul are all Christian names. From 1920 - 2000, 
+compare the name usage of each of the four names. What trends do you notice?
+
+
+_type your results and analysis here_
+
+Usage of the names 'Mary' and 'Martha' both show spikes during W.W. I and W.W. II, increasing their pre-war totals by 100%, from about 20,000 to 45,000 during each war and droping back to about 30,000 between the wars. Both names exhibit the same pattern of occurrence for the last 70 years, with sharp declines in usage right after W.W. II followed by a steady decline from the 1970's to the present.
+ 
+Usage of the names 'Peter' and 'Paul' both show spikes during W.W. I, increasing their pre-war totals by about 200%, with no drop between the wars and a further spike of another 150% during W.W.II. Both names exhibit the same pattern of occurrence for the last 70 years, with sharp spikes in the 1960's with the rebirth of interest in spiritual concepts and folk music in the 1960's follwed by a steady decline from the 1970's to the present.
+ 
+The rise for all four names during both world wars makes sense considering that it was a time of grave instability and danger for the world, for the nation and for individuals. People were reaching for stability, for peace, for tradition and for continuity and looking to the Bible to find it.
+
+GQ3 TABLE 1A - showing the total historical occurrences of the name 'Mary' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Mary' for all U.S. States for each year from 1910 - 2015 
+
+mydat = dat.query('name == "Mary" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+
+```
+
+
+GQ3 CHART 1A - showing the total historical occurrences of the name 'Mary' in all U.S. states for each of the years 1910 - 2015:
+
+
+```{python}
+#| label: GQ3 CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Mary' for all years for each state, plus total
+
+chart = alt.Chart(mydat_melt, title="Occurrences of the name 'Mary' accross all U.S. States from 1910 to 2015")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=1100,
+        height=300
+
+    )
+
+lines_df = pd.DataFrame({'big_events': [1914, 1918, 1939, 1945, 1962, 1969]})
+
+rules = (
+    alt.Chart(lines_df)
+    .mark_rule(
+        color = c_cp[4],
+        opacity= 0.35,
+        size = 1
+    )
+    .encode(
+        # x = alt.X("x:Q", scale = alt.Scale(domain = (1910, 2015)))
+        x = "big_events:N")
+    .properties(
+        width = 1100,
+        height = 400
+        # scale = alt.Scale(domain = (1910, 2015))
+    )
+)
+
+chart + rules
+
+```
+
+
+GQ3 TABLE 2A - showing the total historical occurrences of the name 'Martha' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Martha' for all U.S. States for each year from 1910 - 2015 
+
+mydat = dat.query('name == "Martha" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+
+```
+
+GQ3 CHART 2A - showing the total historical occurrences of the name 'Martha' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Martha' for all years for each state, plus total
+
+chart = alt.Chart(mydat_melt, title="Occurrences of the name 'Martha' accross all U.S. States from 1910 to 2015, with W.W.I, W.W.II & 60's Revolution plotted")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=1100,
+        height=300
+
+    )
+
+lines_df = pd.DataFrame({'big_events': [1914, 1918, 1939, 1945, 1962, 1969]})
+
+rules = (
+    alt.Chart(lines_df)
+    .mark_rule(
+        color = c_cp[4],
+        opacity= 0.35,
+        size = 1
+    )
+    .encode(
+        # x = alt.X("x:Q", scale = alt.Scale(domain = (1910, 2015)))
+        x = "big_events:N")
+    .properties(
+        width = 1100,
+        height = 400
+        # scale = alt.Scale(domain = (1910, 2015))
+    )
+)
+
+chart + rules
+
+```
+
+GQ3 TABLE 3A - showing the total historical occurrences of the name 'Peter' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Peter' for all U.S. States for each year from 1910 - 2015 
+
+mydat = dat.query('name == "Peter" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+
+```
+
+
+GQ3 CHART 3A - showing the total historical occurrences of the name 'Peter' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 CHART3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Peter' for all years for each state, plus total
+
+chart = alt.Chart(mydat_melt, title="Occurrences of the name 'Peter' accross all U.S. States from 1910 to 2015")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=1100,
+        height=300
+
+    )
+
+lines_df = pd.DataFrame({'big_events': [1914, 1918, 1939, 1945, 1962, 1969]})
+
+rules = (
+    alt.Chart(lines_df)
+    .mark_rule(
+        color = c_cp[4],
+        opacity= 0.35,
+        size = 1
+    )
+    .encode(
+        # x = alt.X("x:Q", scale = alt.Scale(domain = (1910, 2015)))
+        x = "big_events:N")
+    .properties(
+        width = 1100,
+        height = 400
+        # scale = alt.Scale(domain = (1910, 2015))
+    )
+)
+
+chart + rules
+
+```
+
+GQ3 TABLE 4A - showing the total historical occurrences of the name 'Paul' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Paul' for all U.S. States for each year from 1910 - 2015 
+
+mydat = dat.query('name == "Paul" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+
+```
+
+
+GQ3 CHART 4A - showing the total historical occurrences of the name 'Paul' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 CHART4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Paul' for all years for each state, plus total
+
+chart = alt.Chart(mydat_melt, title="Occurrences of the name 'Paul' accross all U.S. States from 1910 to 2015")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=1100,
+        height=300
+
+    )
+
+lines_df = pd.DataFrame({'big_events': [1914, 1918, 1939, 1945, 1962, 1969]})
+
+rules = (
+    alt.Chart(lines_df)
+    .mark_rule(
+        color = c_cp[4],
+        opacity= 0.35,
+        size = 1
+    )
+    .encode(
+        # x = alt.X("x:Q", scale = alt.Scale(domain = (1910, 2015)))
+        x = "big_events:N")
+    .properties(
+        width = 1100,
+        height = 400
+        # scale = alt.Scale(domain = (1910, 2015))
+    )
+)
+
+chart + rules
+
+```
+
+
+## GRAND QUESTION 4
+
+Think of a unique name from a famous movie. Plot the usage of that name and
+see how changes line up with the movie release. Does it look like the movie 
+had an effect on usage?
+
+ - Leia and Luke from Star Wars
+
+_type your results and analysis here_
+
+'Luke' and 'Leia' are the names of the two principal characters in the Star Wars series of movies. The popularity of both names rose significantly on the release of the first movie in 1977, and showed additional bumps with each subsequent release (1980, 1983, 1999, 2002, 2005, 2015, 2017, 2019). The popularity of the names has remained high since the release of the first movie, and has not declined since the release of the last movie in 2019. The last series of movies (2015, 2017, 2019) created a new bump in popularity for the names, far exceeding previous spikes (500%).
+
+GQ4 TABLE 1A - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Leia' for all U.S. States for each year from 1910 - 2015 
+
+mydat = dat.query('name == "Leia" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+
+```
+
+GQ4 CHART 1A - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Leia' for all years for each state, plus total
+
+chart = alt.Chart(mydat_melt, title="Occurrences of the name 'Luke' accross all U.S. States from 1910 to 2015, with Star Wars movie releases plotted")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 10)\
+    .properties(
+        width=800,
+        height=300
+    )
+
+lines_df = pd.DataFrame({'movie_releases': [1977, 1980, 1983, 1999, 2002, 2005, 2015]})
+
+rules = (
+    alt.Chart(lines_df)
+    .mark_rule(
+        color = c_cp[4],
+        opacity= 0.35,
+        size = 1
+    )
+    .encode(
+        # x = alt.X("x:Q", scale = alt.Scale(domain = (1910, 2015)))
+        x = "movie_releases:N")
+    .properties(
+        width = 800,
+        height = 400
+        # scale = alt.Scale(domain = (1910, 2015))
+    )
+)
+
+
+chart + rules
+
+
+```
+
+
+GQ4 TABLE 2A - showing the total historical occurrences of the name 'Luke' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Luke' for all U.S. States for each year from 1910 - 2015 
+
+mydat = dat.query('name == "Luke" & year > 1880')
+# melt the data so that the states become rows
+mydat_melt = mydat.melt(id_vars=['name', 'year'])
+# #  rename columns
+mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+mydat_melt = mydat_melt.query('State != "Total"')
+mydat_melt = mydat_melt.groupby('year').Total.sum().reset_index()
+
+Markdown(mydat_melt.to_markdown(index=False))
+
+
+```
+
+
+GQ4 CHART 2A - showing the total historical occurrences of the name 'Luke' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Luke' for all years for each state, plus total
+
+chart = alt.Chart(mydat_melt, title="Occurrences of the name 'Luke' accross all U.S. States from 1910 to 2015, with Star Wars movie releases plotted")\
+    .encode(x="year:N", y="Total:Q")\
+    .mark_bar(width = 5)\
+    .properties(
+        width=1100,
+        height=300
+    )
+
+lines_df = pd.DataFrame({'movie_releases': [1977, 1980, 1983, 1999, 2002, 2005, 2015]})
+
+rules = (
+    alt.Chart(lines_df)
+    .mark_rule(
+        color = c_cp[4],
+        opacity= 0.35,
+        size = 1
+    )
+    .encode(
+        # x = alt.X("x:Q", scale = alt.Scale(domain = (1910, 2015)))
+        x = "movie_releases:N")
+    .properties(
+        width = 1100,
+        height = 400
+        # scale = alt.Scale(domain = (1910, 2015))
+    )
+)
+
+
+chart + rules
+
+```
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

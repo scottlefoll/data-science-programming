@@ -1,0 +1,61 @@
+#%%
+import sys
+!{sys.executable} -m pip install vega_datasets
+
+#%%
+import altair as alt
+from altair.vegalite.v4.schema.channels import X
+from vega_datasets import data
+import numpy as np
+import pandas as pd
+
+source = data.movies.url
+df = data.movies()
+df_mean = np.mean(df.IMDB_Rating)
+df_sig = np.std(df.IMDB_Rating)
+df_stat = pd.DataFrame({'x': [df_mean-df_sig*3, df_mean-df_sig*2, df_mean-df_sig, df_mean, df_mean+df_sig, df_mean+df_sig*2, df_mean+df_sig*3]})
+df_stat['label'] = ['-3σ','-2σ','-σ','x̅','σ','2σ','3σ']
+base = alt.Chart(source)
+
+bar = base.mark_bar().encode(
+    x=alt.X('IMDB_Rating:Q', bin=True, axis=None),
+    y='count()'
+)
+
+bar2 = base.mark_bar().encode(
+    x=alt.X('IMDB_Rating:Q', bin=True),
+    y='count()'
+)
+
+bar3 = base.mark_bar().encode(
+    x=alt.X('IMDB_Rating:Q', bin=False),
+    y='count()'
+)
+
+vert_lines = alt.Chart(df_stat).mark_rule(color='red',strokeDash=[3,5]).encode(
+    x='x',
+    size=alt.value(3)
+)
+
+text = alt.Chart(df_stat).mark_text(
+    align='left',
+    baseline='middle',
+    dx=3
+).encode(
+    alt.Text('label'),
+    alt.X('x')
+)
+
+rule = base.mark_rule(color='red').encode(
+    x='mean(IMDB_Rating):Q',
+    size=alt.value(5)
+)
+
+#bar + rule 
+bar + vert_lines + text
+
+# %%
+bar2 + vert_lines + text
+# %%
+bar3 + vert_lines + text
+# %%

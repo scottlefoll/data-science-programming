@@ -1,0 +1,199 @@
+---
+# W04 U2 Week A Walkthrough
+title: "Client Report - W01 Project )0: Introduction - MPG"
+subtitle: "Course DS 250"
+author: "Scott LeFoll"
+Date: "09/17/2022"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+---
+
+
+```{python}
+# W04 U2 Week A Walkthrough
+
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import matplotlib.pyplot as plt
+import altair_saver as alt_saver
+
+import urllib3
+import requests
+import json
+# alt.data_transformers.enable('json')
+
+from altair_saver import save
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+```
+
+
+## Elevator pitch
+
+The importance ...
+
+
+```{python}
+#| label: W01 Project 0 Data
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+url = "https://github.com/byuidatascience/data4missing/raw/master/data-raw/mtcars_missing/mtcars_missing.json"
+dat = pd.read_csv(url)
+dat.tail(-5)
+```
+
+
+
+## GRAND QUESTION 1
+
+
+
+```{python}
+#| label: GQ1
+#| code-summary: Build Chart
+
+# urlib3 and json
+http = urllib3.PoolManager()
+response = http.request('GET', url)
+cars_json = json.loads(response.data.decode('utf-8'))
+
+```
+
+
+
+```{python}
+#| label: GQ2 chart
+#| code-summary: Save chart 1 - Displacement vs. Highway MPG
+#| fig-cap: "Popular Models, 1999-2008: Displacement vs. Highway MPG"
+#| fig-align: center
+
+req_cars_json = requests.get(url).json()
+
+```
+
+
+
+```{python}
+#| label: GQ3 table
+#| code-summary: Display Table 1 in Terminal and HTML v.1
+#| tbl-cap: "Popular Models Highway Fuel Efficiency"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+cars1 = pd.DataFrame.from_dict(req_cars_json)
+cars2 = pd.DataFrame.from_dict(cars_json)
+```
+
+
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+
+cars1 = pd.json_normalize(cars_json) 
+cars2 = pd.json_normalize(req_cars_json) 
+
+```
+
+
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+
+data = [{'id': 1, 'name': {'first': 'Coleen', 'last': 'Volk'}},
+         {'name': {'given': 'Mose', 'family': 'Regner'}},
+         {'id': 2, 'name': 'Faye Raker'}]
+ex1=pd.DataFrame.from_dict(data)
+ex2=pd.json_normalize(data)
+```
+
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+# missing data
+df = (pd.DataFrame(
+    np.random.randn(5, 3), 
+    index=['a', 'c', 'e', 'f', 'h'],
+    columns=['one', 'two', 'three'])
+  .assign(
+    four = 'bar', 
+    five = lambda x: x.one > 0,
+    six = [np.nan, np.nan, 2, 2, 1],
+    seven = [4, 5, 5, np.nan, np.nan])
+  )
+
+```
+
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+#what is group by and agg
+
+# %%
+df.seven + df.six
+
+
+
+
+```
+
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+# missing data
+
+df.seven.sum()
+```
+
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+# missing data
+
+df.seven.fillna(0) + df.six.fillna(0)
+
+
+```
+
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+# missing data
+
+df.seven.fillna(0).sum()
+
+```

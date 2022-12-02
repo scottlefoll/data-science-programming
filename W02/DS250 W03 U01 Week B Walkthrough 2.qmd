@@ -1,0 +1,213 @@
+---
+title: "Client Report - [Insert Project Title]"
+subtitle: "Course DS 250"
+author: "[STUDENT NAME]"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+_THIS `.qmd` FILE SHOULD BE USED TO WRITE YOUR REPORT.  YOU WILL NEED TO COMPILE THE REPORT INTO A `.html` DOCUMENT AND SUBMIT IT ON CANVAS._
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import pandasql as psql
+
+from pandasql import sqldf
+from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+
+```
+
+
+
+```{python}
+#| label: project data
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+#read in url to df
+url = 'https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv'
+dat = pd.read_csv(url)
+
+# df = pd.DataFrame(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), columns=['a', 'b', 'c'])
+# df = pd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+# print(df)
+
+# %%
+dat.head(-5)
+# dat.tail(10)
+```
+
+
+# %%
+
+
+# %%
+
+```
+
+
+```
+
+```{python}
+#how to confirm you got all the info 
+#what is unique do, what does size do
+# pd.unique(dat.name).size
+#dat.name.size
+
+# This is the total number of attributes (cells) in the data frame
+# dat.size
+
+# This is the total number of rows in the data frame (names, including repeats)
+# dat.name.size
+# year, name, UT FROM dat WHERE UT > 0 and NAME = 'Oliver',
+
+# q = "SELECT SUM (UT) FROM dat WHERE NAME = 'Oliver' "
+q = "SELECT SUM(UT) as sum_utah FROM dat WHERE NAME = 'Oliver' "
+sqldf(q, globals())
+
+# dat.head(-5)
+# dat.tail(5)
+```
+
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ1 chart
+#how to use query with aggregation min, max, size
+# what is the first year in the data set for John
+dat = pd.unique(dat.query('name == "Felisha"').year).min()
+dat
+```
+
+
+
+```{python}
+#| label: G2 chart
+#how to use query with aggregation min, max, size
+# what is the last year in the data set for John
+dat2 = pd.DataFrame.unique(dat.query('name == "John"').year).max()
+dat2
+
+```
+
+
+
+```{python}
+#| label: GQ3 chart
+#how to use query with aggregation min, max, size
+# how many years are in the data set for John
+# pd.unique(dat.query('name == "John"').year).size
+
+# pd.unique(dat.query('name == "Oliver"').year).size
+
+dat3 = pd.DataFrame.unique(dat.query('name == "Oliver"').year).size
+dat3
+# pd.DataFrame(dat.query('name == "Oliver"').year).size
+
+```
+
+
+
+```{python}
+#| label: GQ4 chart
+#what is group by and agg
+#  what is the total number records for each name across all years in the data set
+# dat_total = dat.groupby('name').agg(n = ('Total', 'sum')).reset_index()
+# same thing, but easier to read and interpret, w/o explicit aggregation
+dat_total = dat.query('name'=='Scott').groupby('name').Total.sum().reset_index()
+
+
+# q = "SELECT * FROM dat WHERE NAME = 'Oliver' "
+# sqldf(q, globals())
+
+# What is the suam of each name, by state, with index reset to start at 0
+dat_total = dat.groupby('name').sum().reset_index() #agg(n = ('Total', 'sum')).reset_index()
+dat_total
+```
+
+
+
+```{python}
+#| label: GQ5 chart
+#how to use query with aggregation min, max, size
+#what is group by and agg
+
+# dat_total = dat.groupby('name').Total.max().reset_index()
+# dat_total
+# dat_total_max = dat_total.query('Total.n.max()')
+# dat_total_max
+
+#what is group by and agg
+
+q = "SELECT * FROM dat WHERE NAME = 'Scott' "
+dat2 = sqldf(q, globals())
+ 
+dat_total = dat2.groupby('name').sum() #agg(n = ('Total', 'sum')).reset_index()
+dat_total
+
+```
+
+
+
+```{python}
+#| label: GQ6 chart
+
+print(dat_total
+    .query('n in [@dat_total.n.max(), @dat_total.n.min()]')
+    .to_markdown(showindex = False, floatfmt=".0f"))
+
+```
+
+
+
+
+```{python}
+#| label: GQ7 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(120)\
+    .filter(["year", "UT"])
+
+display(mydat)
+
+```
+
+OR 
+
+```{python}
+
+Markdown(mydat.to_markdown(index=False))
+```
+
+

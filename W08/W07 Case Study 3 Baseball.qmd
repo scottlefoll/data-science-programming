@@ -1,0 +1,214 @@
+---
+title: "Project 3 Finding Relationships in Baseball"
+subtitle: "DS250-02 W06 U3"
+author: "Scott LeFoll"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+
+# import datadotworld as dw
+import pandas as pd 
+import altair as alt
+import numpy as np
+import sqlite3 as sql
+import matplotlib.pyplot as plt
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from sklearn import datasets
+
+
+```
+
+
+## Elevator pitch
+
+The great American pastime, baseball carries a powerful sense of nostalgia unlike any other sport in the country. Generations of men and boys have filled the stands on warm summer evenings, and with drink and dog in hand, have cheered their team into the annals of history. The "stats" for baseball are on record since the game was first played, and those numbers tell a myriad of stories. We are going to explore a few of them in the following charts. We will see Ty Cobbs name in the stats for highest batting average, and we will look into the numbers behind the movie "Moneyball," when the Oakland A's used statistics to beat the Yankees.
+
+
+```{python}
+#| label: Project Data 1
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+# Read in the data
+sqlite_file = 'lahmansbaseballdb.sqlite'
+# set up a connection string
+con = sql.connect(sqlite_file)
+
+
+
+```
+
+
+## Grand Question 1: What is the relationship between a player's batting average and their salary?
+
+1. Write an SQL query to create a new dataframe about baseball players who attended BYU-Idaho. The new table should contain five columns: playerID, schoolID, salary, and the yearID/teamID associated with each salary. Order the table by salary (highest to lowest) and print out the table in your report.
+
+Entry into the Major Leagues is extremely selective, and very few young men are able to make the journey. Many colleges in America have only had a handful of their alumni make it to the big leagues. BYU-Idaho is no exception. In fact, only 3 players have ever made it to the big leagues. The following table shows the players who attended BYU-Idaho, and their salaries in the Major Leagues. The table is ordered by salary, highest to lowest. Still, those lucky few who do make it earn a substantial dividend during their careers.
+
+
+## Grand Qquestion 1 Table 1: BYU-Idaho Baseball Players in the Major Leagues
+
+
+```{python}
+#| label: GQ1 Table 1
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+# Find the students who played baseball for byui and then played professional baseball.
+# Find the salaries and teams for each year they played professional baseball.
+
+# `Set up the query for Grand Question 1
+dat = pd.read_sql_query( 
+    # "SELECT * FROM Schools WHERE schoolID='idbyuid'", con)
+    # "SELECT playerID, schoolID, yearID FROM CollegePlaying, People WHERE schoolID='idbyuid'", con)
+    "SELECT pp.playerID, cp.schoolID, sal.yearID, sal.teamid, sal.salary FROM CollegePlaying as cp JOIN People as pp ON pp.playerid=cp.playerid, Appearances as app ON pp.playerid=app.playerid, Salaries as sal ON pp.playerid=sal.playerid WHERE cp.schoolID='idbyuid' GROUP BY pp.playerid, sal.yearid ORDER BY sal.salary DESC", con)
+
+# change the data type of the salary column to int so that it displays correctly
+dat.salary = dat.salary.astype(int)
+# display GQ1 Table 1
+Markdown(dat.to_markdown(index=False))
+
+
+
+```
+
+## Grand Question 2: What is the relationship between a player's batting average and their salary?
+
+A. Write an SQL query that provides playerID, yearID, and batting average for players with at least 1 at bat that year. Sort the table from highest batting average to lowest, and then by playerid alphabetically. Show the top 5 results in your report.
+
+The batting average is the classic statistic used to compare the offensive power of every baseball player from Ty Cobb to today's power hitters. The best of the best were able to achieve batting averages ( hits / "at bats") of just shy of .400, or 40%. So then why does this query, which filters the data to any player with a single "at bat" show every top hitter as having an average of 1, meaning 100%? It's simple - because these players each only had one chance at bat for that entire year, and they made a hit. That makes them perfect hitters, albeit for only one at bat. The following table does show the "top 5" hitters in the Major Leagues, and their batting averages. The table is ordered by batting average, highest to lowest, and then by playerID alphabetically.
+
+Grand Question 2 Table 1: Top 5 Batting Averages with at least 1 at bat
+
+```{python}
+#| label: GQ2 Table 1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# `Set up the query for Grand Question 2
+dat = pd.read_sql_query( 
+    "SELECT playerid, yearid, h, ab, CAST(h AS float)/CAST(ab AS float) AS avg FROM Batting WHERE ab>0 ORDER BY avg DESC, playerid LIMIT 5", con)
+
+# display GQ2 Table 1
+Markdown(dat.to_markdown(index=False))
+
+
+
+```
+
+B. Use the same query as above, but only include players with at least 10 at bats that year. Print the top 5 results.
+
+Here we see the same query, but with a filter for players with at least 10 at bats. This is a more "realistic" filter, and shows the "top hitters" in the Major Leagues. In the same vein as with the last chart though, 10 'at bats' is still far too low to demonstrate a true average with any meaning. No one considers any of these hitters to be among the top in baseball history. The table is ordered by batting average, highest to lowest, and then by playerID alphabetically.
+
+Grand Question 2 Table 2: Top 5 Batting Averages with at least 10 at bats
+
+
+```{python}
+#| label: GQ2 Table 2
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+# `Set up the query for Grand Question 2, table 2
+dat = pd.read_sql_query( 
+    "SELECT playerid, yearid, h, ab, CAST(h AS float)/CAST(ab as float) AS avg FROM Batting WHERE ab>9 ORDER BY avg DESC, playerid LIMIT 5", con)
+
+# display GQ2 Table 2
+Markdown(dat.to_markdown(index=False))
+
+```
+
+Grand Question 2 Table 3: Top 5 Batting Averages with at least 100 at bats
+
+C. Now calculate the batting average for players over their entire careers (all years combined). Only include players with at least 100 at bats, and print the top 5 results
+
+This is the first time we see a true batting average. These are the "top hitters" in the Major Leagues.  The table is limited to the top 5. These names rank among the greatest hitters of all time, and the legendary Ty Cobb is in the list.The table is ordered by batting average, highest to lowest, and then by playerID alphabetically.
+
+
+```{python}
+#| label: GQ2 Table 3
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+#  set up the query for Grand Question 2, table 3
+dat = pd.read_sql_query( 
+    "SELECT playerid, CAST(SUM(h) AS float)/CAST(SUM(ab) AS float) AS avg FROM Batting WHERE ab>99 GROUP BY playerid ORDER BY avg DESC, playerid LIMIT 5", con)
+
+#  display GQ2 Table 3
+Markdown(dat.to_markdown(index=False))
+
+```
+
+
+## Grand Question 3: How much did the Oakland A's pay per Run when they started playing MoneyBall?
+
+3. Pick any two baseball teams and compare them using a metric of your choice (average salary, home runs, number of wins, etc). Write an SQL query to get the data you need, then make a graph in Altair to visualize the comparison. What do you learn?
+
+This chart shows the Oakland Athletics and the New York Yankees from 1990 to 2010. It illustrates the success of the Oakland A's adoption of statistics in their team management, which powered them to several playoffs and world series champtionships during a ten year period, and revolutionized the entire game of baseball. Basically, by using statistics and data science they were able to laser focus their expenditures on those statistical targets that most contributed to wins - and those were actually base hits. Chart 1 illustrates the relationship between the ratio of total annual salary dollars and the total annual number of runs for each team by year. 
+
+Grand Question 3 Table 1: Oakland A's and New York Yankees Salary to Runs Ratio
+
+```{python}
+
+#| label: GQ3 Table 1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+dat = pd.read_sql_query( 
+    "SELECT t.teamid AS team, t.yearid AS year, sal.yearid, t.r AS runs, t.w AS wins, t.attendance, CAST(SUM(sal.salary) as int)/t.r AS 'dollar_runs' FROM Teams AS t JOIN Salaries as sal ON t.teamid=sal.teamid AND t.yearid=sal.yearid WHERE (t.teamid='NYA' OR t.teamid='OAK') AND (t.yearid>1997 AND t.yearid<2008) GROUP BY t.teamid, t.yearid", con)
+
+dat['YearTeam'] = dat['year'].astype(str) + " " + dat['team']
+dat.sort_values(by=['YearTeam'], inplace=True)
+
+Markdown(dat.to_markdown(index=False))
+```
+
+Grand Question 3 Chart 1: Oakland A's and New York Yankees Salary to Runs Ratio
+
+```{python}
+#| label: GQ3 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+alt.Chart(dat.head(200))\
+    .encode(x = "YearTeam", y = "dollar_runs")\
+    .mark_bar()
+
+```
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

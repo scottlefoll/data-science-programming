@@ -1,0 +1,639 @@
+---
+title: "Client Report - W02 Project 1: What's in a name?"
+subtitle: "Course DS 250"
+author: "Scott LeFoll"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import urllib3
+import requests
+import json
+
+from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from altair import Chart, X, Y, Axis, SortField
+from scipy import stats
+
+
+# alt.data_transformers.enable('json')
+#> DataTransformerRegistry.enable('json')
+
+
+```
+
+
+## Elevator pitch
+
+Late flights and missing data (JSON files)
+Project2 Description: Monthly Airline Delays by Airport for US Flights, 2003-2016
+
+The air travel infrastructure in the U.S. has long been the envy of the rest of the world. As the pioneering leader in business and consumer air passenger travel since the birth of the airline industry in the early part of the 20th century, the U.S. has led the world in terms of passengers carried, routes, flights, and safety. As air travel has matured the number of overall passengers and flights has greatly increased, placing increasing stress on the existing air travel infrastructure in the U.S. This study provides some basic visualizations showing the status and trends of flight delays in the United States Airline industry during the 2003 - 2016 period.
+
+Data Source
+
+In 2003 the Bureau of Transportation Statistics (BTS) began collecting data on the causes of delayed flights. The categories they use are Air Carrier, National Aviation System, Weather, Late-Arriving Aircraft, and Security. You can visit the BTS website to read definitions of these categories.
+
+
+```{python}
+#| label: project data 1
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+#read in url to df
+# contains arrival and departure delay data for Newark, LaGuardia and JFK airports
+flights_url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/flights/flights.csv"
+flights = pd.read_csv(flights_url)
+
+# clean up the NaN values by replacing them with the most relevent values from the matching row
+flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+flights[['dep_time']] =  flights[['sched_dep_time']].bfill(axis = 'columns')
+flights['dep_delay'] =  flights['dep_delay'].fillna(0)
+flights[['arr_time']] =  flights[['sched_arr_time']].bfill(axis = 'columns')
+flights['arr_delay'] =  flights['arr_delay'].fillna(0)
+flights['air_time'] =  flights['air_time'].fillna(0)
+flights['tailnum'] =  flights['tailnum'].fillna("")
+
+# convert negative values to 0
+# get all the numberic columns
+num_cols = flights._get_numeric_data()
+# Replace all elements < 0 with 0
+num_cols[num_cols < 0 ] = 0
+
+
+flights = flights.assign(dep_time = np.where(flights.dep_time > 2400, np.nan, flights.dep_time))
+
+flights = flights.assign(dep_time = np.where(flights.dep_time < 0, np.nan, flights.dep_time))
+
+# df.bfill(axis='columns')
+#  Show some data
+flights.tail(-5)
+
+
+```
+
+
+
+```{python}
+#| label: project data 2
+#| code-summary: Read and format project data
+# Include and execute your code here
+# Include and execute your code here\
+
+# display data structure
+flights.info()
+
+mydat = pd.unique(flights['origin'])
+mydat
+
+```
+
+
+
+```{python}
+#| label: project data 3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# load from the json file 
+# contains flight delay information for Atlanta, Denver, Washington DC, Chicago, San Diego, San Francisco, and Salt Lake City airports
+url_flights = 'https://github.com/byuidatascience/data4missing/raw/master/data-raw/flights_missing/flights_missing.json'
+http = urllib3.PoolManager()
+response = http.request('GET', url_flights)
+flights_json = json.loads(response.data.decode('utf-8'))
+flights2 = pd.json_normalize(flights_json)
+flights2.tail(-5)
+
+    
+```
+
+
+```{python}
+#| label: project data 4
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+def missing_checks(df, column ):
+    out1 = df[column].isnull().sum(axis = 0)
+    out2 = df[column].describe()
+    out3 = df[column].describe(exclude=np.number)
+    print('\n\n\n')
+    print('Checking column' + column)
+    print('\n')
+    print('Missing summary')
+    print(out1)
+    print('\n')
+    print("Numeric summaries")
+    print(out2)
+    print('\n')
+    print('Non Numeric summaries')
+    print(out3)
+
+
+missing_checks(flights2, 'num_of_flights_total')
+missing_checks(flights2, 'num_of_delays_carrier')
+missing_checks(flights2, 'num_of_delays_late_aircraft')
+missing_checks(flights2, 'num_of_delays_nas')
+missing_checks(flights2, 'num_of_delays_security')
+missing_checks(flights2, 'num_of_delays_weather')
+missing_checks(flights2, 'num_of_delays_total')
+
+missing_checks(flights2, 'minutes_delayed_carrier')
+missing_checks(flights2, 'minutes_delayed_late_aircraft')
+missing_checks(flights2, 'minutes_delayed_nas')
+missing_checks(flights2, 'minutes_delayed_security')
+missing_checks(flights2, 'minutes_delayed_weather')
+missing_checks(flights2, 'minutes_delayed_total')
+
+# clean up the NaN values => convert them to ' 0 '
+flights2.fillna(0)
+
+# clean up the negative number values, convert them to ' 0 '
+flights2.num_of_flights_total = np.where(flights2.num_of_flights_total < 0,0, flights2.num_of_flights_total)
+
+# num_of_delays_carrier column is returning as an Object, and raises an error in testing for < 0. Convert to number string. One of the vales contains the string '1500+' - causing the error
+flights2.num_of_delays_carrier = flights2.num_of_delays_carrier.replace('1500+','1500')
+flights2.num_of_delays_carrier = flights2.num_of_delays_carrier.astype('int')
+
+# convert negative values to 0
+# get all the numberic columns
+num_cols = flights2._get_numeric_data()
+# Replace all elements < 0 with 0
+num_cols[num_cols < 0 ] = 0
+
+# convert year to int
+# flights2.year = flights.year.astype('int')
+flights2.year.astype('int')
+# flights2.year = flights.year.round('int')
+flights2.year.round('int')
+
+
+flights2.tail(-5)
+
+```
+
+
+```{python}
+#| label: project data 5
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# show the json flights2 structure
+flights2.info()
+
+mydat = pd.unique(flights2['airport_code'])
+mydat
+# Markdown(mydat.to_markdown(index=False))
+
+```
+
+
+
+## GRAND QUESTION 1
+
+Which airport has the worst delays? 
+
+Discuss the metric you chose, and why you chose it to determine the “worst” airport. Your answer should include a summary table that lists (for each airport) the total number of flights, total number of delayed flights, proportion of delayed flights, and average delay time in hours.
+
+_type your results and analysis here_
+
+
+GQ1 TABLE 1 -  Showing the Ratio of Total Number of Flight Delays to the Total Number of Flights, grouped by Airport for US Flights, 2003-2016
+
+
+```{python}
+#| label: TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here\
+
+# Code for the first table
+# mydat = flights2.query(' & ')
+# mydat
+# mydat = flights2.head(100)\
+#     .sum()\
+#     .reset_index()\
+#     .tail(120)
+# display(mydat)
+
+mydat_sum = flights2.groupby("airport_code").sum()
+
+# mydat_sum.sort_values(by='airport_code', ascending=True)
+
+Markdown(mydat_sum.to_markdown(index=False))
+
+```
+
+GQ1 CHART 1 -  Showing the Ratio of Total Number of Flight Delays to the Total Number of Flights, grouped by Airport for US Flights, 2003-2016
+
+```{python}
+#| label: CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the total number of occurrences for 'Scott' in 1964 across all states
+
+flights.query('month == 1 & day == 1')
+
+"""I recommend replacing the unusual values with missing values. The easiest way to do this is to use assign() to replace the variable with a modified copy. You can use the np.where() function to replace unusual values with np.nan:"""
+
+
+
+# flights = flights.assign(
+#         y = lambda x: np.where((x.y < 3) | (x.y > 20), np.nan, x.y)
+#         )
+
+# same as:  flights[(flights.month == 1) & (flights.day == 1)]
+
+alt.Chart(mydat)\
+    .encode(x="name", y="0")\
+    .mark_bar(width = 50)\
+    .properties(
+        width=800,
+        height=300
+
+    )
+
+    
+```
+
+
+GQ1 TABLE 2 -  Showing the Ratio of Total Minutes of Flight Delays to the Total Number of Flights, grouped by Airport for US Flights, 2003-2016
+
+
+```{python}
+#| label: TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# The following code finds all flights that departed in November or December:
+"""You want to understand what makes observations with missing values different to observations with recorded values. For example, in flights, missing values in the dep_time variable indicate that the flight was cancelled. So you might want to compare the scheduled departure times for cancelled and non-cancelled times. You can do this by making a new variable with pd.isna()."""
+
+flights_url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/flights/flights.csv"
+
+flights = pd.read_csv(flights_url)
+flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+
+pdat = flights.assign(
+  cancelled = lambda x: pd.isna(x.dep_time),
+  sched_hour = lambda x: x.sched_dep_time // 100,
+  sched_minute = lambda x: x.sched_dep_time % 100,
+  sched_dep_time = lambda x: x.sched_hour + x.sched_minute / 60  
+  )
+
+chart = (alt.Chart(pdat)
+      .encode(
+        x = alt.X('sched_dep_time', bin = alt.Bin(step = .25)), 
+        y = 'count()',
+        color = 'cancelled')
+      .mark_bar())
+
+# chart.save("screenshots/altair_flights_scheduled.png")
+chart
+
+```
+
+
+
+GQ1 CHART 2 -  Showing the Ratio of Total Minutes of Flight Delays to the Total Number of Flights, grouped by Airport for US Flights, 2003-2016
+
+```{python}
+#| label: TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# The following code finds all flights that departed in November or December:
+
+flights.query('month == 11 | month == 12')
+#  same as: nov_dec = flights.query('month in [11, 12]')`
+
+
+```
+
+
+_include figures in chunks and discuss your findings in the figure._
+
+
+## GRAND QUESTION 2
+
+
+What is the best month to fly if you want to avoid delays of any length? 
+
+Discuss the metric you chose and why you chose it to calculate your answer. Include one chart to help support your answer, with the x-axis ordered by month. (To answer this question, you will need to remove any rows that are missing the Month variable.)
+
+
+
+
+_type your results and analysis here_
+ 
+
+GQ2 TABLE 1 - showing the total historical occurrences of the name 'Brittany' for each year across all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# Counts: You’ve seen size(), which takes no arguments, and returns the size of the current group. To count the number of non-missing values, use isnull().sum(). To count the number of unique (distinct) values, use nunique().
+
+
+# Which destinations have the most carriers?
+(flights
+  .groupby('dest')
+  .agg(
+    carriers_unique = ('carrier', 'nunique'),
+    carriers_count = ('carrier', 'size'),
+    missing_time = ('dep_time', lambda x: x.isnull().sum())
+    ))
+
+
+# Counts are useful and pandas provides a simple helper if all you want is a count:
+# not_cancelled['dest'].value_counts()
+
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+GQ2 CHART 1 - showing the total historical occurrences of the name 'Brittany' for each year across all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 CHART1
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+# How many flights left before 5am? (these usually indicate delayed
+# flights from the previous day)
+(not_cancelled
+  .groupby(['year', 'month','day'])
+  .agg(n_early = ('dep_time', lambda x: np.sum(x < 500))))
+
+
+(not_cancelled 2
+  .groupby(['year', 'month','day'])
+  .agg(hour_prop = ('arr_delay', lambda x: np.sum(x > 60))))
+
+
+```
+
+GQ2 TABLE 2 - showing the total occurrences of the name 'Brittany' in each U.S. state for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+
+# # compute the total number of occurrences for 'Brittany' for all years for each state
+# mydat = dat.query('name == "Brittany" & year > 1880')
+
+# # melt the data so that the states become rows
+# mydat_melt = mydat.melt(id_vars=['name', 'year'])
+
+# #  rename columns
+# mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+# mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+# mydat_melt = mydat_melt.groupby('State').Total.sum().reset_index()
+
+# # Get index where variable column equals 'Total'
+# indexState = mydat_melt[mydat_melt['State'] == 'Total'].index 
+# # Delete these row indexes from dataFrame
+# mydat_melt.drop(indexState , inplace=True)
+
+# Markdown(mydat_melt.to_markdown(index=False))
+
+```
+
+GQ2 CHART 2 - showing the total occurrences of the name 'Brittany' in each U.S. state for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Brittany' for all years across all states
+
+
+
+```
+
+
+## GRAND QUESTION 3
+
+
+
+According to the BTS website, the “Weather” category only accounts for severe weather delays. Mild weather delays are not counted in the “Weather” category, but are actually included in both the “NAS” and “Late-Arriving Aircraft” categories. Your job is to create a new column that calculates the total number of flights delayed by weather (both severe and mild). You will need to replace all the missing values in the Late Aircraft variable with the mean. Show your work by printing the first 5 rows of data in a table. 
+
+Use these three rules for your calculations:__
+
+1.) 100% of delayed flights in the Weather category are due to weather
+2.) 30% of all delayed flights in the Late-Arriving category are due to weather.
+3.) From April to August, 40% of delayed flights in the NAS category are due to weather. The rest of the months, the proportion rises to 65%.
+
+
+
+
+
+_type your results and analysis here_
+
+
+
+GQ3 TABLE 1 - showing the total historical occurrences of the name 'Mary' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Mary' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+
+GQ3 CHART 1 - showing the total historical occurrences of the name 'Mary' in all U.S. states for each of the years 1910 - 2015:
+
+
+```{python}
+#| label: GQ3 CHART1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Mary' for all years for each state, plus total
+
+
+
+```
+
+
+GQ3 TABLE 2 - showing the total historical occurrences of the name 'Martha' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Martha' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+GQ3 CHART 2 - showing the total historical occurrences of the name 'Martha' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Martha' for all years for each state, plus total
+
+
+```
+
+
+## GRAND QUESTION 4
+
+Using the new weather variable calculated above, create a barplot showing the proportion of all flights that are delayed by weather at each airport. 
+Discuss what you learn from this graph.
+
+_type your results and analysis here_
+
+
+
+GQ4 TABLE 1 - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Leia' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+GQ4 CHART 1 - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 CHART1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Leia' for all years for each state, plus total
+
+
+
+
+```
+
+
+GQ4 TABLE 2 - showing the total historical occurrences of the name 'Luke' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Luke' for all U.S. States for each year from 1910 - 2015 
+
+
+
+```
+
+
+GQ4 CHART 2 - showing the total historical occurrences of the name 'Luke' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Luke' for all years for each state, plus total
+
+
+
+```
+
+
+
+## GRAND QUESTION 5
+
+Fix all of the varied missing data types in the data to be consistent (all missing values should be displayed as “NaN”). In your report include one record example (one row) from your new data, in the raw JSON format. Your example should display the “NaN” for at least one missing value.__
+
+_type your results and analysis here_
+
+
+
+GQ5 TABLE 1 - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ5 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Leia' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+GQ5 CHART 1 - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ5 CHART1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Leia' for all years for each state, plus total
+
+
+
+
+```
+
+
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

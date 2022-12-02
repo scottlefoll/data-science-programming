@@ -1,0 +1,5 @@
+{
+    "editor.acceptSuggestionOnEnter": "on",
+    "python.defaultInterpreterPath": "C:\\Users\\scott\\AppData\\Local\\Programs\\Python\\Python311",
+    "notebook.output.textLineLimit": 200
+}

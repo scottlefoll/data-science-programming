@@ -1,0 +1,347 @@
+---
+title: "Project 3 Finding Relationships in Baseball"
+subtitle: "DS250-02 W06 U3"
+author: "Scott LeFoll"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+
+# import datadotworld as dw
+import pandas as pd 
+import altair as alt
+import numpy as np
+import sqlite3 as sql
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+```
+
+
+## Elevator pitch
+
+_paste your elevator pitch here_
+
+When you hear the word “relationship” what is the first thing that comes to 
+mind? Probably not baseball. But a relationship is simply a way to describe 
+how two or more objects are connected. There are many relationships in baseball 
+such as those between teams and managers, players and salaries, even stadiums 
+and concession prices. The graphs on Data Visualizations from Best Tickets 
+show many other relationships that exist in baseball.
+
+For this project, your client would like developed SQL queries that they can 
+use to retrieve data for use on their website without needing Python. They would 
+also like to see example Altair charts.
+
+DB: lahmansbaseballdb.sqlite
+
+1. A short summary that highlights key that describes the results describing insights 
+from metrics of the project and the tools you used (Think “elevator pitch”).
+
+2. Answers to the grand questions. Each answer should include a written description 
+of your results, code snippets, charts, and tables.
+
+
+```{python}
+#| label: Project Data 1
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+# lds = dw.load_dataset('byuidss/cse-250-baseball-database')
+# results = dw.query('byuidss/cse-250-baseball-database', 'SELECT * FROM lahman2019clean')
+# results = dw.query('byuidss/cse-250-baseball-database', 
+#     'SELECT * FROM batting LIMIT 100')
+
+# results = dw.query('byuidss/cse-250-baseball-database', 
+#     'SELECT * FROM allstarfull LIMIT 5')
+
+# print(results.dataframe)
+
+# result = pd.read_sql_query('byuidss/cse-250-baseball-database', 
+#     'SELECT * FROM pitching, LIMIT 10')
+
+# results
+
+########################################
+
+sqlite_file = 'lahmansbaseballdb.sqlite'
+
+con = sql.connect(sqlite_file)
+
+q = '''
+SELECT  playerid,
+        teamid,
+        ab,
+        r
+FROM batting 
+LIMIT 10
+'''
+
+# data import
+dat = pd.read_sql_query( q, con)
+dat
+# batting5 = results.dataframe
+
+# careful to list your path to the file.
+sqlite_file = 'lahmansbaseballdb.sqlite'
+con = sql.connect(sqlite_file)
+
+results = pd.read_sql_query( 
+    'SELECT * FROM pitching LIMIT 5',
+    con)
+
+results
+
+
+
+```
+
+
+```{python}
+#| label: Project Data 2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+
+# results = pd.read_sql_query( 
+#     'SELECT * FROM batting LIMIT 100', con)
+
+# results
+
+# results = pd.read_sql_query( 
+#     'SELECT * FROM allstarfull LIMIT 5', con)
+
+# print(results.dataframe)
+
+# result = pd.read_sql_query(  
+#     'SELECT * FROM pitching, LIMIT 10', con)
+
+# results
+
+# batting5
+
+"""The load_dataset() function facilitates maintaining copies of datasets on the local 
+filesystem. It will download a given dataset’s datapackage and store it under ~/.dw/cache. 
+When used subsequently, load_dataset() will use the copy stored on disk and will work 
+offline, unless it’s called with force_update=True or auto_update=True. force_update=True 
+will overwrite your local copy unconditionally. auto_update=True will only overwrite your 
+local copy if a newer version of the dataset is available on data.world.
+
+Once loaded, a dataset (data and metadata) can be conveniently accessed via the object 
+returned by load_dataset().
+"""
+
+"""Dataset objects allow access to data via three different properties raw_data, tables 
+and dataframes. Each of these properties is a mapping (dict) whose values are of type bytes, 
+list and pandas.DataFrame, respectively. Values are lazy loaded and cached once loaded. Their 
+keys are the names of the files contained in the dataset.
+
+The query() function allows datasets to be queried live using SQL or SPARQL query languages.
+
+To query a dataset, invoke the query() function. For example:
+results = dw.query('jonloyens/an-intro-to-dataworld-dataset', 'SELECT * FROM DataDotWorldBBallStats')"""
+
+# name='jonloyens/an-intro-to-dataworld-dataset' 
+# results = dw.query(name, 
+#     'SELECT * FROM `DataDotWorldBBallStats`, `DataDotWorldBBallTeam` ' 
+#     'WHERE DataDotWorldBBallTeam.Name = DataDotWorldBBallStats.Name') 
+# df = results.dataframe 
+# print(df)
+
+
+
+```
+
+
+
+__Highlight the grand questions__
+
+## GRAND QUESTION 1
+
+1. Write an SQL query to create a new dataframe about baseball players who attended BYU-Idaho. 
+The new table should contain five columns: playerID, schoolID, salary, and the yearID/teamID 
+associated with each salary. Order the table by salary (highest to lowest) and print out 
+the table in your report.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ1 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x="name", y="AK")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+```
+
+
+```{python}
+#| label: GQ1 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+## GRAND QUESTION 2
+
+__COPY PASTE GRAND QUESTION FROM THE PROJECT HERE__
+
+2. This three-part question requires you to calculate batting average (number of hits divided 
+by the number of at-bats)
+
+    a. Write an SQL query that provides playerID, yearID, and batting average for players with at 
+least 1 at bat that year. Sort the table from highest batting average to lowest, and then by 
+playerid alphabetically. Show the top 5 results in your report.
+
+    b. Use the same query as above, but only include players with at least 10 at bats that year. Print 
+the top 5 results.
+
+    c. Now calculate the batting average for players over their entire careers (all years combined). Only 
+include players with at least 100 at bats, and print the top 5 results.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ2 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ2 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+## GRAND QUESTION 3
+
+__COPY PASTE GRAND QUESTION FROM THE PROJECT HERE__
+
+3. Pick any two baseball teams and compare them using a metric of your choice (average salary, 
+home runs, number of wins, etc). Write an SQL query to get the data you need, then make a 
+graph in Altair to visualize the comparison. What do you learn?
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ3 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ3 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

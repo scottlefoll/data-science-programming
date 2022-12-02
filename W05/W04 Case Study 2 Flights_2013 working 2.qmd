@@ -1,0 +1,1015 @@
+---
+title: "Client Report - W02 Project 1: What's in a name?"
+subtitle: "Course DS 250"
+author: "Scott LeFoll"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import urllib3
+import requests
+import json
+
+from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from altair import Chart, X, Y, Axis, SortField
+from scipy import stats
+
+
+# alt.data_transformers.enable('json')
+#> DataTransformerRegistry.enable('json')
+c_cp = ["#335C67", "#fff3b0", "#e09f3e", "#9e2a2b", "#540b0e"] 
+#https://coolors.co/335c67-fff3b0-e09f3e-9e2a2b-540b0e
+
+
+```
+
+
+## Elevator pitch
+
+Description
+
+Monthly Airline Delays by Airport for US Flights, 2003-2016
+
+
+Project 2: Late flights and missing data (JSON files)
+
+Background
+Delayed flights are not something most people look forward to. In the best case scenario you may only wait a few extra minutes for the plane to be cleaned. However, those few minutes can stretch into hours if a mechanical issue is discovered or a storm develops. Arriving hours late may result in you missing a connecting flight, job interview, or your best friend’s wedding.
+
+In 2003 the Bureau of Transportation Statistics (BTS) began collecting data on the causes of delayed flights. The categories they use are Air Carrier, National Aviation System, Weather, Late-Arriving Aircraft, and Security. You can visit the BTS website to read definitions of these categories.
+
+The JSON file for this project contains information on delays at 7 airports over 10 years. Your task is to clean the data, search for insights about flight delays, and communicate your results using the provided template. If you have completed the checkpoints for Unit 5, then you are ready to answer the Grand Questions listed below. Refer to the readings for additional help.
+
+Missing Airline Delays (US)
+The data is called flights_missing.
+
+Description
+Monthly Airline Delays by Airport for US Flights, 2003-2016
+
+
+```{python}
+#| label: project data
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+#read in url to df
+flights_url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/flights/flights.csv"
+
+# "https://github.com/byuistats/CSE250 ""
+# "https://think.cs.vt.edu/corgis/datasets/json/airlines/airlines.json"
+
+flights = pd.read_csv(flights_url)
+flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+# flights['dep_time'] = pd.to_datetime(flights.dep_time, format = "%m %H:%M")
+
+# flights[['dep_time', 'arr_time']] = flights[['dep_time', 'arr_time']].bfill()
+
+# cols = ['dep_time', 'arr_time']
+# flights.loc[:,cols] = flights.loc[:,cols].bfill()
+
+
+# df.bfill(axis='columns')
+#  Show some data
+flights.tail(-5)
+
+# Example of ffill on only certain columns:
+# >>> ## create dataframe
+# ... ts1 = [0, 1, np.nan, np.nan, np.nan, np.nan]
+# >>> ts2 = [0, 2, np.nan, 3, np.nan, np.nan]
+# >>> d =  {'X': ts1, 'Y': ts2, 'Z': ts2}
+# >>> df = pd.DataFrame(data=d)
+# >>> print(df.head())
+#     X   Y   Z
+# 0   0   0   0
+# 1   1   2   2
+# 2 NaN NaN NaN
+# 3 NaN   3   3
+# 4 NaN NaN NaN
+# >>> 
+# >>> ## apply forward fill
+# ... cols = ['X', 'Y']
+# >>> df.loc[:,cols] = df.loc[:,cols].ffill()
+# >>> print(df.head())
+#    X  Y   Z
+# 0  0  0   0
+# 1  1  2   2
+# 2  1  2 NaN
+# 3  1  3   3
+# 4  1  3 NaN
+
+
+
+
+```
+
+
+```{python}
+#| label: TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here\
+
+flights.info()
+
+
+```
+
+
+
+```{python}
+#| label: CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# the long way to help us understand json files and 
+url_flights = 'https://github.com/byuidatascience/data4missing/raw/master/data-raw/flights_missing/flights_missing.json'
+http = urllib3.PoolManager()
+response = http.request('GET', url_flights)
+flights_json = json.loads(response.data.decode('utf-8'))
+flights2 = pd.json_normalize(flights_json)
+flights2.tail(-5)
+    
+```
+
+
+```{python}
+#| label: CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+"""Filling null values
+Sometimes rather than dropping NA values, you'd rather replace them with a valid value. This value might be a single number like zero, or it might be some sort of imputation or interpolation from the good values. You could do this in-place using the isnull() method as a mask, but because it is such a common operation Pandas provides the fillna() method, which returns a copy of the array with the null values replaced."""
+
+data = pd.Series([1, np.nan, 2, None, 3], index=list('abcde'))
+data
+
+""" Output
+a    1.0
+b    NaN
+c    2.0
+d    NaN
+e    3.0
+dtype: float64"""
+
+# We can fill NA entries with a single value, such as zero:
+
+# data.fillna(0)
+
+""" Output
+a    1.0
+b    0.0
+c    2.0
+d    0.0
+e    3.0
+dtype: float64"""
+
+# We can specify a forward-fill to propagate the previous value forward:
+
+# forward-fill
+# data.fillna(method='ffill')
+""" Output
+a    1.0
+b    1.0
+c    2.0
+d    2.0
+e    3.0
+dtype: float64"""
+
+# Or we can specify a back-fill to propagate the next values backward:"""
+
+# back-fill
+# data.fillna(method='bfill')
+
+""" Output
+a    1.0
+b    2.0
+c    2.0
+d    3.0
+e    3.0
+dtype: float64"""
+
+"""Operating on Null Values¶
+As we have seen, Pandas treats None and NaN as essentially interchangeable for indicating 
+missing or null values. To facilitate this convention, there are several useful methods 
+for detecting, removing, and replacing null values in Pandas data structures. They are:
+
+isnull(): Generate a boolean mask indicating missing values
+notnull(): Opposite of isnull()
+dropna(): Return a filtered version of the data
+fillna(): Return a copy of the data with missing values filled or imputed
+We will conclude this section with a brief exploration and demonstration of these routines.
+
+Detecting null values
+Pandas data structures have two useful methods for detecting null data: isnull() and notnull(). 
+Either one will return a Boolean mask over the data. For example:
+
+data = pd.Series([1, np.nan, 'hello', None])
+data.isnull()"""
+
+```
+
+
+## GRAND QUESTION 1
+
+Which airport has the worst delays? 
+
+Discuss the metric you chose, and why you chose it to determine the “worst” airport. Your answer should include a summary table that lists (for each airport) the total number of flights, total number of delayed flights, proportion of delayed flights, and average delay time in hours.
+
+_type your results and analysis here_
+
+
+GQ1 TABLE 1A -  showing the occurrence of the name 'Scott' in each U.S. state for the year 1964:
+
+```{python}
+#| label: TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here\
+
+# Code for the first table
+
+
+```
+
+GQ1 CHART 1A -  showing the occurrence of the name 'Scott' in each U.S. state for the year 1964:
+
+```{python}
+#| label: CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# compute the total number of occurrences for 'Scott' in 1964 across all states
+
+flights.query('month == 1 & day == 1')
+
+"""I recommend replacing the unusual values with missing values. The easiest way to do this is to use assign() to replace the variable with a modified copy. You can use the np.where() function to replace unusual values with np.nan:"""
+
+flights = flights.assign(dep_time = np.where(flights.dep_time > 2400, np.nan, flights.dep_time))
+
+flights = flights.assign(dep_time = np.where(flights.dep_time < 0, np.nan, flights.dep_time))
+
+# flights = flights.assign(
+#         y = lambda x: np.where((x.y < 3) | (x.y > 20), np.nan, x.y)
+#         )
+
+# same as:  flights[(flights.month == 1) & (flights.day == 1)]
+
+
+    
+```
+
+GQ1 TABLE 2A -  showing the total occurrences of the name 'Scott' in all U.S. states for the year 1964:
+
+```{python}
+#| label: TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# The following code finds all flights that departed in November or December:
+"""You want to understand what makes observations with missing values different to observations with recorded values. For example, in flights, missing values in the dep_time variable indicate that the flight was cancelled. So you might want to compare the scheduled departure times for cancelled and non-cancelled times. You can do this by making a new variable with pd.isna()."""
+
+flights_url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/flights/flights.csv"
+
+flights = pd.read_csv(flights_url)
+flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+
+pdat = flights.assign(
+  cancelled = lambda x: pd.isna(x.dep_time),
+  sched_hour = lambda x: x.sched_dep_time // 100,
+  sched_minute = lambda x: x.sched_dep_time % 100,
+  sched_dep_time = lambda x: x.sched_hour + x.sched_minute / 60  
+  )
+
+chart = (alt.Chart(pdat)
+      .encode(
+        x = alt.X('sched_dep_time', bin = alt.Bin(step = .25)), 
+        y = 'count()',
+        color = 'cancelled')
+      .mark_bar())
+
+# chart.save("screenshots/altair_flights_scheduled.png")
+chart
+
+```
+
+
+
+GQ1 TABLE 2A -  showing the total occurrences of the name 'Scott' in all U.S. states for the year 1964:
+
+```{python}
+#| label: TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# The following code finds all flights that departed in November or December:
+
+flights.query('month == 11 | month == 12')
+#  same as: nov_dec = flights.query('month in [11, 12]')`
+
+
+```
+
+
+GQ1 CHART 2A -  showing the total occurrences of the name 'Scott' in all U.S. states for the year 1964:
+
+```{python}
+#| label: CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# De Morgan’s law:    !(x & y) is the same as !x | !y, 
+#                     !(x | y) is the same as !x & !y. 
+# For example, if you wanted to find flights that weren’t delayed (on arrival or 
+# departure) by more than two hours, you could use either of the following two filters:
+
+flights.query('arr_delay > 120 | dep_delay > 120')
+
+#  or
+
+# flights.query('arr_delay <= 120 | dep_delay <= 120')
+
+# If you want to determine if a value is missing, use pd.isna():
+
+# pd.isna(x)
+#> True
+
+
+
+```
+
+GQ1 TABLE 3A -  showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: TABLE3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+flights.sort_values(by = ['year', 'month', 'day'])
+
+
+```
+
+GQ1 CHART 3A -  showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: CHART3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+flights.filter(['year', 'month', 'day'])
+
+flights.drop(columns = ['year', 'day'])
+
+
+
+```
+
+GQ1 TABLE 4A - Table showing the 5 states with the most occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+
+```{python}
+#| label: TABLE4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# loc[] functions in a similar fashion.
+
+# Select columns by name
+# flights.loc[:, ['year', 'month', 'day']]
+flights.loc[:, 'year':'day']
+
+
+```
+
+GQ1 CHART 4A - Table showing the 5 states with the most occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: CHART4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+by_day = flights.groupby(['year', 'month', 'day'])
+by_day.agg(delay = ('dep_delay', np.mean)).reset_index()
+
+
+```
+
+
+GQ1 TABLE 1B - showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: TABLE1B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+by_dest = flights.groupby('dest')
+
+delay = by_dest.agg(
+    count = ('distance', 'size'),
+    dist = ('distance', np.mean),
+    delay = ('arr_delay', np.mean)
+    )
+
+delay_filter = delay.query('count > 20 & dest != "HNL"')
+
+# It looks like delays increase with distance up to ~750 miles
+# and then decrease. Maybe as flights get longer there's more
+# ability to make up delays in the air?
+chart_base = (alt.Chart(delay_filter)
+  .encode(
+    x = 'dist',
+    y = 'delay'
+    ))
+  
+chart = chart_base.mark_point() + chart_base.transform_loess('dist', 'delay').mark_line()  
+# chart.save("screenshots/transform_1.png")
+chart
+
+
+#  same as:
+# delays = (flights
+#     .groupby('dest')
+#     .agg(
+#       count = ('distance', 'size'),
+#       dist = ('distance', np.mean),
+#       delay = ('arr_delay', np.mean) 
+#       )
+#     .query('count > 20 & dest != "HNL"'))
+
+
+
+```
+
+GQ1 CHART 1B - showing the 5 states with the least occurrences of the name 'Scott' in the U.S. for the year 1964:
+
+```{python}
+#| label: CHART1B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+not_cancelled = flights.dropna(subset = ['dep_delay', 'arr_delay']) 
+
+delays = not_cancelled.groupby('tailnum').agg(
+    delay = ("arr_delay", np.mean)
+)
+
+chart = (alt.Chart(delays)
+    .transform_density(
+      density = 'delay',
+      as_ = ['delay', 'density'],
+      bandwidth=10
+      )
+    .encode(
+      x = 'delay:Q',
+      y = 'density:Q'
+      )
+    .mark_line())
+
+# chart.save("screenshots/transform_2.png")
+chart
+
+
+
+
+```
+
+
+GQ1 TABLE 2B - showing the total historical occurrences of the name 'Scott' for all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: TABLE2B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+delays = (not_cancelled
+  .groupby('tailnum')
+  .agg(
+    delay = ("arr_delay", np.mean),
+    n = ('arr_delay', 'size')
+    ))
+
+chart = (alt.Chart(delays)
+    .encode(
+      x = 'n',
+      y = 'delay'
+      )
+    .mark_point(
+      filled = True, 
+      opacity = 1/10))
+
+# chart.save("screenshots/transform_3.png")
+chart
+
+
+
+```
+
+GQ1 CHART 2B - showing the total historical occurrences of the name 'Scott' for all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: CHART2B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+chart = (alt.Chart(delays.query("n > 25"))
+    .encode(
+      x = 'n',
+      y = 'delay'
+    )
+    .mark_point(
+      filled = True, 
+      opacity = 1/10))
+
+# chart.save("screenshots/altair_delays.png")
+chart
+
+
+
+
+```
+
+GQ1 TABLE 3B - showing the states with the least historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: TABLE3B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# settings for Altair to handle large data
+alt.data_transformers.enable('json')
+#> DataTransformerRegistry.enable('json')
+batting_url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/batting/batting.csv"
+batting = pd.read_csv(batting_url)
+
+batters = (batting
+    .groupby('playerID')
+    .agg(
+      ab = ("AB", "sum"),
+      h = ("H", "sum")
+      )
+    .assign(ba = lambda x: x.h/x.ab))
+
+chart = (alt.Chart(batters.query('ab > 100'))
+    .encode(
+      x = 'ab',
+      y = 'ba'
+      )
+    .mark_point())
+
+# chart.save("screenshots/altair_batters.png")
+chart
+
+
+```
+
+GQ1 CHART 3B - showing the states with the least historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: CHART3B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+(not_cancelled
+.groupby(['year', 'month', 'day'])
+.agg(
+  avg_delay1 = ('arr_delay', np.mean),
+  avg_delay2 = ('arr_delay', lambda x: np.mean(x[x > 0]))
+  ))
+
+
+
+
+```
+
+GQ1 TABLE 4B - showing the states with the most historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: TABLE4B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# Why is distance to some destinations more variable than to others?
+(not_cancelled
+.groupby(['dest'])
+.agg(distance_sd = ('distance', np.std))
+.sort_values('distance_sd', ascending = False))
+
+
+
+```
+
+
+GQ1 CHART 4B - showing the states with the most historical occurrences of the name 'Scott' for the years 1910 - 2015:
+
+```{python}
+#| label: CHART4B
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# When do the first and last flights leave each day?
+(not_cancelled
+  .groupby(['year', 'month', 'day'])
+  .agg(
+    first = ('dep_time', np.min),
+    last = ('dep_time', np.max)
+    ))
+
+#  or,
+# using position
+# (not_cancelled
+#   .groupby(['year', 'month','day'])
+#   .agg(
+#     first_dep = ('dep_time', lambda x: list(x)[0]),
+#     last_dep = ('dep_time', lambda x: list(x)[-1])
+#     ))
+
+
+```
+
+
+
+_include figures in chunks and discuss your findings in the figure._
+
+
+## GRAND QUESTION 2
+
+
+What is the best month to fly if you want to avoid delays of any length? 
+
+Discuss the metric you chose and why you chose it to calculate your answer. Include one chart to help support your answer, with the x-axis ordered by month. (To answer this question, you will need to remove any rows that are missing the Month variable.)
+
+
+
+
+_type your results and analysis here_
+ 
+
+GQ2 TABLE 1A - showing the total historical occurrences of the name 'Brittany' for each year across all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# Counts: You’ve seen size(), which takes no arguments, and returns the size of the current group. To count the number of non-missing values, use isnull().sum(). To count the number of unique (distinct) values, use nunique().
+
+
+# Which destinations have the most carriers?
+(flights
+  .groupby('dest')
+  .agg(
+    carriers_unique = ('carrier', 'nunique'),
+    carriers_count = ('carrier', 'size'),
+    missing_time = ('dep_time', lambda x: x.isnull().sum())
+    ))
+
+# Counts are useful and pandas provides a simple helper if all you want is a count:
+# not_cancelled['dest'].value_counts()
+
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+GQ2 CHART 1A - showing the total historical occurrences of the name 'Brittany' for each year across all U.S. states for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 CHART1A
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+# How many flights left before 5am? (these usually indicate delayed
+# flights from the previous day)
+(not_cancelled
+  .groupby(['year', 'month','day'])
+  .agg(n_early = ('dep_time', lambda x: np.sum(x < 500))))
+
+
+(not_cancelled 2
+  .groupby(['year', 'month','day'])
+  .agg(hour_prop = ('arr_delay', lambda x: np.sum(x > 60))))
+
+
+```
+
+GQ2 TABLE 2A - showing the total occurrences of the name 'Brittany' in each U.S. state for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+
+# # compute the total number of occurrences for 'Brittany' for all years for each state
+# mydat = dat.query('name == "Brittany" & year > 1880')
+
+# # melt the data so that the states become rows
+# mydat_melt = mydat.melt(id_vars=['name', 'year'])
+
+# #  rename columns
+# mydat_melt.rename(columns = {'variable':'State'}, inplace = True)
+# mydat_melt.rename(columns = {'value':'Total'}, inplace = True)
+# mydat_melt = mydat_melt.groupby('State').Total.sum().reset_index()
+
+# # Get index where variable column equals 'Total'
+# indexState = mydat_melt[mydat_melt['State'] == 'Total'].index 
+# # Delete these row indexes from dataFrame
+# mydat_melt.drop(indexState , inplace=True)
+
+# Markdown(mydat_melt.to_markdown(index=False))
+
+```
+
+GQ2 CHART 2A - showing the total occurrences of the name 'Brittany' in each U.S. state for the years 1910 - 2015:
+
+```{python}
+#| label: GQ2 CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# # compute the total number of occurrences for 'Brittany' for all years across all states
+
+
+
+```
+
+
+## GRAND QUESTION 3
+
+
+
+According to the BTS website, the “Weather” category only accounts for severe weather delays. Mild weather delays are not counted in the “Weather” category, but are actually included in both the “NAS” and “Late-Arriving Aircraft” categories. Your job is to create a new column that calculates the total number of flights delayed by weather (both severe and mild). You will need to replace all the missing values in the Late Aircraft variable with the mean. Show your work by printing the first 5 rows of data in a table. 
+
+Use these three rules for your calculations:__
+
+1.) 100% of delayed flights in the Weather category are due to weather
+2.) 30% of all delayed flights in the Late-Arriving category are due to weather.
+3.) From April to August, 40% of delayed flights in the NAS category are due to weather. The rest of the months, the proportion rises to 65%.
+
+
+
+
+
+_type your results and analysis here_
+
+
+
+GQ3 TABLE 1A - showing the total historical occurrences of the name 'Mary' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Mary' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+
+GQ3 CHART 1A - showing the total historical occurrences of the name 'Mary' in all U.S. states for each of the years 1910 - 2015:
+
+
+```{python}
+#| label: GQ3 CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Mary' for all years for each state, plus total
+
+
+
+```
+
+
+GQ3 TABLE 2A - showing the total historical occurrences of the name 'Martha' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Martha' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+GQ3 CHART 2A - showing the total historical occurrences of the name 'Martha' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Martha' for all years for each state, plus total
+
+
+```
+
+GQ3 TABLE 3A - showing the total historical occurrences of the name 'Peter' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Peter' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+
+GQ3 CHART 3A - showing the total historical occurrences of the name 'Peter' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 CHART3A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Peter' for all years for each state, plus total
+
+
+
+```
+
+GQ3 TABLE 4A - showing the total historical occurrences of the name 'Paul' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 TABLE4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Paul' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+
+GQ3 CHART 4A - showing the total historical occurrences of the name 'Paul' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ3 CHART4A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Paul' for all years for each state, plus total
+
+
+```
+
+
+## GRAND QUESTION 4
+
+Using the new weather variable calculated above, create a barplot showing the proportion of all flights that are delayed by weather at each airport. 
+Discuss what you learn from this graph.
+
+_type your results and analysis here_
+
+
+
+GQ4 TABLE 1A - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Leia' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+GQ4 CHART 1A - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Leia' for all years for each state, plus total
+
+
+
+
+```
+
+
+GQ4 TABLE 2A - showing the total historical occurrences of the name 'Luke' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 TABLE2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Luke' for all U.S. States for each year from 1910 - 2015 
+
+
+
+```
+
+
+GQ4 CHART 2A - showing the total historical occurrences of the name 'Luke' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 CHART2A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Luke' for all years for each state, plus total
+
+
+
+```
+
+
+
+## GRAND QUESTION 5
+
+Fix all of the varied missing data types in the data to be consistent (all missing values should be displayed as “NaN”). In your report include one record example (one row) from your new data, in the raw JSON format. Your example should display the “NaN” for at least one missing value.__
+
+_type your results and analysis here_
+
+
+
+GQ4 TABLE 1A - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 TABLE1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Occurrences of 'Leia' for all U.S. States for each year from 1910 - 2015 
+
+
+
+
+```
+
+GQ4 CHART 1A - showing the total historical occurrences of the name 'Leia' in all U.S. states for each of the years 1910 - 2015:
+
+```{python}
+#| label: GQ4 CHART1A
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Display the total number of occurrences for 'Leia' for all years for each state, plus total
+
+
+
+
+```
+
+
+GQ4 TABLE 2A - showing the total historical occurrences of the name 'Luke' in all U.S. states for each of the years 1910 - 2015:
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

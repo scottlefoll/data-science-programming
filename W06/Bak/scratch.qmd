@@ -1,0 +1,62 @@
+W3 - U1 Week B - Class Code Walkthrough
+
+# %%
+#import the usual libraries
+import pandas as pd
+import numpy as np 
+import altair as alt 
+# %%
+#what is a dataframe
+df = pd.DataFrame(
+{"a" : [4 ,5, 6],
+"b" : [7, 8, 9],
+"c" : [10, 11, 12]},
+index = [1, 2, 3])
+print(df)
+
+#%%
+#how to reference a value
+#df['a']
+#df.loc[1,'a']
+
+# %% #alternative df with np.array()
+df = pd.DataFrame(np.array(((
+  [4 ,5, 6],
+  [7, 8, 9],
+  [10, 11, 12]))),
+  index=[1, 2, 3],
+  columns=['a','b','c'])
+df
+# %%
+#use of head with a aggregation
+means = df.sort_values("a", ascending=False).head(2).c.mean()
+means
+# %%
+#use of filter and query
+df
+#%%
+(df.rename(columns = {'a':'duck'})
+  .filter(['duck', 'b'])
+  .query('b < 9')
+  .duck
+  .min()
+)
+# %%
+#read in a dataset to a df
+#chart it 
+url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/mpg/mpg.csv"
+
+mpg = pd.read_csv(url)
+
+chart_loess = (alt.Chart(mpg)
+  .encode(
+    x = "displ",
+    y = "hwy")
+  .transform_loess("displ", "hwy")
+  .mark_line()
+)
+
+chart_loess
+# %%
+
+# %%

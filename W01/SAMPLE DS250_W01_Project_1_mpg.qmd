@@ -1,0 +1,375 @@
+---
+title: "Client Report - W01 Project )0: Introduction - MPG"
+subtitle: "Course DS 250"
+author: "Scott LeFoll"
+Date: "09/17/2022"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+---
+
+
+```{python}
+
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import matplotlib.pyplot as plt
+
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+```
+
+
+## Elevator pitch
+
+The importance of fuel efficiency in gasoline-powered vehicles has never been
+more relevent than today. The average fuel economy of new vehicles sold in the 
+United States has increased by 25% since 2007, and the average fuel economy of 
+new vehicles in the United States is now 36 miles per gallon (mpg) in 2021. 
+This is a significant improvement over the last decade, but efficiency is 
+slated to rise another 25% by 2026.
+
+This project produces a visual analysis of comparative fuel efficiences of cars 
+from 1999 to 2008, as a base reference point with which to compare contemporary 
+vehicles. The comparative fuel efficiencies are related to three indpendent 
+variables for each model: engine displacement, # of cylinders, and transmission
+type. A total of 38 popular models are included, and cars that were not 
+continuously produced in that time period were not included. The data is 
+sourced from the U.S. EPA (https://archive.ics.uci.edu/ml/datasets/Auto+MPG). 
+The data is a subset of the original data at http://fueleconomy.gov, and may 
+be retrieved from https://github.com/tidyverse/ggplot2 . The variables are: 
+model, displ, year, cyl, trans, drv, cty, hwy, fl, class.
+
+
+```{python}
+#| label: W01 Project 0 Data
+#| code-summary: Read and format project data
+# Include and execute your code here
+url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/mpg/mpg.csv"
+dat = pd.read_csv(url)
+mpg = pd.read_csv(url)
+dat
+```
+
+
+
+## GRAND QUESTION 1
+
+W01 Task 1: Finish the readings and be prepared with any questions to get your environment working smoothly (class for on-campus and Slack for online).
+
+W01 Task 2: In VS Code, write a python script to create the example Altair chart from 
+section 3.2.2 of the textbook (part of the assigned readings). Note that you 
+have to type chart to see the Altair chart after you create it.
+
+W01 Task 3 Your final report should also include the markdown table.
+
+Grand Question 1: What is the relationship between fuel efficiency and engine displacement among popular models in the years 1999 - 2008?
+
+
+```{python}
+#| label: GQ1
+#| code-summary: Build Chart
+
+# chart = (alt.Chart(mpg)
+#   .encode(
+#     x='displ', 
+#     y='hwy')
+#   .mark_circle()
+# )
+
+alt.Chart(dat.head(200))\
+    .encode(x="displ", y="hwy")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+
+```
+
+
+
+```{python}
+#| label: GQ2 chart
+#| code-summary: Save chart 1 - Displacement vs. Highway MPG
+#| fig-cap: "Popular Models, 1999-2008: Displacement vs. Highway MPG"
+#| fig-align: center
+# plot the mpg chart
+
+alt.Chart(dat.head(200))\
+    .encode(x = "displ", y = "hwy")\
+    .mark_bar()
+
+# chart
+# chart.save("screenshots/altair_viz_1_displ.html")
+# chart.save("screenshots/altair_viz_1_displ.json")
+
+
+
+```
+
+
+
+```{python}
+#| label: GQ3 table
+#| code-summary: Display Table 1 in Terminal and HTML v.1
+#| tbl-cap: "Popular Models Highway Fuel Efficiency"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+# print()
+print(mpg
+  .head(5)
+  .filter(["manufacturer", "model","year", "hwy", "displ"])
+  .to_markdown(index=False))
+# print()
+
+
+
+```
+
+
+```{python}
+#| label: GQ3A table
+#| code-summary: Display Table 1 in Terminal and HTML v.2
+#| tbl-cap: "Popular Models Highway Fuel Efficiency"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+
+
+mydat = dat.head(1000)\
+    .groupby('manufacturer')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["manufacturer", "model","year", "hwy", "displ"])
+
+display(mydat)
+
+```
+
+```{python}
+#| label: GQ3B chart
+#| code-summary: Display Table 1 in HTML v.3
+# Include and execute your code here
+
+Markdown(mydat.to_markdown(index=False))
+```
+
+
+
+## GRAND QUESTION 2
+
+Grand Question 2: What is the relationship between fuel efficiency and number of cylinders among popular models in the years 1999 - 2008?
+
+
+```{python}
+#| label: GQ4
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# chart = (alt.Chart(mpg)
+#   .encode(
+#     x='cyl', 
+#     y='hwy')
+#   .mark_circle()
+# )
+
+alt.Chart(dat.head(200))\
+    .encode(x="cyl", y="hwy")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+
+```
+
+
+
+```{python}
+#| label: GQ5 chart
+#| code-summary: Save chart 2 - Cylinders vs. Highway MPG
+#| fig-cap: "Popular Models, 1999-2008: Cylinders vs. Highway MPG"
+#| fig-align: center
+# Include and execute your code here
+
+alt.Chart(dat.head(200))\
+    .encode(x = "cyl", y = "hwy")\
+    .mark_bar()
+
+# chart
+# chart.save("screenshots/altair_viz_2_cyl.html")
+# chart.save("screenshots/altair_viz_2_cyl.json")
+
+```
+
+
+
+```{python}
+#| label: GQ6 table
+#| code-summary: Display Table 2 in Terminal and HTML v.1
+#| tbl-cap: "Popular Models Highway Fuel Efficiency"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+# print()
+print(mpg
+  .head(5)
+  .filter(["manufacturer", "model","year", "hwy", "cyl"])
+  .to_markdown(index=False))
+# print()
+
+
+```
+
+
+```{python}
+#| label: GQ6A table
+#| code-summary: Display Table 2 in Terminal and HTML v.2
+#| tbl-cap: "Popular Models Highway Fuel Efficiency"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+
+mydat = dat.head(1000)\
+    .groupby('manufacturer')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["manufacturer", "model","year", "hwy", "cyl"])
+
+display(mydat)
+
+```
+
+
+```{python}
+#| label: GQ6B chart
+#| code-summary: Display Table 2 in HTML v.3
+# Include and execute your code here
+
+Markdown(mydat.to_markdown(index=False))
+```
+
+
+
+## GRAND QUESTION 3
+
+Grand Question 3: What is the relationship between fuel efficiency and transmission type among popular models in the years 1999 - 2008?
+
+
+```{python}
+#| label: GQ7
+#| code-summary: Build Chart
+# Include and execute your code here
+
+# chart = (alt.Chart(mpg)
+#   .encode(
+#     x='trans', 
+#     y='hwy')
+#   .mark_circle()
+# )
+
+alt.Chart(dat.head(200))\
+    .encode(x="trans", y="hwy")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+
+```
+
+
+
+```{python}
+#| label: GQ8 chart
+#| code-summary: Save chart 3 - Transmission
+#| fig-cap: "Popular Models, 1999-2008: Transmission Type vs. Highway MPG"
+#| fig-align: center
+# Include and execute your code here
+
+alt.Chart(dat.head(200))\
+    .encode(x = "trans", y = "hwy")\
+    .mark_bar()
+
+# chart
+# chart.save("screenshots/altair_viz_3_trans.html")
+# chart.save("screenshots/altair_viz_3_trans.json")
+
+```
+
+
+
+```{python}
+#| label: GQ9 table
+#| code-summary: Display Table 3 in Terminal and HTML v.1
+#| tbl-cap: "Popular Models Highway Fuel Efficiency"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+# print()
+print(mpg
+  .head(5)
+  .filter(["manufacturer", "model","year", "hwy", "trans"])
+  .to_markdown(index=False))
+# print()
+
+```
+
+
+```{python}
+#| label: GQ9A table
+#| code-summary: Display Table 3 in Terminal and HTML v.2
+#| tbl-cap: "Popular Models Highway Fuel Efficiency"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+mydat = dat.head(1000)\
+    .groupby('manufacturer')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["manufacturer", "model","year", "hwy", "trans"])
+
+display(mydat)
+```
+
+
+
+```{python}
+#| label: GQ9BA chart
+#| code-summary: Display Table 3 in HTML v.3
+# Include and execute your code here
+
+Markdown(mydat.to_markdown(index=False))
+```
+
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

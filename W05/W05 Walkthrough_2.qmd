@@ -1,0 +1,84 @@
+#%%
+import sys
+!{sys.executable} -m pip install vega_datasets
+
+#%%
+"""You want to understand what makes observations with missing values different to observations with recorded values. For example, in flights, missing values in the dep_time variable indicate that the flight was cancelled. So you might want to compare the scheduled departure times for cancelled and non-cancelled times. You can do this by making a new variable with pd.isna()."""
+
+flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+
+pdat = flights.assign(
+  cancelled = lambda x: pd.isna(x.dep_time),
+  sched_hour = lambda x: x.sched_dep_time // 100,
+  sched_minute = lambda x: x.sched_dep_time % 100,
+  sched_dep_time = lambda x: x.sched_hour + x.sched_minute / 60  
+  )
+
+chart = (alt.Chart(pdat)
+      .encode(
+        x = alt.X('sched_dep_time', bin = alt.Bin(step = .25)), 
+        y = 'count()',
+        color = 'cancelled')
+      .mark_bar())
+
+# chart.save("screenshots/altair_flights_scheduled.png")
+chart
+
+
+#%%
+import altair as alt
+from altair.vegalite.v4.schema.channels import X
+from vega_datasets import data
+import numpy as np
+import pandas as pd
+
+source = data.movies.url
+df = data.movies()
+df_mean = np.mean(df.IMDB_Rating)
+df_sig = np.std(df.IMDB_Rating)
+df_stat = pd.DataFrame({'x': [df_mean-df_sig*3, df_mean-df_sig*2, df_mean-df_sig, df_mean, df_mean+df_sig, df_mean+df_sig*2, df_mean+df_sig*3]})
+df_stat['label'] = ['-3σ','-2σ','-σ','x̅','σ','2σ','3σ']
+base = alt.Chart(source)
+
+bar = base.mark_bar().encode(
+    x=alt.X('IMDB_Rating:Q', bin=True, axis=None),
+    y='count()'
+)
+
+bar2 = base.mark_bar().encode(
+    x=alt.X('IMDB_Rating:Q', bin=True),
+    y='count()'
+)
+
+bar3 = base.mark_bar().encode(
+    x=alt.X('IMDB_Rating:Q', bin=False),
+    y='count()'
+)
+
+vert_lines = alt.Chart(df_stat).mark_rule(color='red',strokeDash=[3,5]).encode(
+    x='x',
+    size=alt.value(3)
+)
+
+text = alt.Chart(df_stat).mark_text(
+    align='left',
+    baseline='middle',
+    dx=3
+).encode(
+    alt.Text('label'),
+    alt.X('x')
+)
+
+rule = base.mark_rule(color='red').encode(
+    x='mean(IMDB_Rating):Q',
+    size=alt.value(5)
+)
+
+#bar + rule 
+bar + vert_lines + text
+
+# %%
+bar2 + vert_lines + text
+# %%
+bar3 + vert_lines + text
+# %%

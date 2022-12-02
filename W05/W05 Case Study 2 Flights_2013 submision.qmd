@@ -1,0 +1,806 @@
+---
+title: "Client Report - W02 Project 1: What's in a name?"
+subtitle: "Course DS 250"
+author: "Scott LeFoll"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import urllib3
+import requests
+import json
+
+# from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from altair import Chart, X, Y, Axis, SortField
+# from scipy import stats
+
+
+# alt.data_transformers.enable('json')
+#> DataTransformerRegistry.enable('json')
+
+
+```
+
+
+## Elevator pitch
+
+Late flights and missing data (JSON files)
+Project2 Description: Monthly Airline Delays by Airport for US Flights, 2003-2016
+
+The air travel infrastructure in the U.S. has long been the envy of the rest of the world. As the pioneering leader in business and consumer air passenger travel since the birth of the airline industry in the early part of the 20th century, the U.S. has led the world in terms of passengers carried, routes, flights, and safety. As air travel has matured the number of overall passengers and flights has greatly increased, placing increasing stress on the existing air travel infrastructure in the U.S. This study provides visualizations that show which select airports have the worst delays, showing the status and trends of flight delays in the United States Airline industry during the 2003 - 2016 period.
+
+Data Source
+
+In 2003 the Bureau of Transportation Statistics (BTS) began collecting data on the causes of delayed flights. The categories they use are Air Carrier, National Aviation System, Weather, Late-Arriving Aircraft, and Security. You can visit the BTS website to read definitions of these categories.
+
+
+```{python}
+#| label: project data 1
+#| code-summary: Read and format project data
+# Include and execute your code here
+
+#read in url to df
+# contains arrival and departure delay data for Newark, LaGuardia and JFK airports
+flights_url = "https://github.com/byuidatascience/data4python4ds/raw/master/data-raw/flights/flights.csv"
+flights = pd.read_csv(flights_url)
+
+# clean up the NaN values by replacing them with the most relevent values from the matching row
+flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+flights[['dep_time']] =  flights[['sched_dep_time']].bfill(axis = 'columns')
+flights['dep_delay'] =  flights['dep_delay'].fillna(0)
+flights[['arr_time']] =  flights[['sched_arr_time']].bfill(axis = 'columns')
+flights['arr_delay'] =  flights['arr_delay'].fillna(0)
+flights['air_time'] =  flights['air_time'].fillna(0)
+flights['tailnum'] =  flights['tailnum'].fillna("")
+
+# convert negative values to 0
+# get all the numberic columns
+num_cols = flights._get_numeric_data()
+# Replace all elements < 0 with 0
+num_cols[num_cols < 0 ] = 0
+
+
+flights = flights.assign(dep_time = np.where(flights.dep_time > 2400, np.nan, flights.dep_time))
+
+flights = flights.assign(dep_time = np.where(flights.dep_time < 0, np.nan, flights.dep_time))
+
+# df.bfill(axis='columns')
+#  Show some data
+flights.tail(-5)
+
+
+```
+
+
+
+```{python}
+#| label: project data 2
+#| code-summary: Read and format project data
+# Include and execute your code here
+# Include and execute your code here\
+
+# display data structure
+flights.info()
+
+mydat = pd.unique(flights['origin'])
+mydat
+
+```
+
+
+
+```{python}
+#| label: project data 3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+# load from the json file 
+# contains flight delay information for Atlanta, Denver, Washington DC, Chicago, San Diego, San Francisco, and Salt Lake City airports
+url_flights = 'https://github.com/byuidatascience/data4missing/raw/master/data-raw/flights_missing/flights_missing.json'
+http = urllib3.PoolManager()
+response = http.request('GET', url_flights)
+flights_json = json.loads(response.data.decode('utf-8'))
+flights2 = pd.json_normalize(flights_json)
+flights2.tail(-5)
+
+    
+```
+
+
+```{python}
+#| label: project data 4
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+def missing_checks(df, column ):
+    out1 = df[column].isnull().sum()
+    out1 = df[column].isnull().sum(axis = 0)
+    out2 = df[column].describe()
+    out3 = df[column].describe(exclude=np.number)
+    print()
+    print('Checking column' + column)
+    print()
+    print('Missing summary')
+    print(out1)
+    print()
+    print("Numeric summaries")
+    print(out2)
+    print()
+    print('Non Numeric summaries')
+    print(out3)
+
+
+missing_checks(flights2, 'num_of_flights_total')
+missing_checks(flights2, 'num_of_delays_carrier')
+missing_checks(flights2, 'num_of_delays_late_aircraft')
+missing_checks(flights2, 'num_of_delays_nas')
+missing_checks(flights2, 'num_of_delays_security')
+missing_checks(flights2, 'num_of_delays_weather')
+missing_checks(flights2, 'num_of_delays_total')
+missing_checks(flights2, 'airport_name')
+missing_checks(flights2, 'minutes_delayed_late_aircraft')
+missing_checks(flights2, 'year')                     #  23 NaN values
+missing_checks(flights2, 'minutes_delayed_carrier')  #  52 NaN values
+missing_checks(flights2, 'minutes_delayed_nas')      # 31 NaN values
+missing_checks(flights2, 'minutes_delayed_security')
+missing_checks(flights2, 'minutes_delayed_weather')
+missing_checks(flights2, 'minutes_delayed_total')
+
+# # clean up the NaN values => convert them to ' 0 '
+flights2 = flights2.fillna(0)
+missing_checks(flights2, 'minutes_delayed_nas')
+missing_checks(flights2, 'minutes_delayed_carrier')
+missing_checks(flights2, 'year')
+
+# # # clean up the negative number values, convert them to ' 0 '
+flights2.num_of_flights_total = np.where(flights2.num_of_flights_total < 0,0, flights2.num_of_flights_total)
+
+# # # num_of_delays_carrier column is returning as an Object, and raises an error in testing for < 0. Convert to number string. One of the vales contains the string '1500+' - causing the error
+flights2.num_of_delays_carrier = flights2.num_of_delays_carrier.replace('1500+','1500')
+flights2.num_of_delays_carrier = flights2.num_of_delays_carrier.astype('int')
+flights2.num_of_flights_total = flights2.num_of_flights_total.astype('int')
+flights2.minutes_delayed_late_aircraft = flights2.minutes_delayed_late_aircraft.astype('int')
+flights2.minutes_delayed_nas = flights2.minutes_delayed_nas.astype('int')
+flights2.minutes_delayed_security = flights2.minutes_delayed_security.astype('int')
+flights2.minutes_delayed_weather = flights2.minutes_delayed_weather.astype('int')
+flights2.minutes_delayed_total = flights2.minutes_delayed_total.astype('int')
+
+
+# convert negative values to 0
+# get all the numberic columns
+num_cols = flights2._get_numeric_data()
+# # Replace all elements < 0 with 0
+num_cols[num_cols < 0 ] = 0
+
+# # convert year to int
+flights2.year = flights2.year.astype('int')
+flights2.num_of_flights_total = flights2.num_of_flights_total.astype('int')
+
+
+flights2.tail(-5)
+
+```
+
+
+```{python}
+#| label: project data 5
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# show the json flights2 structure
+# flights2.info()
+
+# mydat = pd.unique(flights2['airport_code'])
+# mydat
+
+flights2.info()
+
+# Markdown(mydat.to_markdown(index=False))
+
+```
+
+
+
+## GRAND QUESTION 1
+
+Which aiport, out of a select list seven major U.S. "hub" airports, has the longest delays, and the most? The airports analyzed are San Francisco, Salt Lake City, San Diego, Denver, Atlanta, Orlando, and D.C. Which has the least delays, and the shortest? As a proportion of all flights through each airport, which have the highest and lowest ratios of delayed flights to total flights, and minutes of delay to total flights? All of these questions will help to answer the grand question: Which airport has the best on-time performance our of the seven airports analyzed?
+
+The worst airport among these seven in terms of delays is San Francisco (SFO). It has a flight delay ratio of .26, an average hour delay of 1.04, and a minute delay ratio of 15.85. This means that on average 26% of all flights there are delayed, for an average delay each of 1.04 hours, and that on average there are 15.85 minutes of delay for every flight there. This is the worst airport in terms of delays. Orlando does have a worse average hour delay of 1.13, but they have a better flight delay ratio of 23%.
+
+The best airport among these seven in terms of delays is Salt Lake City Internationsl Airport (SLC). It has a flight delay ratio of .146, an average hour delay of .82, and a minute delay ratio of 7.00. This means that on average 14.6% of all flights there are delayed, for an average delay each of .82 hours, and that on average there are 7 minutes of delay for every flight there. This is the best airport in terms of delays by a substantial margin. San Diego has a better average hour delay of .79, but all its other metrics are worse than SLC.
+
+
+GQ1 TABLE 1 -  Showing the average number of delayed flights as a percentage of all flights through that airport, grouped by Airport for US Flights, 2003-2016 and in descending order by the ratio.
+
+This data illustrates how many flights are delayed out of the total number of flights at each airport. It helps predict the raw percentage chance that any flight out of that aiport might be delayed.
+
+
+```{python}
+#| label: GQ1 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here\
+
+
+# mydat_sum = flights2.head(50).reset_index()
+flights2.sort_values(by=['airport_code'], inplace=True)
+mydat_sum = flights2.groupby("airport_code").sum().reset_index()
+
+mydat_sum.eval('flights_delay_sum = num_of_delays_carrier + num_of_delays_late_aircraft + num_of_delays_nas + num_of_delays_security + num_of_delays_weather', inplace=True)
+
+mydat_sum.eval('minutes_delay_sum = minutes_delayed_carrier + minutes_delayed_late_aircraft + minutes_delayed_nas + minutes_delayed_security + minutes_delayed_weather', inplace=True)
+
+mydat_sum.eval('f_delay_ratio = flights_delay_sum / num_of_flights_total', inplace=True)
+mydat_sum.eval('m_delay_ratio = minutes_delay_sum / num_of_flights_total', inplace=True)
+mydat_sum.eval('m_delay2_ratio = minutes_delay_sum / num_of_delays_total', inplace=True)
+mydat_sum.eval('avg_hour_delay = (minutes_delayed_total / num_of_delays_total)/60', inplace=True)
+
+mydat_sum.sort_values(by=['f_delay_ratio'], inplace=True, ascending=False)
+mydat_sum.reset_index(drop=True, inplace=True)
+Markdown(mydat_sum.to_markdown())
+
+```
+
+GQ1 CHART 1 -  Showing the average number of delayed flights as a percentage of all flights through that airport, grouped by Airport for US Flights, 2003-2016 and in descending order by the ratio
+
+```{python}
+#| label: CHART1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# alt.Chart(mydat_sum)\
+#     .encode(
+#         alt.x="airport_code", 
+#         alt.y="f_delay_ratio")\
+#     .mark_bar(width = 20)\
+#     .properties(
+#         width=600,
+#         height=300
+#     )
+
+alt.Chart(mydat_sum).mark_bar(width=20, color="purple")\
+    .encode(x = alt.X('airport_code', sort=alt.SortField('f_delay_ratio')),\
+            y = alt.Y('f_delay_ratio', scale=alt.Scale(domain=[0.13, 0.27])),)\
+    .properties(width=600, height=300)
+
+
+
+
+    
+```
+
+
+GQ1 TABLE 2 -  Showing the average number of delay minutes as a percentage of of all flights through an airport, grouped by Airport for US Flights, 2003-2016 and in descending order by the ratio
+
+This data illustrates the total number of minutes of flight delays as a percentage of the total number of flights at each airport. It calculates the average minutes of delay spread out over all flights from an airport, and helps to compare airport delay rates and the likelihood of a serious delay.
+
+```{python}
+#| label: GQ1 TABLE 2
+#| code-summary: Read and format data
+# Include and execute your code here
+#  m_delay2_ratio
+mydat_sum.sort_values(by=['m_delay_ratio'], inplace=True, ascending=False)
+mydat_sum.reset_index(drop=True, inplace=True)
+Markdown(mydat_sum.to_markdown())
+
+```
+
+GQ1 CHART 2 -  Showing the average number of delay minutes as a percentage of of all flights through an airport, grouped by Airport for US Flights, 2003-2016 and in descending order by the ratio
+
+
+```{python}
+#| label: CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+#  m_delay2_ratio
+
+
+alt.Chart(mydat_sum).mark_bar(width=20, color="orange")\
+    .encode(x = alt.X('airport_code', sort=alt.SortField('m_delay_ratio')),\
+            y = alt.Y('m_delay_ratio', scale=alt.Scale(domain=[6, 17])),)\
+    .properties(width=600, height=300)
+            
+
+```
+
+GQ1 TABLE 3 -  Showing the average number of delay minutes as a percentage of of delayed flights through an airport, grouped by Airport for US Flights, 2003-2016 and in descending order by the ratio
+
+This data illustrates the total number of minutes of flight delays as a percentage of the total number of delayed flights at each airport. It calculates the average minutes of delay per delayed flight from an airport, and predict likely duration of a delay at an airport if a delay is experienced.
+
+```{python}
+#| label: GQ1 TABLE 3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+mydat_sum.sort_values(by=['m_delay2_ratio'], inplace=True, ascending=False)
+mydat_sum.reset_index(drop=True, inplace=True)
+Markdown(mydat_sum.to_markdown())
+
+```
+
+GQ1 CHART 3 -  Showing the average number of delay minutes as a percentage of of all flights through an airport, grouped by Airport for US Flights, 2003-2016 and in descending order by the ratio
+
+
+```{python}
+#| label: CHART3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+alt.Chart(mydat_sum).mark_bar(width=20, color="green")\
+    .encode(x = alt.X('airport_code', sort=alt.SortField('m_delay2_ratio')),\
+            y = alt.Y('m_delay2_ratio', scale=alt.Scale(domain=[45, 68])),)\
+    .properties(width=600, height=300)
+            
+
+```
+
+
+## GRAND QUESTION 2
+
+
+What is the best month to fly if you want to avoid delays of any length at a hub airport? 
+
+The metric chosen to illustrate the delay potential of flights in any given month is the total number of delays as a ratio of the total number of flights, and the total delay minutes as a ratio of the total number of flights, because they are the most accurate measures of the number of delays and the number of minutes of delay per flight. The total number of delays as a ratio of the total number of flights is the most accurate measure of the number of delays per flight, because it reflects the volume of flights. The total delay minutes as a ratio of the total number of flights is the most accurate measure of the time delay per flight, because it is also accounts for the total flight volume.
+
+Using these calculated fields, analysis shows that September and November have the lowest flight delay ratios, and the lowest delay minutes ratios. This means that these months have the lowest number of delays per flight, and the lowest number of minutes of delay per flight. This is the best time to fly if you want to avoid delays of any length at a hub airport. The months of June and December have the highest flight delay ratios, and the highest delay minutes ratios. This means that these months have the highest number of delays per flight, and the highest number of minutes of delay per flight. This is the worst time to fly if you want to avoid delays.
+
+
+GQ2 TABLE 1 - Showing the average number of delayed flights as a percentage of all flights, grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+```{python}
+#| label: GQ2 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# Counts: You’ve seen size(), which takes no arguments, and returns the size of the current group. To count the number of non-missing values, use isnull().sum(). To count the number of unique (distinct) values, use nunique().
+# Which destinations have the most carriers?
+# Counts are useful and pandas provides a simple helper if all you want is a count:
+# not_cancelled['dest'].value_counts()
+
+
+flights2.sort_values(by=['month'], inplace=True)
+
+mydat_sum = flights2.groupby("month").sum().reset_index()
+mydat_sum = mydat_sum[mydat_sum['month'] != 'n/a']
+
+mydat_sum.eval('flights_delay_sum = num_of_delays_carrier + num_of_delays_late_aircraft + num_of_delays_nas + num_of_delays_security + num_of_delays_weather', inplace=True)
+
+mydat_sum.eval('minutes_delay_sum = minutes_delayed_carrier + minutes_delayed_late_aircraft + minutes_delayed_nas + minutes_delayed_security + minutes_delayed_weather', inplace=True)
+
+mydat_sum.eval('f_delay_ratio = flights_delay_sum / num_of_flights_total', inplace=True)
+mydat_sum.eval('m_delay_ratio = minutes_delay_sum / num_of_flights_total', inplace=True)
+mydat_sum.eval('m_delay2_ratio = minutes_delay_sum / num_of_delays_total', inplace=True)
+mydat_sum.sort_values(by=['f_delay_ratio'], inplace=True, ascending=False)
+mydat_sum.reset_index(drop=True, inplace=True)
+
+
+Markdown(mydat_sum.to_markdown())
+
+
+```
+
+
+GQ2 CHART 1 GQ2 - Showing the average number of delayed flights as a percentage of all flights, grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+```{python}
+#| label: GQ2 CHART1
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+
+
+# alt.Chart(mydat_sum)\
+#     .encode(x="month", y="num_of_delays_carrier")\
+#     .mark_bar(width = 20)\
+#     .configure_axisY(
+#         minExtent=10,
+#     )\
+#     .properties(
+#         width=600,
+#         height=300
+#     )
+
+
+alt.Chart(mydat_sum).mark_bar(width=20, color="darkblue")\
+    .encode(x = alt.X('month', sort=alt.SortField('f_delay_ratio')),\
+            y = alt.Y('f_delay_ratio', scale=alt.Scale(domain=[.15, .25])),)\
+    .properties(width=600, height=300)
+
+# How many flights left before 5am? (these usually indicate delayed
+# flights from the previous day)
+
+# (not_cancelled
+#   .groupby(['year', 'month','day'])
+#   .agg(n_early = ('dep_time', lambda x: np.sum(x < 500))))
+
+
+# (not_cancelled 2
+#   .groupby(['year', 'month','day'])
+#   .agg(hour_prop = ('arr_delay', lambda x: np.sum(x > 60))))
+
+
+# You want to understand what makes observations with missing values different to observations with recorded values. For example, in flights, missing values in the dep_time variable indicate that the flight was cancelled. So you might want to compare the scheduled departure times for cancelled and non-cancelled times. You can do this by making a new variable with pd.isna().
+
+# flights['time_hour'] = pd.to_datetime(flights.time_hour, format = "%Y-%m-%d %H:%M:%S")
+
+# pdat = flights.assign(
+#   cancelled = lambda x: pd.isna(x.dep_time),
+#   sched_hour = lambda x: x.sched_dep_time // 100,
+#   sched_minute = lambda x: x.sched_dep_time % 100,
+#   sched_dep_time = lambda x: x.sched_hour + x.sched_minute / 60  
+#   )
+
+# chart = (alt.Chart(pdat)
+#       .encode(
+#         x = alt.X('sched_dep_time', bin = alt.Bin(step = .25)), 
+#         y = 'count()',
+#         color = 'cancelled')
+#       .mark_bar())
+
+# # chart.save("screenshots/altair_flights_scheduled.png")
+# chart
+
+
+```
+
+GQ2 TABLE 2 - Showing the average number of minutes delayed as a percentage of all flights, grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+```{python}
+#| label: GQ2 TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+mydat_sum.sort_values(by=['m_delay_ratio'], inplace=True, ascending=False)
+mydat_sum.reset_index(drop=True, inplace=True)
+Markdown(mydat_sum.to_markdown(index=False))
+
+
+```
+
+GQ2 CHART 2 - Showing the average number of minutes delayed as a percentage of all flights, grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+```{python}
+#| label: GQ2 CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# alt.Chart(mydat_sum)\
+#     .encode(x="month", y="m_delay_ratio")\
+#     .mark_bar(width = 20)\
+#     .configure_axisY(
+#         minExtent=10,
+#     )\
+#     .properties(
+#         width=600,
+#         height=300
+#     )
+
+alt.Chart(mydat_sum).mark_bar(width=20, color="red")\
+    .encode(x = alt.X('month', sort=alt.SortField('m_delay_ratio')),\
+            y = alt.Y('m_delay_ratio', scale=alt.Scale(domain=[8, 16])),)\
+    .properties(width=600, height=300)
+
+```
+
+GQ2 TABLE 3 - Showing the average number of minutes delayed as a percentage of all delayed flights, grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+```{python}
+#| label: GQ2 TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+mydat_sum.sort_values(by=['m_delay2_ratio'], inplace=True, ascending=False)
+mydat_sum.reset_index(drop=True, inplace=True)
+Markdown(mydat_sum.to_markdown(index=False))
+
+
+```
+
+GQ2 CHART 3 - Showing the average number of minutes delayed as a percentage of all delayed flights, grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+
+```{python}
+#| label: GQ2 CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+# alt.Chart(mydat_sum)\
+#     .encode(x="month", y="m_delay2_ratio")\
+#     .mark_bar(width = 20)\
+#     .configure_axisY(
+#         minExtent=10,
+#     )\
+#     .properties(
+#         width=600,
+#         height=300
+#     )
+
+alt.Chart(mydat_sum).mark_bar(width=20, color="lightgreen")\
+    .encode(x = alt.X('month', sort=alt.SortField('m_delay2_ratio')),\
+            y = alt.Y('m_delay2_ratio', scale=alt.Scale(domain=[53, 64])),)\
+    .properties(width=600, height=300)
+
+```
+
+
+## GRAND QUESTION 3
+
+What is the worst month to fly in terms of weather delays? Which month is the best weather delay month to fly? The answers to these questions are explored by comparing the average number of minutes delayed due to weather as a percentage of all flights, grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio. 
+
+A new calculated column has been created showing the total number of flights in each calendar month delayed by weather, according the the following formula:
+
+1.) 100% of delayed flights in the Weather category are due to weather
+2.) 30% of all delayed flights in the Late-Arriving category are due to weather.
+3.) From April to August, 40% of delayed flights in the NAS category are due to weather. The rest of the months, the proportion rises to 65%.
+
+The results show that the worst months to fly in terms of the total number of weather delays are December followed by January, and the best months to fly are April followed by May. However, when the ratio of delayed flights to total flights is calculated for each month, the results change significantly. The worst months to fly in terms of the ratio are the winter months in general, with December through March showing a close grouping from 37.9% for December up to 39.7% for January. The best months to fly are the summer months, also showing a very tight cluster, with July being the best at 28% and May the worst at 29.3%.
+
+GQ3 TABLE 1 - Showing the ratio of delayed flights due to weather to the total number of flights at seven selected hub airports in the U.S., grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+
+
+```{python}
+#| label: GQ3 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+dat_weather = flights2
+
+#  replace the zeros in the delays late aircraft column with the mean of the column
+dat_weather["num_of_delays_late_aircraft"].replace(0, dat_weather["num_of_delays_late_aircraft"].replace(0, np.nan).mean(skipna=True), inplace=True)
+
+# drop rows that have "n/a" for the month
+dat_weather = dat_weather[dat_weather.month != 'n/a']
+dat_weather.month.dropna(inplace=True)
+
+#  create a new column for a nummeric month value
+dat_weather['month_num'] = dat_weather['month']
+
+#  create a new column for a nummeric month value
+dat_weather['month_num'] = dat_weather['month'].map({'January':1, 'Febuary':2, 'March':3, 'April':4, 'May':5, 'June':6, 'July':7, 'August':8, 'September':9, 'October':10, 'November':11, 'December':12})
+
+dat_weather['delays_weather_sum'] = 0
+dat_weather1 = dat_weather.query("month == 0 or (month_num > 3 and month_num < 9)").eval('delays_weather_sum = delays_weather_sum + num_of_delays_weather + (num_of_delays_late_aircraft * .3) + (num_of_delays_nas * .4)')
+
+dat_weather2 = dat_weather.query('month_num < 4 or month_num > 8').eval('delays_weather_sum = delays_weather_sum + num_of_delays_weather + (num_of_delays_late_aircraft * .3) + (num_of_delays_nas * .65)')
+
+dat_weather = pd.concat([dat_weather1, dat_weather2])
+dat_hubs_weather = dat_weather
+
+dat_weather = dat_weather.groupby("month").sum().reset_index()
+dat_weather.sort_values(by=['delays_weather_sum'], inplace=True, ascending=False)
+dat_weather['delays_weather_avg'] = dat_weather.eval('delays_weather_sum /num_of_delays_total')
+dat_weather = dat_weather.round({'delays_weather_avg':3})
+dat_weather = dat_weather.round({'delays_weather_sum':0})
+dat_weather.reset_index(drop=True, inplace=True)
+dat_weather.sort_values(by=['delays_weather_avg'], inplace=True, ascending=False)
+
+Markdown(dat_weather.to_markdown(index=False))
+
+
+```
+
+
+GQ3 CHART 1 - Showing the ratio of delayed flights due to weather to the total number of flights at seven selected hub airports in the U.S., grouped by Month for US Flights, 2003-2016 and in descending order by the delay ratio.
+
+
+
+```{python}
+#| label: GQ3 CHART1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+alt.Chart(dat_weather).mark_bar(width=20, color="brown")\
+    .encode(x = alt.X('month', sort=alt.SortField('delays_weather_avg')),\
+            y = alt.Y('delays_weather_avg', scale=alt.Scale(domain=[.27, .4])),)\
+    .properties(width=600, height=300)
+
+```
+
+
+GQ3 TABLE 2 - Showing the total number of delayed flights due to weather at seven selected hub airports in the U.S., grouped by Month for US Flights, 2003-2016 and in descending order by the number of delayed flights.
+
+```{python}
+#| label: GQ3 TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+dat_weather.sort_values(by=['delays_weather_sum'], inplace=True, ascending=False)
+Markdown(dat_weather.to_markdown(index=False))
+
+```
+
+GQ3 CHART 2 - 
+
+```{python}
+#| label: GQ3 CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+alt.Chart(dat_weather).mark_bar(width=20, color="brown")\
+    .encode(x = alt.X('month', sort=alt.SortField('delays_weather_sum')),\
+            y = alt.Y('delays_weather_sum', scale=alt.Scale(domain=[65000, 120000])),)\
+    .properties(width=600, height=300)
+
+
+```
+
+
+GQ3 TABLE 3 - Showing the ratio of the total number of delayed flight minutes due to weather to the total flight number of flights at seven selected hub airports in the U.S., grouped by Month for US Flights, 2003-2016 and in descending order by the ratio.
+
+```{python}
+#| label: GQ3 TABLE2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+dat_weather['min_weath_delays_avg'] = dat_weather.eval('(minutes_delayed_late_aircraft + minutes_delayed_nas + minutes_delayed_weather) /num_of_flights_total')
+dat_weather.sort_values(by=['min_weath_delays_avg'], inplace=True, ascending=False)
+dat_weather = dat_weather.round({'min_weath_delays_avg':1})
+
+Markdown(dat_weather.to_markdown(index=False))
+
+```
+
+GQ3 CHART 3 - Showing the ratio of the total number of delayed flight minutes due to weather to the total flight number of flights at seven selected hub airports in the U.S., grouped by Month for US Flights, 2003-2016 and in descending order by the ratio.
+
+```{python}
+#| label: GQ3 CHART2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+alt.Chart(dat_weather).mark_bar(width=20, color="turquoise")\
+    .encode(x = alt.X('month', sort=alt.SortField('min_weath_delays_avg')),\
+            y = alt.Y('min_weath_delays_avg', scale=alt.Scale(domain=[6, 12])),)\
+    .properties(width=600, height=300)
+
+
+```
+
+
+
+## GRAND QUESTION 4
+
+Which of the seven selected hub airports have the most total flight delays due to weather? This question will be answered by looking at the total number of delayed flights due to weather at each of the seven selected hub airports. The data will be grouped by airport and then sorted in descending order by the total number of delayed flights due to weather. The data will be displayed in a table and a chart.
+
+The data shows that San Diego has the least number of weather delayed flights, which could be predicted because of its mild climate in sunny California. What is not as predictable is that Orlando has the most weather delays in the group. This could be due to the fact that Orlando is a major tourist destination and has a large number of flights to and from the airport. Travel to Orlando is much more prevalent in the winter months, when weather in connecting cities is often much worse.
+
+When the ratio of total delayed flights to total flights is calculated for each airport, San Francisco rises to the position of the worst ration of delayed flights, and San Diego still is the the top position with the lowest ratio.
+
+GQ4 TABLE 1 - Showing the total number of delayed flights due to weather at seven selected hub airports in the U.S., grouped by Airport for US Flights, 2003-2016 and in ascending order by the number of delayed flights.
+
+
+```{python}
+#| label: GQ4 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+dat_hubs_weather = dat_hubs_weather.groupby("airport_code").sum().reset_index()
+dat_hubs_weather.sort_values(by=['delays_weather_sum'], inplace=True)
+dat_hubs_weather = dat_hubs_weather.round({'delays_weather_sum':0})
+
+Markdown(dat_hubs_weather.to_markdown(index=False))
+
+
+```
+
+GQ4 CHART 1 - Showing the total number of delayed flights due to weather at seven selected hub airports in the U.S., grouped by Airport for US Flights, 2003-2016 and in ascending order by the number of delayed flights.
+
+```{python}
+#| label: GQ4 CHART1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+alt.Chart(dat_hubs_weather).mark_bar(width=20, color="maroon")\
+    .encode(x = alt.X('airport_code', sort=alt.SortField('delays_weather_sum')),\
+            y = alt.Y('delays_weather_sum', scale=alt.Scale(domain=[46000, 305000])),)\
+    .properties(width=600, height=300)
+
+
+
+```
+
+GQ4 TABLE 2 - Showing the ratio of the total number of weather delayed flights to the total number opf flights at seven selected hub airports in the U.S., grouped by Airport for US Flights, 2003-2016 and in ascending order by the ratio.
+
+GQ4 TABLE 2 - 
+
+```{python}
+#| label: GQ4 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+dat_hubs_weather['delays_weather_avg'] = dat_hubs_weather.eval('delays_weather_sum /num_of_delays_total')
+dat_hubs_weather = dat_hubs_weather.round({'delays_weather_avg':3})
+# dat_hubs_weather = dat_hubs_weather.round({'delays_weather_sum':0})
+dat_hubs_weather.reset_index(drop=True, inplace=True)
+dat_hubs_weather.sort_values(by=['delays_weather_avg'], inplace=True, ascending=False)
+
+Markdown(dat_hubs_weather.to_markdown(index=False))
+
+
+```
+
+GQ4 CHART 2 - Showing the ratio of the total number of weather delayed flights to the total number opf flights at seven selected hub airports in the U.S., grouped by Airport for US Flights, 2003-2016 and in ascending order by the ratio.
+
+```{python}
+#| label: GQ4 CHART1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+alt.Chart(dat_hubs_weather).mark_bar(width=20, color="teal")\
+    .encode(x = alt.X('airport_code', sort=alt.SortField('delays_weather_avg')),\
+            y = alt.Y('delays_weather_avg', scale=alt.Scale(domain=[.275, .375])),)\
+    .properties(width=600, height=300)
+
+
+
+```
+
+
+## GRAND QUESTION 5
+
+The last table in this analysis will show the original data file, with all missing data values replaced with NaN. This conversion includes empty strings, '0' values, 'n/a', 'N/A', 'NA', and '?' values. The resulting table will show a single record displaying NaN values in place of missing data.
+
+
+GQ5 TABLE 1 - Table showin a single record with NaN values in place of missing data.
+
+
+```{python}
+#| label: GQ5 TABLE1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+flights3 = flights2
+flights3.replace('', np.nan, inplace=True)
+flights3.replace(0, np.nan, inplace=True)
+flights3.replace("n/a", np.nan, inplace=True)
+flights3.replace("N/A", np.nan, inplace=True)
+flights3.replace("NA", np.nan, inplace=True)
+flights3.replace("?", np.nan, inplace=True)
+
+flights3.describe()
+flights3.info()
+
+Markdown(flights3.tail(1).to_markdown(index=False))
+
+
+
+```
+
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

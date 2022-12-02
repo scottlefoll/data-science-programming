@@ -1,0 +1,291 @@
+---
+title: "Client Report - [Insert Project Title]"
+subtitle: "Course DS 250"
+author: "[STUDENT NAME]"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import scikitlearn as sk
+import skikitpplot as skp
+# import urllib3
+# import json
+# import requests
+
+from sklearn.model_selection import train_test_split
+from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from matplotlib import pyplot as plt
+from altair import Chart, X, Y, Axis, SortField
+from scipy import stats
+
+```
+
+
+## Elevator pitch
+
+Project 4: Can you predict that?
+Background
+The clean air act of 1970 was the beginning of the end for the use of asbestos in 
+home building. By 1976, the U.S. Environmental Protection Agency (EPA) was given 
+authority to restrict the use of asbestos in paint. Homes built during and before 
+this period are known to have materials with asbestos YOu can read more about this 
+ban.
+
+The state of Colorado has a large portion of their residential dwelling data that 
+is missing the year built and they would like you to build a predictive model that 
+can classify if a house is built pre 1980.
+
+Colorado gave you home sales data for the city of Denver from 2013 on which to train 
+your model. They said all the column names should be descriptive enough for your 
+modeling and that they would like you to use the latest machine learning methods.
+
+Deliverables
+
+1.  A short summary that highlights key that describes the results describing insights 
+from metrics of the project and the tools you used (Think “elevator pitch”).
+
+2.  Answers to the grand questions. Each answer should include a written description of 
+your results, code snippets, charts, and tables.
+
+```{python}
+#| label: project data
+#| code-summary: Read and format project data
+# Include and execute your code here
+dat = pd.read_csv("https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv")
+```
+
+__Highlight the grand questions__
+
+## GRAND QUESTION 1
+
+Create 2-3 charts that evaluate potential relationships between the home variables and 
+before 1980. Explain what you learn from the charts that could help a machine learning algorithm
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ1 Table 1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ1 Chart 1
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x="name", y="AK")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+```
+
+
+```{python}
+#| label: GQ1 Table 2
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+
+```
+
+
+```{python}
+#| label: GQ1 Chart 2
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x="name", y="AK")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+```
+
+
+## GRAND QUESTION 2
+
+Build a classification model labeling houses as being built “before 1980” or “during or 
+after 1980”. Your goal is to reach or exceed 90% accuracy. Explain your final model 
+choice (algorithm, tuning parameters, etc) and describe what other models you tried.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ2 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ2 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+## GRAND QUESTION 3
+
+Justify your classification model by discussing the most important features selected by 
+your model. This discussion should include a chart and a description of the features.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ3 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ3 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+## GRAND QUESTION 4
+
+Describe the quality of your classification model using 2-3 different evaluation metrics. 
+You also need to explain how to interpret each of the evaluation metrics you use.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ4
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ4 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ4 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```

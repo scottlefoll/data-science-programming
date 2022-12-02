@@ -1,0 +1,304 @@
+---
+title: "Client Report - [Insert Project Title]"
+subtitle: "Course DS 250"
+author: "[STUDENT NAME]"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+```{python}
+#| label: libraries
+#| include: false
+import pandas as pd
+import altair as alt
+import numpy as np
+import scikitlearn as sk
+import skikitpplot as skp
+# import urllib3
+# import json
+# import requests
+
+from sklearn.model_selection import train_test_split
+from sklearn import datasets
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+from matplotlib import pyplot as plt
+from altair import Chart, X, Y, Axis, SortField
+from scipy import stats
+
+```
+
+
+## Elevator pitch
+
+Project 5: The War with Star Wars
+
+Survey data is notoriously difficult to munge. Even when the data is recorded cleanly the options for ‘write in questions’, ‘choose from multiple answers’, ‘pick all that are right’, and ‘multiple choice questions’ makes storing the data in a tidy format difficult.
+
+In 2014, FiveThirtyEight surveyed over 1000 people to write the article titled, America’s Favorite ‘Star Wars’ Movies (And Least Favorite Characters). They have provided the data on GitHub.
+
+For this project, your client would like to use the Star Wars survey data to figure out if they can predict an interviewing job candidate’s current income based on a few responses about Star Wars movies.
+
+
+Deliverables
+
+1.  A short summary that highlights key that describes the results describing insights from metrics of the project and the tools you used (Think “elevator pitch”).
+
+2.  Answers to the grand questions. Each answer should include a written description of your results, code snippets, charts, and tables.
+
+
+```{python}
+#| label: project data
+#| code-summary: Read and format project data
+# Include and execute your code here
+dat = pd.read_csv("https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv")
+```
+
+
+
+```{python}
+#| label: project data 2
+#| code-summary: Read and format project data
+# Include and execute your code here
+dat = pd.read_csv("https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv")
+```
+
+
+```{python}
+#| label: project data 3
+#| code-summary: Read and format project data
+# Include and execute your code here
+dat = pd.read_csv("https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv")
+```
+
+
+__Highlight the grand questions__
+
+## GRAND QUESTION 1
+
+Shorten the column names and clean them up for easier use with pandas. Provide a table or list that exemplifies how you fixed the names.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ1 Table 1
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ1 Chart 1
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x="name", y="AK")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+```
+
+
+```{python}
+#| label: GQ1 Table 2
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+
+
+```
+
+
+```{python}
+#| label: GQ1 Chart 2
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x="name", y="AK")\
+    .mark_bar()\
+    .properties(
+        width=800,
+        height=300
+    )
+```
+
+
+## GRAND QUESTION 2
+
+Clean and format the data so that it can be used in a machine learning model. As you format the data, you should complete each item listed below. In your final report provide example(s) of the reformatted data with a short description of the changes made.
+
+    1.  Filter the dataset to respondents that have seen at least one film.
+    2.  Create a new column that converts the age ranges to a single number. Drop the age range categorical column.
+    3.  Create a new column that converts the education groupings to a single number. Drop the school categorical column
+    4.  Create a new column that converts the income ranges to a single number. Drop the income range categorical column.
+    5.  Create your target (also known as “y” or “label”) column based on the new income range column.
+    6.  One-hot encode all remaining categorical columns.
+
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ2
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ2 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ2 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+## GRAND QUESTION 3
+
+Validate that the data provided on GitHub lines up with the article by recreating 2 of the visuals from the article.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ3
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ3 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ3 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+## GRAND QUESTION 4
+
+Build a machine learning model that predicts whether a person makes more than $50k. Describe your model and report the accuracy.
+
+_type your results and analysis here_
+
+```{python}
+#| label: GQ4
+#| code-summary: Read and format data
+# Include and execute your code here
+
+
+```
+
+_include figures in chunks and discuss your findings in the figure._
+
+```{python}
+#| label: GQ4 chart
+#| code-summary: plot example
+#| fig-cap: "My useless chart"
+#| fig-align: center
+# Include and execute your code here
+alt.Chart(dat.head(200))\
+    .encode(x = "name", y = "AK")\
+    .mark_bar()
+```
+
+
+```{python}
+#| label: GQ4 table
+#| code-summary: table example
+#| tbl-cap: "Not much of a table"
+#| tbl-cap-location: top
+# Include and execute your code here
+mydat = dat.head(1000)\
+    .groupby('year')\
+    .sum()\
+    .reset_index()\
+    .tail(10)\
+    .filter(["year", "AK","AR"])
+
+display(mydat)
+
+```
+
+
+
+## APPENDIX A (Additional Python Code)
+
+```python
+#paste other your code from your python file (.py) here
+```
