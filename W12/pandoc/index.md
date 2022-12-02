@@ -77,6 +77,7 @@ scottlefoll@gmail.com\
 -   Amazon AWS Machine Learning Foundations Certification
 
 ---------------------------------------------- ------------------------
+
 ### Experience
 
   ---------------------------------------------- ------------------------
