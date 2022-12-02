@@ -1,17 +1,18 @@
-###**<div style="text-align: center;">Scott R. LeFoll</div>**
-<div style="text-align: center;">228 Milan Hill Rd.</div>
-<div style="text-align: center;">Milan, NH 03588</div>
-<div style="text-align: center;">+1 802.274.2548</div>
+## Scott LeFoll
+228 Milan Hill Rd.\
+Milan, NH 03588\
++1 802.274.2548\
 
-scottlefoll@gmail.com
-[www.linkedin.com/in/scottlefoll](http://www.linkedin.com/in/scottlefoll)
+scottlefoll@gmail.com\
+[linkedin.com/in/scottlefoll](http://www.linkedin.com/in/scottlefoll)
 
-###**Education**
+### Education
 
   ---------------------------------------------- ------------------------
-  **Brigham Young University - Idaho**           July 2023
-
-  BS Software Engineering                        Rexburg, Idaho
+  
+  **Brigham Young University - Idaho**           July 2023, Rexburg, Idaho
+  BS Software Engineering                        
+  
   ---------------------------------------------- ------------------------
 
 -   Web Programming Certificate, and Web Design Certificate
@@ -23,9 +24,28 @@ scottlefoll@gmail.com
 -   Python, JavaScript, C++, HTML, CSS
 
   ---------------------------------------------- ------------------------
-  **BYU-Pathway Worldwide**                      January 2022
+  
+  **Thomas Edison State University**             May 2023, Trenton, New Jersey
+  BA Computer Science                            
+  BS Business Administration, CIS
+  
+  ---------------------------------------------- ------------------------
 
-  PathwayConnect Certificate                     Rexburg, Idaho
+-   Project Management, Agile Management
+  
+-   Global Management, Supply-Chain Logistics
+  
+-   MIS, Database Design, Network Design
+  
+-   Java, C, C++, R
+  
+-   Systems Analysis
+
+  ---------------------------------------------- ------------------------
+  
+  **BYU-Pathway Worldwide**                      January 2022, Rexburg, Idaho
+  PathwayConnect Certificate                     
+  
   ---------------------------------------------- ------------------------
 
 -   Oral and written effective communication
@@ -36,11 +56,12 @@ scottlefoll@gmail.com
 
 -   Decision-making and problem-solving
 
-  ---------------------------------------------- ------------------------
-  **Additional Certifications**                  December 2022
+ ---------------------------------------------- ------------------------
+  
+  **Additional Certifications**
 
-  Udemy, Udacity, Coursera, Google, IBM, Amazon, Various
-  Comptia                                        
+  Udemy, Udacity, Coursera, Google
+
   ---------------------------------------------- ------------------------
 
 -   Comptia A+ IT 2022 Support Certificate
@@ -55,15 +76,16 @@ scottlefoll@gmail.com
 
 -   Amazon AWS Machine Learning Foundations Certification
 
- 
-
-**Experience**
+---------------------------------------------- ------------------------
+### Experience
 
   ---------------------------------------------- ------------------------
-  **Sweet Eats Farm & CSA**                      June 2010 - September
-                                                 2021
 
-  *Owner/Manager*                                Maidstone, Vermont, USA
+  **Sweet Eats Farm & CSA**                      June 2010 - September 2021
+
+  *Owner/Manager*                                
+  Maidstone, Vermont
+
   ---------------------------------------------- ------------------------
 
 -   Founded and operated a 200-acre, diversified organic farm, using
@@ -72,11 +94,12 @@ scottlefoll@gmail.com
 -   Planned, designed, and implemented agronomy practices, rotational planting and harvest plans, marketing plans, and managed farm laborers. Increased sales 300% in 3 years.
 
   ---------------------------------------------- ------------------------
-  **City of Bristol, Connecticut Fire            September 1996 - August
-  Department**                                   2010
 
-  *Firefighter II. combat firefighter*           Bristol, Connecticut,
-                                                 USA
+  **City of Bristol Fire Department**            September 1996 - August 2010
+
+  *Firefighter II. combat firefighter*           
+  Bristol, Connecticut
+
   ---------------------------------------------- ------------------------
 
 -   Performed fire combat rescue operations, responded to EMS/MVA
@@ -85,11 +108,13 @@ scottlefoll@gmail.com
 -   Coordinated with other agencies, including police, EMS, and utility crews
 
   ---------------------------------------------- ------------------------
-  **Micro-tech Computer Services & State of      May 1998 - September
-  Connecticut**                                  2002
 
-  *Software Developer & Team Leader*             West Hartford,
-                                                 Connecticut, USA
+  **Micro-tech Computer Services &**             May 1998 - September 2002
+  **State of Connecticut**                                  
+
+  *Software Developer & Team Leader*             
+  West Hartford, Connecticut
+
   ---------------------------------------------- ------------------------
 
 -   Developed department management software for two different state
