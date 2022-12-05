@@ -1,4 +1,4 @@
-**Scott R. LeFoll**
+###**<div style="text-align: center;">Scott R. LeFoll</div>**
 <div style="text-align: center;">228 Milan Hill Rd.</div>
 <div style="text-align: center;">Milan, NH 03588</div>
 <div style="text-align: center;">+1 802.274.2548</div>
@@ -21,6 +21,24 @@ scottlefoll@gmail.com
 -   Data Science and Machine Learning Certificate
 
 -   Python, JavaScript, C++, HTML, CSS
+
+  ---------------------------------------------- ------------------------
+
+**Thomas Edison State University**             May 2023, Trenton, New Jersey
+  BA Computer Science                            
+  BS Business Administration, CIS
+  
+  ---------------------------------------------- ------------------------
+
+-   Project Management, Agile Management
+  
+-   Global Management, Supply-Chain Logistics
+  
+-   MIS, Database Design, Network Design
+  
+-   Java, C, C++, R
+  
+-   Systems Analysis
 
   ---------------------------------------------- ------------------------
   **BYU-Pathway Worldwide**                      January 2022
@@ -54,10 +72,10 @@ scottlefoll@gmail.com
 -   Complete 2022 Web Dev Certificate and FreeCodeCamp Responsive Web Certificate
 
 -   Amazon AWS Machine Learning Foundations Certification
-
+  ---------------------------------------------- ------------------------
  
 
-**Experience**
+## **Experience**
 
   ---------------------------------------------- ------------------------
   **Sweet Eats Farm & CSA**                      June 2010 - September

@@ -1,4 +1,10 @@
-## Scott LeFoll
+---
+layout: davewhipp
+# davewhipp , kjhealy
+title: Scott LeFoll's CV
+---
+
+# Scott LeFoll
 228 Milan Hill Rd.\
 Milan, NH 03588\
 +1 802.274.2548\
@@ -6,7 +12,7 @@ Milan, NH 03588\
 scottlefoll@gmail.com\
 [linkedin.com/in/scottlefoll](http://www.linkedin.com/in/scottlefoll)
 
-### Education
+## Education
 
   ---------------------------------------------- ------------------------
   
@@ -78,7 +84,7 @@ scottlefoll@gmail.com\
 
 ---------------------------------------------- ------------------------
 
-### Experience
+## Experience
 
   ---------------------------------------------- ------------------------
 
