@@ -2681,7 +2681,7 @@ vertical-align: -.125em;
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>flights.tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="project-data-1" class="cell-output cell-output-display" data-execution_count="2">
+<div id="project-data-1" class="cell-output cell-output-display" data-execution_count="27">
 
 <div>
 
@@ -2956,7 +2956,7 @@ memory usage: 48.8+ MB</code></pre>
 <span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>flights2.tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="project-data-4" class="cell-output cell-output-display" data-execution_count="5">
+<div id="project-data-4" class="cell-output cell-output-display" data-execution_count="30">
 
 <div>
 
@@ -3165,10 +3165,10 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>Markdown(mydat_sum.to_markdown())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\scott\AppData\Local\Temp\ipykernel_23580\1342354024.py:6: FutureWarning: The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
+<pre><code>C:\Users\scott\AppData\Local\Temp\ipykernel_25888\1342354024.py:6: FutureWarning: The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
   mydat_sum = flights2.groupby(&quot;airport_code&quot;).sum().reset_index()</code></pre>
 </div>
-<div id="gq1-table1" class="cell-output cell-output-display" data-execution_count="7">
+<div id="gq1-table1" class="cell-output cell-output-display" data-execution_count="32">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 0%">
@@ -3408,15 +3408,15 @@ memory usage: 94.0+ KB</code></pre>
 <pre><code>C:\Python310\lib\site-packages\altair\utils\core.py:317: FutureWarning: iteritems is deprecated and will be removed in a future version. Use .items instead.
   for col_name, dtype in df.dtypes.iteritems():</code></pre>
 </div>
-<div id="gq1-chart1" class="cell-output cell-output-display" data-execution_count="8">
+<div id="gq1-chart1" class="cell-output cell-output-display" data-execution_count="33">
 
-<div id="altair-viz-443373909f8341c9bfbbae4b08bd90d6"></div>
+<div id="altair-viz-53e90db2b2634ec5844e443d1d10e0f7"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-443373909f8341c9bfbbae4b08bd90d6") {
-      outputDiv = document.getElementById("altair-viz-443373909f8341c9bfbbae4b08bd90d6");
+    if (outputDiv.id !== "altair-viz-53e90db2b2634ec5844e443d1d10e0f7") {
+      outputDiv = document.getElementById("altair-viz-53e90db2b2634ec5844e443d1d10e0f7");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -3477,7 +3477,7 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>mydat_sum.reset_index(drop<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>Markdown(mydat_sum.to_markdown())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq1-table-2" class="cell-output cell-output-display" data-execution_count="9">
+<div id="gq1-table-2" class="cell-output cell-output-display" data-execution_count="34">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 0%">
@@ -3715,15 +3715,15 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> alt.Y(<span class="st">&#39;m_delay_ratio&#39;</span>, scale<span class="op">=</span>alt.Scale(domain<span class="op">=</span>[<span class="dv">6</span>, <span class="dv">17</span>])),)<span class="op">\</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    .properties(width<span class="op">=</span><span class="dv">600</span>, height<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq1-chart2" class="cell-output cell-output-display" data-execution_count="10">
+<div id="gq1-chart2" class="cell-output cell-output-display" data-execution_count="35">
 
-<div id="altair-viz-4ed491fc50c7441b8bec2253bc518a71"></div>
+<div id="altair-viz-9420feed7c5444bbb8d17c737c8c05ba"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-4ed491fc50c7441b8bec2253bc518a71") {
-      outputDiv = document.getElementById("altair-viz-4ed491fc50c7441b8bec2253bc518a71");
+    if (outputDiv.id !== "altair-viz-9420feed7c5444bbb8d17c737c8c05ba") {
+      outputDiv = document.getElementById("altair-viz-9420feed7c5444bbb8d17c737c8c05ba");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -3784,7 +3784,7 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>mydat_sum.reset_index(drop<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Markdown(mydat_sum.to_markdown())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq1-table-3" class="cell-output cell-output-display" data-execution_count="11">
+<div id="gq1-table-3" class="cell-output cell-output-display" data-execution_count="36">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 0%">
@@ -4021,15 +4021,15 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> alt.Y(<span class="st">&#39;m_delay2_ratio&#39;</span>, scale<span class="op">=</span>alt.Scale(domain<span class="op">=</span>[<span class="dv">45</span>, <span class="dv">68</span>])),)<span class="op">\</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    .properties(width<span class="op">=</span><span class="dv">600</span>, height<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq1-chart3" class="cell-output cell-output-display" data-execution_count="12">
+<div id="gq1-chart3" class="cell-output cell-output-display" data-execution_count="37">
 
-<div id="altair-viz-64d22445f2344f01b4495ab1f0fce8c8"></div>
+<div id="altair-viz-f19e34653fe74735a7cad9eca4ad1857"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-64d22445f2344f01b4495ab1f0fce8c8") {
-      outputDiv = document.getElementById("altair-viz-64d22445f2344f01b4495ab1f0fce8c8");
+    if (outputDiv.id !== "altair-viz-f19e34653fe74735a7cad9eca4ad1857") {
+      outputDiv = document.getElementById("altair-viz-f19e34653fe74735a7cad9eca4ad1857");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -4120,10 +4120,10 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>Markdown(mydat_sum.to_markdown())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\scott\AppData\Local\Temp\ipykernel_23580\1862387196.py:7: FutureWarning: The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
+<pre><code>C:\Users\scott\AppData\Local\Temp\ipykernel_25888\1862387196.py:7: FutureWarning: The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
   mydat_sum = flights2.groupby(&quot;month&quot;).sum().reset_index()</code></pre>
 </div>
-<div id="gq2-table1" class="cell-output cell-output-display" data-execution_count="13">
+<div id="gq2-table1" class="cell-output cell-output-display" data-execution_count="38">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 0%">
@@ -4484,15 +4484,15 @@ memory usage: 94.0+ KB</code></pre>
 <pre><code>C:\Python310\lib\site-packages\altair\utils\core.py:317: FutureWarning: iteritems is deprecated and will be removed in a future version. Use .items instead.
   for col_name, dtype in df.dtypes.iteritems():</code></pre>
 </div>
-<div id="gq2-chart1" class="cell-output cell-output-display" data-execution_count="14">
+<div id="gq2-chart1" class="cell-output cell-output-display" data-execution_count="39">
 
-<div id="altair-viz-0d7a1b2e94154072bde235e55db6926b"></div>
+<div id="altair-viz-61bcfc61ebf1471986ebe950e8bc5b87"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-0d7a1b2e94154072bde235e55db6926b") {
-      outputDiv = document.getElementById("altair-viz-0d7a1b2e94154072bde235e55db6926b");
+    if (outputDiv.id !== "altair-viz-61bcfc61ebf1471986ebe950e8bc5b87") {
+      outputDiv = document.getElementById("altair-viz-61bcfc61ebf1471986ebe950e8bc5b87");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -4553,7 +4553,7 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>mydat_sum.reset_index(drop<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Markdown(mydat_sum.to_markdown(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq2-table2" class="cell-output cell-output-display" data-execution_count="15">
+<div id="gq2-table2" class="cell-output cell-output-display" data-execution_count="40">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 2%">
@@ -4896,15 +4896,15 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> alt.Y(<span class="st">&#39;m_delay_ratio&#39;</span>, scale<span class="op">=</span>alt.Scale(domain<span class="op">=</span>[<span class="dv">8</span>, <span class="dv">16</span>])),)<span class="op">\</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    .properties(width<span class="op">=</span><span class="dv">600</span>, height<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq2-chart2" class="cell-output cell-output-display" data-execution_count="16">
+<div id="gq2-chart2" class="cell-output cell-output-display" data-execution_count="41">
 
-<div id="altair-viz-051ba715f3eb4f6a8977a721ec48dba6"></div>
+<div id="altair-viz-e6376abc05bb4ede8c529e4739ad2036"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-051ba715f3eb4f6a8977a721ec48dba6") {
-      outputDiv = document.getElementById("altair-viz-051ba715f3eb4f6a8977a721ec48dba6");
+    if (outputDiv.id !== "altair-viz-e6376abc05bb4ede8c529e4739ad2036") {
+      outputDiv = document.getElementById("altair-viz-e6376abc05bb4ede8c529e4739ad2036");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -4964,7 +4964,7 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>mydat_sum.reset_index(drop<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>Markdown(mydat_sum.to_markdown(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq2-table3" class="cell-output cell-output-display" data-execution_count="17">
+<div id="gq2-table3" class="cell-output cell-output-display" data-execution_count="42">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 2%">
@@ -5307,15 +5307,15 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> alt.Y(<span class="st">&#39;m_delay2_ratio&#39;</span>, scale<span class="op">=</span>alt.Scale(domain<span class="op">=</span>[<span class="dv">53</span>, <span class="dv">64</span>])),)<span class="op">\</span></span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    .properties(width<span class="op">=</span><span class="dv">600</span>, height<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq2-chart3" class="cell-output cell-output-display" data-execution_count="18">
+<div id="gq2-chart3" class="cell-output cell-output-display" data-execution_count="43">
 
-<div id="altair-viz-b90ce687ac44460b93fc6dcedab2fbee"></div>
+<div id="altair-viz-3f84216bb3d14596ad683ea9b09c4937"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-b90ce687ac44460b93fc6dcedab2fbee") {
-      outputDiv = document.getElementById("altair-viz-b90ce687ac44460b93fc6dcedab2fbee");
+    if (outputDiv.id !== "altair-viz-3f84216bb3d14596ad683ea9b09c4937") {
+      outputDiv = document.getElementById("altair-viz-3f84216bb3d14596ad683ea9b09c4937");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -5414,33 +5414,33 @@ memory usage: 94.0+ KB</code></pre>
 <span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>Markdown(dat_weather3.head(<span class="dv">5</span>).to_markdown(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:10: SettingWithCopyWarning: 
+<pre><code>C:\Users\scott\AppData\Local\Temp\ipykernel_25888\3901648301.py:10: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   dat_weather.month.dropna(inplace=True)
-C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:12: SettingWithCopyWarning: 
+C:\Users\scott\AppData\Local\Temp\ipykernel_25888\3901648301.py:12: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   dat_weather[&#39;month_num&#39;] = dat_weather[&#39;month&#39;]
-C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:17: SettingWithCopyWarning: 
+C:\Users\scott\AppData\Local\Temp\ipykernel_25888\3901648301.py:17: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   dat_weather[&#39;month_num&#39;] = dat_weather[&#39;month&#39;].map({&#39;January&#39;:1, &#39;Febuary&#39;:2, &#39;March&#39;:3, &#39;April&#39;:4, &#39;May&#39;:5, &#39;June&#39;:6, &#39;July&#39;:7, &#39;August&#39;:8, &#39;September&#39;:9, &#39;October&#39;:10, &#39;November&#39;:11, &#39;December&#39;:12})
-C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:20: SettingWithCopyWarning: 
+C:\Users\scott\AppData\Local\Temp\ipykernel_25888\3901648301.py:20: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   dat_weather[&#39;delays_weather_sum&#39;] = 0
-C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:32: FutureWarning: The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
+C:\Users\scott\AppData\Local\Temp\ipykernel_25888\3901648301.py:32: FutureWarning: The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
   dat_weather2 = dat_weather.groupby(&quot;airport_code&quot;).sum().reset_index()</code></pre>
 </div>
-<div id="gq3-table1" class="cell-output cell-output-display" data-execution_count="19">
+<div id="gq3-table1" class="cell-output cell-output-display" data-execution_count="44">
 <table class="table table-sm table-striped">
 <thead>
 <tr class="header">
@@ -5502,7 +5502,7 @@ C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:32: FutureWarnin
 <span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>Markdown(dat_weather2.to_markdown(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq4-table1" class="cell-output cell-output-display" data-execution_count="20">
+<div id="gq4-table1" class="cell-output cell-output-display" data-execution_count="45">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 19%">
@@ -5580,15 +5580,15 @@ C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:32: FutureWarnin
 <pre><code>C:\Python310\lib\site-packages\altair\utils\core.py:317: FutureWarning: iteritems is deprecated and will be removed in a future version. Use .items instead.
   for col_name, dtype in df.dtypes.iteritems():</code></pre>
 </div>
-<div id="gq4-chart1" class="cell-output cell-output-display" data-execution_count="21">
+<div id="gq4-chart1" class="cell-output cell-output-display" data-execution_count="46">
 
-<div id="altair-viz-49b0dc60de124c88ac7bc528748e9da7"></div>
+<div id="altair-viz-56c66525ecff40bb9cef40affb43cf01"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-49b0dc60de124c88ac7bc528748e9da7") {
-      outputDiv = document.getElementById("altair-viz-49b0dc60de124c88ac7bc528748e9da7");
+    if (outputDiv.id !== "altair-viz-56c66525ecff40bb9cef40affb43cf01") {
+      outputDiv = document.getElementById("altair-viz-56c66525ecff40bb9cef40affb43cf01");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -5650,7 +5650,7 @@ C:\Users\scott\AppData\Local\Temp\ipykernel_23580\3901648301.py:32: FutureWarnin
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>flights3.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq5-table1" class="cell-output cell-output-display" data-execution_count="22">
+<div id="gq5-table1" class="cell-output cell-output-display" data-execution_count="47">
 <pre><code>airport_code                      0
 airport_name                      0
 month                             0
@@ -5687,9 +5687,9 @@ dtype: int64</code></pre>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>Markdown(flights3.tail(<span class="dv">100</span>).to_markdown(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>Markdown(flights3.head(<span class="dv">10</span>).to_markdown(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq5-table2" class="cell-output cell-output-display" data-execution_count="23">
+<div id="gq5-table2" class="cell-output cell-output-display" data-execution_count="48">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 3%">
@@ -5733,1904 +5733,194 @@ dtype: int64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">14489</td>
-<td style="text-align: left;">704</td>
-<td style="text-align: right;">987</td>
-<td style="text-align: right;">1596</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">70</td>
-<td style="text-align: right;">3362</td>
-<td style="text-align: right;">42036</td>
-<td style="text-align: right;">66337</td>
-<td style="text-align: right;">88352</td>
-<td style="text-align: right;">193</td>
-<td style="text-align: right;">4499</td>
-<td style="text-align: right;">201417</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">9233</td>
-<td style="text-align: left;">306</td>
-<td style="text-align: right;">352</td>
-<td style="text-align: right;">207</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">876</td>
-<td style="text-align: right;">17094</td>
-<td style="text-align: right;">18684</td>
-<td style="text-align: right;">6672</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">692</td>
-<td style="text-align: right;">43142</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">29296</td>
-<td style="text-align: left;">954</td>
-<td style="text-align: right;">1227</td>
-<td style="text-align: right;">1175</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">3420</td>
-<td style="text-align: right;">74609</td>
-<td style="text-align: right;">68028</td>
-<td style="text-align: right;">35915</td>
-<td style="text-align: right;">214</td>
-<td style="text-align: right;">5462</td>
-<td style="text-align: right;">184228</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">17296</td>
-<td style="text-align: left;">751</td>
-<td style="text-align: right;">1285</td>
-<td style="text-align: right;">1179</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">101</td>
-<td style="text-align: right;">3317</td>
-<td style="text-align: right;">48085</td>
-<td style="text-align: right;">85421</td>
-<td style="text-align: right;">55098</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">7053</td>
-<td style="text-align: right;">195671</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">4412</td>
-<td style="text-align: left;">184</td>
-<td style="text-align: right;">324</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">712</td>
-<td style="text-align: right;">12743</td>
-<td style="text-align: right;">23683</td>
-<td style="text-align: right;">9539</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">1085</td>
-<td style="text-align: right;">47050</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">23564</td>
-<td style="text-align: left;">995</td>
-<td style="text-align: right;">2160</td>
-<td style="text-align: right;">1838</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">96</td>
-<td style="text-align: right;">5093</td>
-<td style="text-align: right;">70708</td>
-<td style="text-align: right;">139201</td>
-<td style="text-align: right;">79789</td>
-<td style="text-align: right;">108</td>
-<td style="text-align: right;">8189</td>
-<td style="text-align: right;">297995</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">6068</td>
-<td style="text-align: left;">319</td>
-<td style="text-align: right;">478</td>
-<td style="text-align: right;">163</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">983</td>
-<td style="text-align: right;">15060</td>
-<td style="text-align: right;">26112</td>
-<td style="text-align: right;">5271</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">1060</td>
-<td style="text-align: right;">47517</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">13243</td>
-<td style="text-align: left;">629</td>
-<td style="text-align: right;">1005</td>
-<td style="text-align: right;">1846</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">101</td>
-<td style="text-align: right;">3578</td>
-<td style="text-align: right;">38392</td>
-<td style="text-align: right;">69912</td>
-<td style="text-align: right;">122312</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">6803</td>
-<td style="text-align: right;">237434</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">8457</td>
-<td style="text-align: left;">345</td>
-<td style="text-align: right;">452</td>
-<td style="text-align: right;">333</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">1152</td>
-<td style="text-align: right;">27394</td>
-<td style="text-align: right;">25546</td>
-<td style="text-align: right;">10417</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: right;">827</td>
-<td style="text-align: right;">64233</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">30000</td>
-<td style="text-align: left;">1187</td>
-<td style="text-align: right;">1476</td>
-<td style="text-align: right;">1055</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">3770</td>
-<td style="text-align: right;">93872</td>
-<td style="text-align: right;">82356</td>
-<td style="text-align: right;">32496</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">3708</td>
-<td style="text-align: right;">212463</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">18206</td>
-<td style="text-align: left;">1092</td>
-<td style="text-align: right;">1822</td>
-<td style="text-align: right;">1386</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">4411</td>
-<td style="text-align: right;">65491</td>
-<td style="text-align: right;">120726</td>
-<td style="text-align: right;">60390</td>
-<td style="text-align: right;">335</td>
-<td style="text-align: right;">6883</td>
-<td style="text-align: right;">253825</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">4320</td>
-<td style="text-align: left;">289</td>
-<td style="text-align: right;">360</td>
-<td style="text-align: right;">272</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">937</td>
-<td style="text-align: right;">17111</td>
-<td style="text-align: right;">23670</td>
-<td style="text-align: right;">9544</td>
-<td style="text-align: right;">42</td>
-<td style="text-align: right;">465</td>
-<td style="text-align: right;">50832</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">23484</td>
-<td style="text-align: left;">1092</td>
-<td style="text-align: right;">2097</td>
-<td style="text-align: right;">1514</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: right;">4763</td>
-<td style="text-align: right;">71835</td>
-<td style="text-align: right;">121988</td>
-<td style="text-align: right;">51361</td>
-<td style="text-align: right;">84</td>
-<td style="text-align: right;">5655</td>
-<td style="text-align: right;">250923</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">6339</td>
-<td style="text-align: left;">551</td>
-<td style="text-align: right;">828</td>
-<td style="text-align: right;">345</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">1746</td>
-<td style="text-align: right;">27784</td>
-<td style="text-align: right;">52364</td>
-<td style="text-align: right;">11108</td>
-<td style="text-align: right;">217</td>
-<td style="text-align: right;">645</td>
-<td style="text-align: right;">92118</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">13827</td>
-<td style="text-align: left;">734</td>
-<td style="text-align: right;">1468</td>
-<td style="text-align: right;">3368</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">150</td>
-<td style="text-align: right;">5721</td>
-<td style="text-align: right;">50397</td>
-<td style="text-align: right;">120417</td>
-<td style="text-align: right;">279201</td>
-<td style="text-align: right;">193</td>
-<td style="text-align: right;">12750</td>
-<td style="text-align: right;">462958</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">8825</td>
-<td style="text-align: left;">469</td>
-<td style="text-align: right;">644</td>
-<td style="text-align: right;">405</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">1546</td>
-<td style="text-align: right;">27780</td>
-<td style="text-align: right;">39264</td>
-<td style="text-align: right;">13949</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: right;">3118</td>
-<td style="text-align: right;">84162</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">ATL</td>
 <td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
 <td style="text-align: left;">January</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">29492</td>
-<td style="text-align: left;">1231</td>
-<td style="text-align: right;">1422</td>
-<td style="text-align: right;">1539</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">133</td>
-<td style="text-align: right;">4331</td>
-<td style="text-align: right;">97521</td>
-<td style="text-align: right;">88061</td>
-<td style="text-align: right;">61602</td>
-<td style="text-align: right;">382</td>
-<td style="text-align: right;">11844</td>
-<td style="text-align: right;">259410</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">January</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">17059</td>
-<td style="text-align: left;">1002</td>
-<td style="text-align: right;">1485</td>
-<td style="text-align: right;">1290</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">104</td>
-<td style="text-align: right;">3885</td>
-<td style="text-align: right;">64939</td>
-<td style="text-align: right;">102388</td>
-<td style="text-align: right;">53802</td>
-<td style="text-align: right;">128</td>
-<td style="text-align: right;">8804</td>
-<td style="text-align: right;">230061</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">January</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">3700</td>
-<td style="text-align: left;">255</td>
-<td style="text-align: right;">319</td>
-<td style="text-align: right;">248</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">855</td>
-<td style="text-align: right;">15600</td>
-<td style="text-align: right;">24397</td>
-<td style="text-align: right;">11031</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">1917</td>
-<td style="text-align: right;">52993</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">January</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">23515</td>
-<td style="text-align: left;">1181</td>
-<td style="text-align: right;">2439</td>
-<td style="text-align: right;">2787</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">136</td>
-<td style="text-align: right;">6551</td>
-<td style="text-align: right;">90489</td>
-<td style="text-align: right;">187288</td>
-<td style="text-align: right;">153149</td>
-<td style="text-align: right;">338</td>
-<td style="text-align: right;">13886</td>
-<td style="text-align: right;">445150</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">January</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6084</td>
-<td style="text-align: left;">352</td>
-<td style="text-align: right;">485</td>
-<td style="text-align: right;">167</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">25</td>
-<td style="text-align: right;">1030</td>
-<td style="text-align: right;">15608</td>
-<td style="text-align: right;">26486</td>
-<td style="text-align: right;">5519</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">2089</td>
-<td style="text-align: right;">49728</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">January</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">12883</td>
-<td style="text-align: left;">643</td>
-<td style="text-align: right;">986</td>
-<td style="text-align: right;">1116</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">99</td>
-<td style="text-align: right;">2850</td>
-<td style="text-align: right;">38996</td>
-<td style="text-align: right;">68063</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">107</td>
-<td style="text-align: right;">6856</td>
-<td style="text-align: right;">176783</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">January</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8626</td>
-<td style="text-align: left;">376</td>
-<td style="text-align: right;">479</td>
-<td style="text-align: right;">289</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">1191</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">29169</td>
-<td style="text-align: right;">9708</td>
-<td style="text-align: right;">60</td>
-<td style="text-align: right;">3734</td>
-<td style="text-align: right;">67026</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">Febuary</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">27366</td>
-<td style="text-align: left;">1342</td>
-<td style="text-align: right;">1742</td>
-<td style="text-align: right;">1301</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">273</td>
-<td style="text-align: right;">4662</td>
-<td style="text-align: right;">112780</td>
-<td style="text-align: right;">109867</td>
-<td style="text-align: right;">60092</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">35497</td>
-<td style="text-align: right;">318276</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">Febuary</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">15638</td>
-<td style="text-align: left;">899</td>
-<td style="text-align: right;">1266</td>
-<td style="text-align: right;">1389</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">187</td>
-<td style="text-align: right;">3742</td>
-<td style="text-align: right;">56283</td>
-<td style="text-align: right;">84652</td>
-<td style="text-align: right;">62810</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">14963</td>
-<td style="text-align: right;">218738</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">Febuary</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">2998</td>
-<td style="text-align: left;">198</td>
-<td style="text-align: right;">230</td>
-<td style="text-align: right;">195</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">656</td>
-<td style="text-align: right;">10937</td>
-<td style="text-align: right;">18260</td>
-<td style="text-align: right;">9123</td>
-<td style="text-align: right;">38</td>
-<td style="text-align: right;">1700</td>
-<td style="text-align: right;">40058</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">Febuary</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">21814</td>
-<td style="text-align: left;">1161</td>
-<td style="text-align: right;">2522</td>
-<td style="text-align: right;">2689</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">232</td>
-<td style="text-align: right;">6606</td>
-<td style="text-align: right;">92645</td>
-<td style="text-align: right;">181761</td>
-<td style="text-align: right;">136184</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: right;">26912</td>
-<td style="text-align: right;">437556</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">Febuary</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">5478</td>
-<td style="text-align: left;">393</td>
-<td style="text-align: right;">458</td>
-<td style="text-align: right;">212</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">1119</td>
-<td style="text-align: right;">18106</td>
-<td style="text-align: right;">25383</td>
-<td style="text-align: right;">8286</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">5157</td>
-<td style="text-align: right;">56932</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">Febuary</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">11555</td>
-<td style="text-align: left;">609</td>
-<td style="text-align: right;">831</td>
-<td style="text-align: right;">1348</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">140</td>
-<td style="text-align: right;">2929</td>
-<td style="text-align: right;">40202</td>
-<td style="text-align: right;">59666</td>
-<td style="text-align: right;">92381</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: right;">10099</td>
-<td style="text-align: right;">202402</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">Febuary</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">7866</td>
-<td style="text-align: left;">371</td>
-<td style="text-align: right;">431</td>
-<td style="text-align: right;">246</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: right;">1108</td>
-<td style="text-align: right;">22900</td>
-<td style="text-align: right;">26711</td>
-<td style="text-align: right;">9260</td>
-<td style="text-align: right;">86</td>
-<td style="text-align: right;">5811</td>
-<td style="text-align: right;">64768</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">March</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">32775</td>
-<td style="text-align: left;">1496</td>
-<td style="text-align: right;">2025</td>
-<td style="text-align: right;">1533</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">121</td>
-<td style="text-align: right;">5181</td>
-<td style="text-align: right;">119219</td>
-<td style="text-align: right;">118541</td>
-<td style="text-align: right;">50075</td>
-<td style="text-align: right;">170</td>
-<td style="text-align: right;">15085</td>
-<td style="text-align: right;">303090</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">March</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">18617</td>
-<td style="text-align: left;">896</td>
-<td style="text-align: right;">1322</td>
-<td style="text-align: right;">868</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">64</td>
-<td style="text-align: right;">3156</td>
-<td style="text-align: right;">55010</td>
-<td style="text-align: right;">87448</td>
-<td style="text-align: right;">35901</td>
-<td style="text-align: right;">135</td>
-<td style="text-align: right;">6690</td>
-<td style="text-align: right;">185184</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">March</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">3033</td>
-<td style="text-align: left;">195</td>
-<td style="text-align: right;">197</td>
-<td style="text-align: right;">141</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">548</td>
-<td style="text-align: right;">10685</td>
-<td style="text-align: right;">14361</td>
-<td style="text-align: right;">6632</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">997</td>
-<td style="text-align: right;">32675</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">March</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">26122</td>
-<td style="text-align: left;">1115</td>
-<td style="text-align: right;">1871</td>
-<td style="text-align: right;">2238</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">148</td>
-<td style="text-align: right;">5374</td>
-<td style="text-align: right;">79939</td>
-<td style="text-align: right;">132585</td>
-<td style="text-align: right;">119587</td>
-<td style="text-align: right;">70</td>
-<td style="text-align: right;">15921</td>
-<td style="text-align: right;">348102</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">March</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6589</td>
-<td style="text-align: left;">386</td>
-<td style="text-align: right;">441</td>
-<td style="text-align: right;">187</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">1039</td>
-<td style="text-align: right;">22163</td>
-<td style="text-align: right;">23863</td>
-<td style="text-align: right;">7187</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2291</td>
-<td style="text-align: right;">55507</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">March</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">13431</td>
-<td style="text-align: left;">653</td>
-<td style="text-align: right;">825</td>
-<td style="text-align: right;">864</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">82</td>
-<td style="text-align: right;">2421</td>
-<td style="text-align: right;">41702</td>
-<td style="text-align: right;">58215</td>
-<td style="text-align: right;">40798</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">5231</td>
-<td style="text-align: right;">145963</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">March</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">9475</td>
-<td style="text-align: left;">373</td>
-<td style="text-align: right;">461</td>
-<td style="text-align: right;">269</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">1135</td>
-<td style="text-align: right;">26833</td>
-<td style="text-align: right;">26848</td>
-<td style="text-align: right;">10905</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">3210</td>
-<td style="text-align: right;">67796</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">April</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">31383</td>
-<td style="text-align: left;">1201</td>
-<td style="text-align: right;">1566</td>
-<td style="text-align: right;">1447</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">4356</td>
-<td style="text-align: right;">94652</td>
-<td style="text-align: right;">92755</td>
-<td style="text-align: right;">59912</td>
-<td style="text-align: right;">152</td>
-<td style="text-align: right;">11694</td>
-<td style="text-align: right;">259165</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">April</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">17472</td>
-<td style="text-align: left;">824</td>
-<td style="text-align: right;">1116</td>
-<td style="text-align: right;">995</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">87</td>
-<td style="text-align: right;">3024</td>
-<td style="text-align: right;">54192</td>
-<td style="text-align: right;">73960</td>
-<td style="text-align: right;">37869</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">4954</td>
-<td style="text-align: right;">171016</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">April</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">2955</td>
-<td style="text-align: left;">165</td>
-<td style="text-align: right;">171</td>
-<td style="text-align: right;">83</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">438</td>
-<td style="text-align: right;">8500</td>
-<td style="text-align: right;">11538</td>
-<td style="text-align: right;">2997</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">1806</td>
-<td style="text-align: right;">24850</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">April</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">25845</td>
-<td style="text-align: left;">956</td>
-<td style="text-align: right;">1335</td>
-<td style="text-align: right;">1929</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">4364</td>
-<td style="text-align: right;">72450</td>
-<td style="text-align: right;">95109</td>
-<td style="text-align: right;">125396</td>
-<td style="text-align: right;">197</td>
-<td style="text-align: right;">14426</td>
-<td style="text-align: right;">307578</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">April</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6422</td>
-<td style="text-align: left;">375</td>
-<td style="text-align: right;">488</td>
-<td style="text-align: right;">289</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">1176</td>
-<td style="text-align: right;">20492</td>
-<td style="text-align: right;">26391</td>
-<td style="text-align: right;">9693</td>
-<td style="text-align: right;">66</td>
-<td style="text-align: right;">1594</td>
-<td style="text-align: right;">58236</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">April</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">13015</td>
-<td style="text-align: left;">613</td>
-<td style="text-align: right;">807</td>
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">73</td>
-<td style="text-align: right;">2496</td>
-<td style="text-align: right;">37200</td>
-<td style="text-align: right;">53341</td>
-<td style="text-align: right;">50222</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">3889</td>
-<td style="text-align: right;">144693</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">April</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8845</td>
-<td style="text-align: left;">333</td>
-<td style="text-align: right;">431</td>
-<td style="text-align: right;">247</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">1042</td>
-<td style="text-align: right;">24619</td>
-<td style="text-align: right;">24607</td>
-<td style="text-align: right;">8365</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">2035</td>
-<td style="text-align: right;">59644</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">May</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">32425</td>
-<td style="text-align: left;">1314</td>
-<td style="text-align: right;">1536</td>
-<td style="text-align: right;">1422</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">169</td>
-<td style="text-align: right;">4446</td>
-<td style="text-align: right;">119902</td>
-<td style="text-align: right;">110874</td>
-<td style="text-align: right;">82449</td>
-<td style="text-align: right;">148</td>
-<td style="text-align: right;">17489</td>
-<td style="text-align: right;">330862</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">May</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">18072</td>
-<td style="text-align: left;">906</td>
-<td style="text-align: right;">1231</td>
-<td style="text-align: right;">1214</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">124</td>
-<td style="text-align: right;">3480</td>
-<td style="text-align: right;">57723</td>
-<td style="text-align: right;">80777</td>
-<td style="text-align: right;">48281</td>
-<td style="text-align: right;">205</td>
-<td style="text-align: right;">9045</td>
-<td style="text-align: right;">196031</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">May</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">3244</td>
-<td style="text-align: left;">191</td>
-<td style="text-align: right;">195</td>
-<td style="text-align: right;">132</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">548</td>
-<td style="text-align: right;">10854</td>
-<td style="text-align: right;">15248</td>
-<td style="text-align: right;">5912</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">1701</td>
-<td style="text-align: right;">33715</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">May</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">26909</td>
-<td style="text-align: left;">1095</td>
-<td style="text-align: right;">1687</td>
-<td style="text-align: right;">1839</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">162</td>
-<td style="text-align: right;">4789</td>
-<td style="text-align: right;">83599</td>
-<td style="text-align: right;">121084</td>
-<td style="text-align: right;">85605</td>
-<td style="text-align: right;">181</td>
-<td style="text-align: right;">14010</td>
-<td style="text-align: right;">304479</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">May</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6595</td>
-<td style="text-align: left;">412</td>
-<td style="text-align: right;">552</td>
-<td style="text-align: right;">249</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: right;">1266</td>
-<td style="text-align: right;">21133</td>
-<td style="text-align: right;">29773</td>
-<td style="text-align: right;">8589</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">3706</td>
-<td style="text-align: right;">63201</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">May</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">13520</td>
-<td style="text-align: left;">636</td>
-<td style="text-align: right;">1033</td>
-<td style="text-align: right;">1960</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">120</td>
-<td style="text-align: right;">3753</td>
-<td style="text-align: right;">43919</td>
-<td style="text-align: right;">68937</td>
-<td style="text-align: right;">101881</td>
-<td style="text-align: right;">122</td>
-<td style="text-align: right;">8958</td>
-<td style="text-align: right;">223817</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">May</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8757</td>
-<td style="text-align: left;">292</td>
-<td style="text-align: right;">391</td>
-<td style="text-align: right;">210</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">27</td>
-<td style="text-align: right;">921</td>
-<td style="text-align: right;">19404</td>
-<td style="text-align: right;">22610</td>
-<td style="text-align: right;">7521</td>
-<td style="text-align: right;">74</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: right;">52548</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">June</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">32739</td>
-<td style="text-align: left;">1500+</td>
-<td style="text-align: right;">2300</td>
-<td style="text-align: right;">1803</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">172</td>
-<td style="text-align: right;">6031</td>
-<td style="text-align: right;">148949</td>
-<td style="text-align: right;">164521</td>
-<td style="text-align: right;">98579</td>
-<td style="text-align: right;">516</td>
-<td style="text-align: right;">17265</td>
-<td style="text-align: right;">429830</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">June</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">18684</td>
-<td style="text-align: left;">1251</td>
-<td style="text-align: right;">1847</td>
-<td style="text-align: right;">1468</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">204</td>
-<td style="text-align: right;">4773</td>
-<td style="text-align: right;">88084</td>
-<td style="text-align: right;">137815</td>
-<td style="text-align: right;">74727</td>
-<td style="text-align: right;">281</td>
-<td style="text-align: right;">18225</td>
-<td style="text-align: right;">319132</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">June</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">3382</td>
-<td style="text-align: left;">293</td>
-<td style="text-align: right;">319</td>
-<td style="text-align: right;">238</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">893</td>
-<td style="text-align: right;">15400</td>
-<td style="text-align: right;">24989</td>
-<td style="text-align: right;">12302</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">3169</td>
-<td style="text-align: right;">55860</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">June</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">27590</td>
-<td style="text-align: left;">1500+</td>
-<td style="text-align: right;">2551</td>
-<td style="text-align: right;">3544</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">250</td>
-<td style="text-align: right;">7889</td>
-<td style="text-align: right;">121806</td>
-<td style="text-align: right;">197034</td>
-<td style="text-align: right;">235468</td>
-<td style="text-align: right;">341</td>
-<td style="text-align: right;">26927</td>
-<td style="text-align: right;">581576</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">June</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6763</td>
-<td style="text-align: left;">536</td>
-<td style="text-align: right;">636</td>
-<td style="text-align: right;">259</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">46</td>
-<td style="text-align: right;">1479</td>
-<td style="text-align: right;">26194</td>
-<td style="text-align: right;">33831</td>
-<td style="text-align: right;">9168</td>
-<td style="text-align: right;">55</td>
-<td style="text-align: right;">3671</td>
-<td style="text-align: right;">72919</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">June</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">13844</td>
-<td style="text-align: left;">918</td>
-<td style="text-align: right;">1295</td>
-<td style="text-align: right;">818</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">3135</td>
-<td style="text-align: right;">59236</td>
-<td style="text-align: right;">89562</td>
-<td style="text-align: right;">39192</td>
-<td style="text-align: right;">139</td>
-<td style="text-align: right;">6503</td>
-<td style="text-align: right;">194632</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">June</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8975</td>
-<td style="text-align: left;">458</td>
-<td style="text-align: right;">512</td>
-<td style="text-align: right;">277</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: right;">1305</td>
-<td style="text-align: right;">32948</td>
-<td style="text-align: right;">30428</td>
-<td style="text-align: right;">10003</td>
-<td style="text-align: right;">88</td>
-<td style="text-align: right;">4106</td>
-<td style="text-align: right;">77573</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">July</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">33735</td>
-<td style="text-align: left;">1420</td>
-<td style="text-align: right;">2066</td>
-<td style="text-align: right;">1581</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">185</td>
-<td style="text-align: right;">5258</td>
-<td style="text-align: right;">117880</td>
-<td style="text-align: right;">131352</td>
-<td style="text-align: right;">74056</td>
-<td style="text-align: right;">199</td>
-<td style="text-align: right;">13118</td>
-<td style="text-align: right;">336605</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">July</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">19083</td>
-<td style="text-align: left;">1113</td>
-<td style="text-align: right;">1795</td>
-<td style="text-align: right;">1142</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">116</td>
-<td style="text-align: right;">4171</td>
-<td style="text-align: right;">73579</td>
-<td style="text-align: right;">125301</td>
-<td style="text-align: right;">49403</td>
-<td style="text-align: right;">85</td>
-<td style="text-align: right;">7354</td>
-<td style="text-align: right;">255722</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">July</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">3334</td>
-<td style="text-align: left;">249</td>
-<td style="text-align: right;">246</td>
-<td style="text-align: right;">143</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">669</td>
-<td style="text-align: right;">14158</td>
-<td style="text-align: right;">16394</td>
-<td style="text-align: right;">7017</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">2045</td>
-<td style="text-align: right;">39614</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">July</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">28183</td>
-<td style="text-align: left;">1326</td>
-<td style="text-align: right;">2173</td>
-<td style="text-align: right;">2435</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">190</td>
-<td style="text-align: right;">6130</td>
-<td style="text-align: right;">94502</td>
-<td style="text-align: right;">162676</td>
-<td style="text-align: right;">137663</td>
-<td style="text-align: right;">428</td>
-<td style="text-align: right;">17747</td>
-<td style="text-align: right;">413016</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">July</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">7031</td>
-<td style="text-align: left;">518</td>
-<td style="text-align: right;">700</td>
-<td style="text-align: right;">315</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">1564</td>
-<td style="text-align: right;">28411</td>
-<td style="text-align: right;">42242</td>
-<td style="text-align: right;">11663</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">1965</td>
-<td style="text-align: right;">84314</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">July</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">14435</td>
-<td style="text-align: left;">918</td>
-<td style="text-align: right;">1261</td>
-<td style="text-align: right;">1415</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">83</td>
-<td style="text-align: right;">3684</td>
-<td style="text-align: right;">60872</td>
-<td style="text-align: right;">83446</td>
-<td style="text-align: right;">72945</td>
-<td style="text-align: right;">241</td>
-<td style="text-align: right;">4850</td>
-<td style="text-align: right;">222354</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">July</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">9502</td>
-<td style="text-align: left;">434</td>
-<td style="text-align: right;">598</td>
-<td style="text-align: right;">230</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">38</td>
-<td style="text-align: right;">1298</td>
-<td style="text-align: right;">32414</td>
-<td style="text-align: right;">34708</td>
-<td style="text-align: right;">8685</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">2269</td>
-<td style="text-align: right;">78126</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">August</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">33725</td>
-<td style="text-align: left;">1403</td>
-<td style="text-align: right;">1940</td>
-<td style="text-align: right;">1612</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">187</td>
-<td style="text-align: right;">5145</td>
-<td style="text-align: right;">114610</td>
-<td style="text-align: right;">126112</td>
-<td style="text-align: right;">76802</td>
-<td style="text-align: right;">212</td>
-<td style="text-align: right;">14895</td>
-<td style="text-align: right;">332631</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">August</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">18871</td>
-<td style="text-align: left;">946</td>
-<td style="text-align: right;">1261</td>
-<td style="text-align: right;">997</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">97</td>
-<td style="text-align: right;">3304</td>
-<td style="text-align: right;">64152</td>
-<td style="text-align: right;">83906</td>
-<td style="text-align: right;">42167</td>
-<td style="text-align: right;">58</td>
-<td style="text-align: right;">6550</td>
-<td style="text-align: right;">196833</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">August</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">3228</td>
-<td style="text-align: left;">218</td>
-<td style="text-align: right;">201</td>
-<td style="text-align: right;">116</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">576</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">14135</td>
-<td style="text-align: right;">8155</td>
-<td style="text-align: right;">88</td>
-<td style="text-align: right;">2729</td>
-<td style="text-align: right;">36951</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">August</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">28128</td>
-<td style="text-align: left;">1157</td>
-<td style="text-align: right;">1832</td>
-<td style="text-align: right;">1948</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">168</td>
-<td style="text-align: right;">5110</td>
-<td style="text-align: right;">88495</td>
-<td style="text-align: right;">130699</td>
-<td style="text-align: right;">123914</td>
-<td style="text-align: right;">237</td>
-<td style="text-align: right;">15846</td>
-<td style="text-align: right;">359191</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">August</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6876</td>
-<td style="text-align: left;">443</td>
-<td style="text-align: right;">510</td>
-<td style="text-align: right;">228</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">1212</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">28069</td>
-<td style="text-align: right;">8680</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">2134</td>
-<td style="text-align: right;">60636</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">August</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">14605</td>
-<td style="text-align: left;">776</td>
-<td style="text-align: right;">1148</td>
-<td style="text-align: right;">1106</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">108</td>
-<td style="text-align: right;">3149</td>
-<td style="text-align: right;">49990</td>
-<td style="text-align: right;">73599</td>
-<td style="text-align: right;">51759</td>
-<td style="text-align: right;">527</td>
-<td style="text-align: right;">6587</td>
-<td style="text-align: right;">182462</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">August</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">9502</td>
-<td style="text-align: left;">384</td>
-<td style="text-align: right;">528</td>
-<td style="text-align: right;">195</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">47</td>
-<td style="text-align: right;">1157</td>
-<td style="text-align: right;">24081</td>
-<td style="text-align: right;">28489</td>
-<td style="text-align: right;">-999</td>
-<td style="text-align: right;">116</td>
-<td style="text-align: right;">3113</td>
-<td style="text-align: right;">63116</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">September</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">31331</td>
-<td style="text-align: left;">945</td>
-<td style="text-align: right;">1027</td>
-<td style="text-align: right;">1075</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">86</td>
-<td style="text-align: right;">3134</td>
-<td style="text-align: right;">80478</td>
-<td style="text-align: right;">62886</td>
-<td style="text-align: right;">39930</td>
-<td style="text-align: right;">92</td>
-<td style="text-align: right;">5627</td>
-<td style="text-align: right;">189013</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">September</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">17393</td>
-<td style="text-align: left;">563</td>
-<td style="text-align: right;">704</td>
-<td style="text-align: right;">477</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: right;">1802</td>
-<td style="text-align: right;">40431</td>
-<td style="text-align: right;">45853</td>
-<td style="text-align: right;">16989</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">3628</td>
-<td style="text-align: right;">106946</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">September</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">2925</td>
-<td style="text-align: left;">139</td>
-<td style="text-align: right;">103</td>
-<td style="text-align: right;">132</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">397</td>
-<td style="text-align: right;">6065</td>
-<td style="text-align: right;">8197</td>
-<td style="text-align: right;">5020</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: right;">1564</td>
-<td style="text-align: right;">20898</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">September</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">26169</td>
-<td style="text-align: left;">834</td>
-<td style="text-align: right;">1149</td>
-<td style="text-align: right;">1785</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">109</td>
-<td style="text-align: right;">3879</td>
-<td style="text-align: right;">60343</td>
-<td style="text-align: right;">78618</td>
-<td style="text-align: right;">100852</td>
-<td style="text-align: right;">143</td>
-<td style="text-align: right;">9074</td>
-<td style="text-align: right;">249030</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">September</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6173</td>
-<td style="text-align: left;">280</td>
-<td style="text-align: right;">258</td>
-<td style="text-align: right;">164</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">722</td>
-<td style="text-align: right;">15546</td>
-<td style="text-align: right;">13351</td>
-<td style="text-align: right;">5239</td>
-<td style="text-align: right;">109</td>
-<td style="text-align: right;">1282</td>
-<td style="text-align: right;">35527</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">September</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">13318</td>
-<td style="text-align: left;">479</td>
-<td style="text-align: right;">637</td>
-<td style="text-align: right;">741</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">55</td>
-<td style="text-align: right;">1913</td>
-<td style="text-align: right;">29865</td>
-<td style="text-align: right;">36997</td>
+<td style="text-align: right;">2005</td>
 <td style="text-align: right;">35048</td>
-<td style="text-align: right;">82</td>
-<td style="text-align: right;">2544</td>
-<td style="text-align: right;">104536</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">September</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8406</td>
-<td style="text-align: left;">231</td>
-<td style="text-align: right;">292</td>
-<td style="text-align: right;">131</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">671</td>
-<td style="text-align: right;">18863</td>
-<td style="text-align: right;">16185</td>
-<td style="text-align: right;">3756</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">1285</td>
-<td style="text-align: right;">40106</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">32594</td>
-<td style="text-align: left;">1021</td>
-<td style="text-align: right;">1034</td>
-<td style="text-align: right;">1010</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">3098</td>
-<td style="text-align: right;">87953</td>
-<td style="text-align: right;">60372</td>
-<td style="text-align: right;">33160</td>
-<td style="text-align: right;">216</td>
-<td style="text-align: right;">4122</td>
-<td style="text-align: right;">185823</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">18125</td>
-<td style="text-align: left;">669</td>
-<td style="text-align: right;">743</td>
-<td style="text-align: right;">744</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">2200</td>
-<td style="text-align: right;">47720</td>
-<td style="text-align: right;">44085</td>
-<td style="text-align: right;">26533</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">3359</td>
-<td style="text-align: right;">121745</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">3000</td>
-<td style="text-align: left;">140</td>
-<td style="text-align: right;">102</td>
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">352</td>
-<td style="text-align: right;">7885</td>
-<td style="text-align: right;">6417</td>
-<td style="text-align: right;">3877</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">693</td>
-<td style="text-align: right;">18872</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">27608</td>
-<td style="text-align: left;">847</td>
-<td style="text-align: right;">1077</td>
-<td style="text-align: right;">1257</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">3236</td>
-<td style="text-align: right;">71131</td>
-<td style="text-align: right;">70611</td>
-<td style="text-align: right;">42078</td>
-<td style="text-align: right;">238</td>
-<td style="text-align: right;">3917</td>
-<td style="text-align: right;">187975</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6207</td>
-<td style="text-align: left;">245</td>
-<td style="text-align: right;">263</td>
-<td style="text-align: right;">141</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">661</td>
-<td style="text-align: right;">12002</td>
-<td style="text-align: right;">15836</td>
-<td style="text-align: right;">5121</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">955</td>
-<td style="text-align: right;">33975</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">14170</td>
-<td style="text-align: left;">510</td>
-<td style="text-align: right;">753</td>
-<td style="text-align: right;">792</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">39</td>
-<td style="text-align: right;">2096</td>
-<td style="text-align: right;">33326</td>
-<td style="text-align: right;">50740</td>
-<td style="text-align: right;">41157</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2948</td>
-<td style="text-align: right;">128173</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">October</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8764</td>
-<td style="text-align: left;">234</td>
-<td style="text-align: right;">257</td>
-<td style="text-align: right;">150</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">652</td>
-<td style="text-align: right;">15522</td>
-<td style="text-align: right;">14155</td>
-<td style="text-align: right;">-999</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">1765</td>
-<td style="text-align: right;">35799</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">30903</td>
-<td style="text-align: left;">1112</td>
-<td style="text-align: right;">1420</td>
-<td style="text-align: right;">1457</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">4060</td>
-<td style="text-align: right;">95024</td>
-<td style="text-align: right;">84231</td>
-<td style="text-align: right;">46457</td>
-<td style="text-align: right;">576</td>
-<td style="text-align: right;">5921</td>
-<td style="text-align: right;">232209</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DEN</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">17120</td>
-<td style="text-align: left;">751</td>
-<td style="text-align: right;">1031</td>
-<td style="text-align: right;">1197</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">93</td>
-<td style="text-align: right;">3076</td>
-<td style="text-align: right;">54704</td>
-<td style="text-align: right;">69918</td>
-<td style="text-align: right;">50919</td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">9509</td>
-<td style="text-align: right;">185113</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IAD</td>
-<td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">2684</td>
-<td style="text-align: left;">134</td>
-<td style="text-align: right;">106</td>
-<td style="text-align: right;">65</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">320</td>
-<td style="text-align: right;">8017</td>
-<td style="text-align: right;">9193</td>
-<td style="text-align: right;">2183</td>
-<td style="text-align: right;">36</td>
-<td style="text-align: right;">901</td>
-<td style="text-align: right;">20330</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">26063</td>
-<td style="text-align: left;">838</td>
-<td style="text-align: right;">1287</td>
-<td style="text-align: right;">1724</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">110</td>
-<td style="text-align: right;">3962</td>
-<td style="text-align: right;">72305</td>
-<td style="text-align: right;">101335</td>
-<td style="text-align: right;">150030</td>
-<td style="text-align: right;">317</td>
-<td style="text-align: right;">14731</td>
-<td style="text-align: right;">338718</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">5965</td>
-<td style="text-align: left;">307</td>
-<td style="text-align: right;">364</td>
-<td style="text-align: right;">284</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">36</td>
-<td style="text-align: right;">997</td>
-<td style="text-align: right;">15502</td>
-<td style="text-align: right;">18896</td>
-<td style="text-align: right;">-999</td>
-<td style="text-align: right;">253</td>
-<td style="text-align: right;">3615</td>
-<td style="text-align: right;">50942</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">13527</td>
-<td style="text-align: left;">585</td>
-<td style="text-align: right;">766</td>
-<td style="text-align: right;">772</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">65</td>
-<td style="text-align: right;">2189</td>
-<td style="text-align: right;">39934</td>
-<td style="text-align: right;">51704</td>
-<td style="text-align: right;">31587</td>
-<td style="text-align: right;">165</td>
-<td style="text-align: right;">4625</td>
-<td style="text-align: right;">128015</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">November</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8435</td>
-<td style="text-align: left;">288</td>
-<td style="text-align: right;">379</td>
-<td style="text-align: right;">294</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">981</td>
-<td style="text-align: right;">21745</td>
-<td style="text-align: right;">20938</td>
-<td style="text-align: right;">8777</td>
-<td style="text-align: right;">41</td>
-<td style="text-align: right;">2295</td>
-<td style="text-align: right;">53796</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ATL</td>
-<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">31030</td>
 <td style="text-align: left;">1500+</td>
-<td style="text-align: right;">2176</td>
-<td style="text-align: right;">1616</td>
+<td style="text-align: right;">-999</td>
+<td style="text-align: right;">4598</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">147</td>
-<td style="text-align: right;">5474</td>
-<td style="text-align: right;">148033</td>
-<td style="text-align: right;">173784</td>
-<td style="text-align: right;">93850</td>
-<td style="text-align: right;">313</td>
-<td style="text-align: right;">19532</td>
-<td style="text-align: right;">435512</td>
+<td style="text-align: right;">448</td>
+<td style="text-align: right;">8355</td>
+<td style="text-align: right;">116423</td>
+<td style="text-align: right;">104415</td>
+<td style="text-align: right;">207467</td>
+<td style="text-align: right;">297</td>
+<td style="text-align: right;">36931</td>
+<td style="text-align: right;">465533</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DEN</td>
+<td style="text-align: left;">Denver, CO: Denver International</td>
+<td style="text-align: left;">January</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">12687</td>
+<td style="text-align: left;">1041</td>
+<td style="text-align: right;">928</td>
+<td style="text-align: right;">935</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">233</td>
+<td style="text-align: right;">3153</td>
+<td style="text-align: right;">53537</td>
+<td style="text-align: right;">70301</td>
+<td style="text-align: right;">36817</td>
+<td style="text-align: right;">363</td>
+<td style="text-align: right;">21779</td>
+<td style="text-align: right;">182797</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IAD</td>
+<td style="text-align: left;">nan</td>
+<td style="text-align: left;">January</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">12381</td>
+<td style="text-align: left;">414</td>
+<td style="text-align: right;">1058</td>
+<td style="text-align: right;">895</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">2430</td>
+<td style="text-align: right;">nan</td>
+<td style="text-align: right;">70919</td>
+<td style="text-align: right;">35660</td>
+<td style="text-align: right;">208</td>
+<td style="text-align: right;">4497</td>
+<td style="text-align: right;">134881</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ORD</td>
+<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
+<td style="text-align: left;">January</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">28194</td>
+<td style="text-align: left;">1197</td>
+<td style="text-align: right;">2255</td>
+<td style="text-align: right;">5415</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">306</td>
+<td style="text-align: right;">9178</td>
+<td style="text-align: right;">88691</td>
+<td style="text-align: right;">160811</td>
+<td style="text-align: right;">364382</td>
+<td style="text-align: right;">151</td>
+<td style="text-align: right;">24859</td>
+<td style="text-align: right;">638894</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SAN</td>
+<td style="text-align: left;">San Diego, CA: San Diego International</td>
+<td style="text-align: left;">January</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">7283</td>
+<td style="text-align: left;">572</td>
+<td style="text-align: right;">680</td>
+<td style="text-align: right;">638</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">1952</td>
+<td style="text-align: right;">27436</td>
+<td style="text-align: right;">38445</td>
+<td style="text-align: right;">21127</td>
+<td style="text-align: right;">218</td>
+<td style="text-align: right;">4326</td>
+<td style="text-align: right;">91552</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SFO</td>
+<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
+<td style="text-align: left;">January</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">10274</td>
+<td style="text-align: left;">798</td>
+<td style="text-align: right;">733</td>
+<td style="text-align: right;">1166</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">2816</td>
+<td style="text-align: right;">41570</td>
+<td style="text-align: right;">47705</td>
+<td style="text-align: right;">60380</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: right;">7373</td>
+<td style="text-align: right;">157275</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SLC</td>
+<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
+<td style="text-align: left;">January</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">12000</td>
+<td style="text-align: left;">817</td>
+<td style="text-align: right;">564</td>
+<td style="text-align: right;">864</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">270</td>
+<td style="text-align: right;">2525</td>
+<td style="text-align: right;">36252</td>
+<td style="text-align: right;">30557</td>
+<td style="text-align: right;">35977</td>
+<td style="text-align: right;">327</td>
+<td style="text-align: right;">27219</td>
+<td style="text-align: right;">130332</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ATL</td>
+<td style="text-align: left;">Atlanta, GA: Hartsfield-Jackson Atlanta International</td>
+<td style="text-align: left;">Febuary</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">33702</td>
+<td style="text-align: left;">1288</td>
+<td style="text-align: right;">-999</td>
+<td style="text-align: right;">6104</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">399</td>
+<td style="text-align: right;">9195</td>
+<td style="text-align: right;">86876</td>
+<td style="text-align: right;">86698</td>
+<td style="text-align: right;">321969</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">31944</td>
+<td style="text-align: right;">527523</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DEN</td>
 <td style="text-align: left;">Denver, CO: Denver International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">18001</td>
-<td style="text-align: left;">1001</td>
-<td style="text-align: right;">1463</td>
-<td style="text-align: right;">981</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">152</td>
-<td style="text-align: right;">3610</td>
-<td style="text-align: right;">64757</td>
-<td style="text-align: right;">111638</td>
-<td style="text-align: right;">60584</td>
-<td style="text-align: right;">405</td>
-<td style="text-align: right;">20271</td>
-<td style="text-align: right;">257655</td>
+<td style="text-align: left;">Febuary</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">11480</td>
+<td style="text-align: left;">729</td>
+<td style="text-align: right;">432</td>
+<td style="text-align: right;">581</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">1788</td>
+<td style="text-align: right;">33205</td>
+<td style="text-align: right;">26228</td>
+<td style="text-align: right;">16864</td>
+<td style="text-align: right;">271</td>
+<td style="text-align: right;">2781</td>
+<td style="text-align: right;">79349</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">IAD</td>
 <td style="text-align: left;">Washington, DC: Washington Dulles International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">2799</td>
-<td style="text-align: left;">182</td>
-<td style="text-align: right;">183</td>
-<td style="text-align: right;">61</td>
+<td style="text-align: left;">Febuary</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">10042</td>
+<td style="text-align: left;">284</td>
+<td style="text-align: right;">631</td>
+<td style="text-align: right;">691</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">1639</td>
+<td style="text-align: right;">15573</td>
+<td style="text-align: right;">39840</td>
 <td style="text-align: right;">nan</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">443</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">15438</td>
-<td style="text-align: right;">2826</td>
-<td style="text-align: right;">nan</td>
-<td style="text-align: right;">1825</td>
-<td style="text-align: right;">31164</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ORD</td>
-<td style="text-align: left;">Chicago, IL: Chicago O’Hare International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">25568</td>
-<td style="text-align: left;">923</td>
-<td style="text-align: right;">1755</td>
-<td style="text-align: right;">1364</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">180</td>
-<td style="text-align: right;">4233</td>
-<td style="text-align: right;">80962</td>
-<td style="text-align: right;">132055</td>
-<td style="text-align: right;">72045</td>
-<td style="text-align: right;">435</td>
-<td style="text-align: right;">22459</td>
-<td style="text-align: right;">307956</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SAN</td>
-<td style="text-align: left;">San Diego, CA: San Diego International</td>
-<td style="text-align: left;">nan</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">6231</td>
-<td style="text-align: left;">480</td>
-<td style="text-align: right;">606</td>
-<td style="text-align: right;">256</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: right;">1383</td>
-<td style="text-align: right;">25402</td>
-<td style="text-align: right;">35796</td>
-<td style="text-align: right;">9038</td>
-<td style="text-align: right;">161</td>
-<td style="text-align: right;">2742</td>
-<td style="text-align: right;">73139</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SFO</td>
-<td style="text-align: left;">San Francisco, CA: San Francisco International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">13833</td>
-<td style="text-align: left;">757</td>
-<td style="text-align: right;">1180</td>
-<td style="text-align: right;">2372</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">147</td>
-<td style="text-align: right;">4465</td>
-<td style="text-align: right;">55283</td>
-<td style="text-align: right;">96703</td>
-<td style="text-align: right;">193525</td>
-<td style="text-align: right;">285</td>
-<td style="text-align: right;">13788</td>
-<td style="text-align: right;">359584</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SLC</td>
-<td style="text-align: left;">Salt Lake City, UT: Salt Lake City International</td>
-<td style="text-align: left;">December</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">8804</td>
-<td style="text-align: left;">483</td>
-<td style="text-align: right;">796</td>
-<td style="text-align: right;">404</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: right;">1745</td>
-<td style="text-align: right;">37354</td>
-<td style="text-align: right;">49549</td>
-<td style="text-align: right;">13515</td>
-<td style="text-align: right;">158</td>
-<td style="text-align: right;">6693</td>
-<td style="text-align: right;">107269</td>
+<td style="text-align: right;">169</td>
+<td style="text-align: right;">1359</td>
+<td style="text-align: right;">78878</td>
 </tr>
 </tbody>
 </table>
@@ -7644,7 +5934,7 @@ dtype: int64</code></pre>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>flights3.isnull().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq5-table3" class="cell-output cell-output-display" data-execution_count="24">
+<div id="gq5-table3" class="cell-output cell-output-display" data-execution_count="49">
 <pre><code>airport_code                      0
 airport_name                     56
 month                            27
@@ -7674,7 +5964,7 @@ dtype: int64</code></pre>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>nan_values <span class="op">=</span> flights3[flights3.isnull().<span class="bu">any</span>(axis<span class="op">=</span><span class="dv">1</span>)].tail(<span class="dv">1</span>)</span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>Markdown(nan_values.to_markdown(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="gq5-table4" class="cell-output cell-output-display" data-execution_count="25">
+<div id="gq5-table4" class="cell-output cell-output-display" data-execution_count="50">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 3%">

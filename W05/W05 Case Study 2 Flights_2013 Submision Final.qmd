@@ -624,7 +624,7 @@ flights3.replace("?", np.nan, inplace=True)
 
 
 
-Markdown(flights3.tail(100).to_markdown(index=False))
+Markdown(flights3.head(10).to_markdown(index=False))
 
 
 
