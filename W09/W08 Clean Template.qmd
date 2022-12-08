@@ -23,22 +23,49 @@ format:
     
 ---
 
+
 ```{python}
-#| label: libraries
-#| include: false
+
 import pandas as pd
 import altair as alt
+import math
 import numpy as np
+import sklearn as sk
+import seaborn as sns
 
-from IPython.display import Markdown
-from IPython.display import display
+# import scikit-plot as skp
+# import urllib3
+# import json
+# import requests
+
+from sklearn import metrics, datasets, tree
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import GradientBoostingClassifier, ExtraTreesClassifier, RandomForestClassifier
+from sklearn.feature_selection import SelectKBest, chi2, f_classif, mutual_info_classif
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from skfeature.function.similarity_based import fisher_score
+from mlxtend.feature_selection import SequentialFeatureSelector as sfs, ExhaustiveFeatureSelector
+from IPython.display import Markdown, display
 from tabulate import tabulate
+from matplotlib import pyplot as plt
+%matplotlib inline
+from altair import Chart, X, Y, Axis, SortField
+from scipy import stats
+alt.data_transformers.enable('json')
 ```
-
 
 ## Elevator pitch
 
-_paste your elevator pitch here_
+Asbestos began to be phased out as a construction with the Clearn Air Act of 1970, but today there remain many dwellings that predate that act. Asbestos is a known carcinogen, and the EPA has a list of asbestos containing materials that should be removed from a home. The City of Denver has a program to help homeowners remove asbestos from their homes, but they need a way to determine if a home most likely contains asbestos. In their assessment and building data Denver has the year built, but it is missing for many dwellings. The city needs to know if it was built before 1980, so they can determine if it most likely contains asbestos. 
+
+This project will use 2013 data from the Denver tax records and building department to build a machine learning model to predict the likelihood that a dwelling was built before 1980. The model will be used to predict the year built for dwellings that are missing that data. The model will also be used to determine if a dwelling is likely to contain asbestos. This project will use data from the EPA to determine if there are any patterns in the styles and features that are found in homes that contain asbestos. The goal is to provide a tool for home inspectors to use to determine if a home contains asbestos and what types of materials should be removed.
+
 
 ```{python}
 #| label: project data
