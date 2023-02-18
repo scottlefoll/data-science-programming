@@ -65,17 +65,10 @@ Y_test.head(10).astype({'before1980':'int'}).mean()
 
 X_test.sprice.mean()
 
-#%%
+
 
 #%%
 
-sns.set(style="whitegrid", palette="muted")
-
-plt.figure(figsize=(10,10))
-plt.xticks(rotation=90)
-sns.barplot(x=df["name"], y=df['sugars'])
-
-#%%
 
 #############################################################
 

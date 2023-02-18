@@ -542,7 +542,9 @@ df4.info()
 #| fig-cap: "My useless chart"
 #| fig-align: center
 # Include and execute your code here
-alt.Chart(dat.head())\
+
+
+alt.Chart(df.head())\
     .encode(x = "name", y = "AK")\
     .mark_bar()
 #%%

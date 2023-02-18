@@ -1,0 +1,211 @@
+A. Univariate Selection - SelectKBest 1
+
+     Specs    Score
+0            arcstyle_TWO-STORY  1720.51
+1                   gartype_Att  1285.37
+2                     quality_B  1244.26
+3                   gartype_Det   962.19
+4                condition_Good   911.90
+5                     quality_C   714.27
+6                     quality_A   442.96
+7                 condition_AVG   275.95
+8   arcstyle_ONE AND HALF-STORY   196.45
+9                      status_I    77.26
+10              condition_VGood    64.19
+11         arcstyle_CONVERSIONS    49.89
+12                 gartype_None    41.23
+13         arcstyle_SPLIT LEVEL    31.62
+14              gartype_Att/Det    26.61
+
+
+B. Univariate Selection - SelectKBest 1
+
+Specs    Score
+0            arcstyle_TWO-STORY  1678.82
+1                   gartype_Att  1310.83
+2                     quality_B  1174.76
+3                   gartype_Det   986.40
+4                condition_Good   949.64
+5                     quality_C   690.58
+6                     quality_A   465.70
+7                 condition_AVG   289.85
+8   arcstyle_ONE AND HALF-STORY   205.42
+9               condition_VGood    81.65
+10                     status_I    73.51
+11         arcstyle_CONVERSIONS    53.10
+12                 gartype_None    44.64
+13         arcstyle_SPLIT LEVEL    42.39
+14  arcstyle_TWO AND HALF-STORY    32.13
+
+C. Univariate Selection - SelectKBest 1
+
+          Specs         Score
+0             netprice  4.912446e+09
+1             livearea  8.695464e+05
+2             basement  4.988513e+04
+3   arcstyle_TWO-STORY  1.734450e+03
+4             numbaths  1.632340e+03
+5          gartype_Att  1.348640e+03
+6            quality_B  1.241710e+03
+7            quality_B  1.241710e+03
+8          gartype_Det  9.546700e+02
+9       condition_Good  9.325200e+02
+10             stories  7.679500e+02
+11           quality_C  7.286100e+02
+12           quality_C  7.286100e+02
+13           quality_A  4.941200e+02
+14       condition_AVG  2.829400e+02
+
+A. Extra Trees Classifier
+arcstyle_TWO-STORY             0.195904
+quality_C                      0.160278
+gartype_Att                    0.146855
+quality_B                      0.096221
+gartype_Det                    0.085686
+status_I                       0.083426
+condition_AVG                  0.057424
+condition_Good                 0.044973
+gartype_None                   0.037491
+quality_A                      0.035455
+arcstyle_ONE AND HALF-STORY    0.011111
+arcstyle_TWO AND HALF-STORY    0.007296
+arcstyle_SPLIT LEVEL           0.006491
+qualified_U                    0.006278
+qualified_Q                    0.006099
+dtype: float64
+
+B. Extra Trees Classifier
+
+livearea              0.141313
+netprice              0.127404
+stories               0.106675
+gartype_Att           0.080174
+basement              0.073201
+arcstyle_TWO-STORY    0.062022
+numbaths              0.058277
+quality_C             0.040463
+numbdrm               0.040136
+quality_C             0.038555
+gartype_Det           0.032954
+status_I              0.032221
+quality_B             0.028246
+gartype_None          0.021916
+quality_B             0.021269
+dtype: float64
+
+A. Mutual Information Scores: 
+Feature 0: 0.008336
+Feature 1: 0.055361
+Feature 2: 0.065549
+Feature 3: 0.053386
+Feature 4: 0.000000
+Feature 5: 0.044360
+Feature 6: 0.003622
+Feature 7: 0.070253
+Feature 8: 0.000000
+Feature 9: 0.007128
+Feature 10: 0.043452
+Feature 11: 0.004039
+Feature 12: 0.000000
+Feature 13: 0.001161
+Feature 14: 0.010282
+Feature 15: 0.004158
+Feature 16: 0.004558
+Feature 17: 0.073857
+Feature 18: 0.001570
+Feature 19: 0.002752
+Feature 20: 0.056192
+
+ #   Column                       Non-Null Count  Dtype
+---  ------                       --------------  -----
+ 0   quality_A                    15351 non-null  int64
+ 1   quality_B                    15351 non-null  int64
+ 2   quality_C                    15351 non-null  int64
+ 3   condition_AVG                15351 non-null  int64
+ 4   condition_Excel              15351 non-null  int64
+ 5   condition_Good               15351 non-null  int64
+ 6   condition_VGood              15351 non-null  int64
+ 7   gartype_Att                  15351 non-null  int64
+ 8   gartype_Att/Det              15351 non-null  int64
+ 9   gartype_CP                   15351 non-null  int64
+ 10  gartype_Det                  15351 non-null  int64
+ 11  gartype_None                 15351 non-null  int64
+ 12  arcstyle_BI-LEVEL            15351 non-null  int64
+ 13  arcstyle_CONVERSIONS         15351 non-null  int64
+ 14  arcstyle_ONE AND HALF-STORY  15351 non-null  int64
+ 15  arcstyle_SPLIT LEVEL         15351 non-null  int64
+ 16  arcstyle_TWO AND HALF-STORY  15351 non-null  int64
+ 17  arcstyle_TWO-STORY           15351 non-null  int64
+ 18  qualified_Q                  15351 non-null  int64
+ 19  qualified_U                  15351 non-null  int64
+ 20  status_I                     15351 non-null  int64
+dtypes: int64(21)
+memory usage: 2.6 MB
+
+A. Mutual Information Scores: 
+Mutual Information Scores: 
+Feature 0: 0.011734
+Feature 1: 0.058444
+Feature 2: 0.070277
+Feature 3: 0.044551
+Feature 4: 0.000000
+Feature 5: 0.046261
+Feature 6: 0.007026
+Feature 7: 0.063565
+Feature 8: 0.002288
+Feature 9: 0.007522
+Feature 10: 0.052017
+Feature 11: 0.000000
+Feature 12: 0.000698
+Feature 13: 0.004801
+Feature 14: 0.006446
+Feature 15: 0.002354
+Feature 16: 0.000000
+Feature 17: 0.075448
+Feature 18: 0.000000
+Feature 19: 0.004669
+Feature 20: 0.051734
+Feature 21: 0.072332
+Feature 22: 0.187846
+Feature 23: 0.098511
+Feature 24: 0.011985
+Feature 25: 0.117783
+Feature 26: 0.120152
+Feature 27: 0.051488
+Feature 28: 0.080151
+Feature 29: 0.047367
+
+ #   Column                       Non-Null Count  Dtype
+---  ------                       --------------  -----
+ 0   quality_A                    7562 non-null   int64
+ 1   quality_B                    7562 non-null   int64
+ 2   quality_C                    7562 non-null   int64
+ 3   condition_AVG                7562 non-null   int64
+ 4   condition_Excel              7562 non-null   int64
+ 5   condition_Good               7562 non-null   int64
+ 6   condition_VGood              7562 non-null   int64
+ 7   gartype_Att                  7562 non-null   int64
+ 8   gartype_Att/Det              7562 non-null   int64
+ 9   gartype_CP                   7562 non-null   int64
+ 10  gartype_Det                  7562 non-null   int64
+ 11  gartype_None                 7562 non-null   int64
+ 12  arcstyle_BI-LEVEL            7562 non-null   int64
+ 13  arcstyle_CONVERSIONS         7562 non-null   int64
+ 14  arcstyle_ONE AND HALF-STORY  7562 non-null   int64
+ 15  arcstyle_SPLIT LEVEL         7562 non-null   int64
+ 16  arcstyle_TWO AND HALF-STORY  7562 non-null   int64
+ 17  arcstyle_TWO-STORY           7562 non-null   int64
+ 18  qualified_Q                  7562 non-null   int64
+ 19  qualified_U                  7562 non-null   int64
+ 20  status_I                     7562 non-null   int64
+ 21  netprice                     7562 non-null   int64
+ 22  livearea                     7562 non-null   int64
+ 23  basement                     7562 non-null   int64
+ 24  numbdrm                      7562 non-null   int64
+ 25  numbaths                     7562 non-null   int64
+ 26  stories                      7562 non-null   int64
+ 27  quality_B                    7562 non-null   int64
+ 28  quality_C                    7562 non-null   int64
+ 29  condition_AVG                7562 non-null   int64
+dtypes: int64(30)
+memory usage: 1.8 MB

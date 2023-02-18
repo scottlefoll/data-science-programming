@@ -1,35 +1,35 @@
 #%%
 import pandas as pd
 import altair as alt
-import math
+# import math
 import numpy as np
-import sklearn as sk
-import seaborn as sns
+# import sklearn as sk
+# import seaborn as sns
 
 # import scikit-plot as skp
-import urllib3
+# import urllib3
 import json
-import requests
+# import requests
 
-from sklearn import metrics, datasets, tree
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.naive_bayes import GaussianNB
-from sklearn.ensemble import GradientBoostingClassifier, ExtraTreesClassifier, RandomForestClassifier
-from sklearn.feature_selection import SelectKBest, chi2, f_classif, mutual_info_classif
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
+# from sklearn import metrics, datasets, tree
+# from sklearn.linear_model import LinearRegression
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import MinMaxScaler
+# from sklearn.naive_bayes import GaussianNB
+# from sklearn.ensemble import GradientBoostingClassifier, ExtraTreesClassifier, RandomForestClassifier
+# from sklearn.feature_selection import SelectKBest, chi2, f_classif, mutual_info_classif
+# from sklearn.metrics import confusion_matrix
+# from sklearn.metrics import accuracy_score
+# from sklearn.metrics import f1_score
 # from skfeature.function.similarity_based import fisher_score
 # from mlxtend.feature_selection import SequentialFeatureSelector as sfs, ExhaustiveFeatureSelector
 from IPython.display import Markdown, display
 from tabulate import tabulate
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 %matplotlib inline
-from altair import Chart, X, Y, Axis, SortField
-from scipy import stats
+# from altair import Chart, X, Y, Axis, SortField
+# from scipy import stats
 alt.data_transformers.enable('json')
 #%%
 
@@ -157,12 +157,12 @@ df.rename(columns = {'RespondentID':'ID',
                     'Unnamed: 6':'seen_IV',
                     'Unnamed: 7':'seen_V',
                     'Unnamed: 8':'seen_VI',
-                    'Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.':'rank_1',
-                    'Unnamed: 10':'rank_2',
-                    'Unnamed: 11':'rank_3',
-                    'Unnamed: 12':'rank_4',
-                    'Unnamed: 13':'rank_5',
-                    'Unnamed: 14':'rank_6',
+                    'Please rank the Star Wars films in order of preference with 1 being your favorite film in the franchise and 6 being your least favorite film.':'rank_I',
+                    'Unnamed: 10':'rank_II',
+                    'Unnamed: 11':'rank_III',
+                    'Unnamed: 12':'rank_IV',
+                    'Unnamed: 13':'rank_V',
+                    'Unnamed: 14':'rank_VI',
                     'Please state whether you view the following characters favorably, unfavorably, or are unfamiliar with him/her.':'han',
                     'Unnamed: 16':'luke',
                     'Unnamed: 17':'leia',
@@ -189,7 +189,7 @@ df.rename(columns = {'RespondentID':'ID',
                     }, inplace = True)
 
 cols = ['seen_any', 'fan', 'seen_I', 'seen_II', 'seen_III', 'seen_IV', 'seen_V', 
-        'seen_VI', 'rank_1', 'rank_2', 'rank_3', 'rank_4', 'rank_5', 'rank_6', 
+        'seen_VI', 'rank_I', 'rank_II', 'rank_III', 'rank_IV', 'rank_V', 'rank_VI', 
         'han', 'luke', 'leia', 'anakin', 'obiwan', 'emperor', 'darth', 
         'lando', 'boba', 'c3po', 'r2d2', 'jarjar', 'padme', 
         'yoda', 'shot_first', 'familiar_expand', 'fan_expand', 'fan_trek', 
@@ -213,72 +213,6 @@ print(new_cols)
 # convert negative values to 0
 num_cols = df._get_numeric_data()
 num_cols[num_cols < 0 ] = 0
-#%%
-
-#%%
-df.fillna(0, inplace = True)
-df.replace({'Yes':1, 'No':0}, inplace = True)
-df.replace({'Male':1, 'Female':2}, inplace = True)
-df.replace({"I don't understand this question":0}, inplace = True)
-df.replace({'Response':'0'}, inplace = True)
-df.replace('', 0, inplace=True)
-df.replace('nan', 0, inplace=True)
-df.replace('NaN', 0, inplace=True)
-df.replace("n/a", 0, inplace=True)
-df.replace("N/A", 0, inplace=True)
-df.replace("NA", 0, inplace=True)
-df.replace("?", 0, inplace=True)
-
-df.seen_I.loc[df['seen_I'] != 0] = 1
-df.seen_II.loc[df['seen_II'] != 0] = 1
-df.seen_III.loc[df['seen_III'] != 0] = 1
-df.seen_IV.loc[df['seen_IV'] != 0] = 1
-df.seen_V.loc[df['seen_V'] != 0] = 1
-df.seen_VI.loc[df['seen_VI'] != 0] = 1
-
-df.shot_first.loc[df['shot_first'] == 'Han'] = 1
-df.shot_first.loc[df['shot_first'] == 'Greedo'] = 2
-
-df.education.loc[df['education'] == 'High school degree'] = 1
-df.education.loc[df['education'] == 'Some college or Associate degree'] = 2
-df.education.loc[df['education'] == 'Bachelor degree'] = 3
-df.education.loc[df['education'] == 'Graduate degree'] = 4
-
-df.income.loc[df['income'] == '$0 - $24,999'] = 1
-df.income.loc[df['income'] == '$25,000 - $49,999'] = 2
-df.income.loc[df['income'] == '$50,000 - $99,999'] = 3
-df.income.loc[df['income'] == '$100,000 - $149,999'] = 4
-df.income.loc[df['income'] == '	$150,000+'] = 4
-df.income.loc[df['income'] == '$150,000+'] = 4
-
-df.age.loc[df['age'] == '18-29'] = 1
-df.age.loc[df['age'] == '30-44'] = 2
-
-df.location.loc[df['location'] == 'New England'] = 1
-df.location.loc[df['location'] == 'Middle Atlantic'] = 2
-df.location.loc[df['location'] == 'South Atlantic'] = 3
-df.location.loc[df['location'] == 'East North Central'] = 4
-df.location.loc[df['location'] == '	Mountain'] = 5
-df.location.loc[df['location'] == 'Mountain'] = 5
-df.location.loc[df['location'] == 'Pacific'] = 6
-df.location.loc[df['location'] == 'West North Central'] = 7
-df.location.loc[df['location'] == 'East South Central'] = 8
-df.location.loc[df['location'] == 'West South Central'] = 9
-
-df.replace("Very favorably", 4, inplace=True)
-df.replace("Somewhat favorably", 3, inplace=True)
-df.replace("Neither favorably nor unfavorably (neutral)", 2, inplace=True)
-df.replace("	Unfamiliar (N/A)", 2, inplace=True)
-df.replace("Unfamiliar (N/A)", 2, inplace=True)
-df.replace("Somewhat unfavorably", 1, inplace=True)
-df.replace("Very unfavorably", 0, inplace=True)
-
-df['seen_total'] = df.seen_I + df.seen_II + df.seen_III + df.seen_IV + df.seen_V + df.seen_VI
-df.query('seen_any == 1', inplace = True)
-
-df = df.drop(index=0)
-df.reset_index(drop=True, inplace=True)
-Markdown(df.head(5).to_markdown())
 #%%
 
 
@@ -311,17 +245,17 @@ missing_checks(df, 'seen_III')
 missing_checks(df, 'seen_IV')
 missing_checks(df, 'seen_V')
 missing_checks(df, 'seen_VI')
-missing_checks(df, 'rank_1')
-missing_checks(df, 'rank_2')
-missing_checks(df, 'rank_3')
-missing_checks(df, 'rank_4')
-missing_checks(df, 'rank_5')
-missing_checks(df, 'rank_6')
+missing_checks(df, 'rank_I')
+missing_checks(df, 'rank_II')
+missing_checks(df, 'rank_III')
+missing_checks(df, 'rank_IV')
+missing_checks(df, 'rank_V')
+missing_checks(df, 'rank_VI')
 missing_checks(df, 'han')
 missing_checks(df, 'luke')
 missing_checks(df, 'leia')
 missing_checks(df, 'anakin')
-missing_checks(df, 'obi_wan')
+missing_checks(df, 'obiwan')
 missing_checks(df, 'emperor')
 missing_checks(df, 'darth')
 missing_checks(df, 'lando')
@@ -341,6 +275,114 @@ missing_checks(df, 'income')
 missing_checks(df, 'education')
 missing_checks(df, 'location')
 #%%
+
+#%%
+df = df.drop(index=0)
+df.fillna(0, inplace = True)
+df.replace({'Yes':1, 'No':0}, inplace = True)
+df.replace({'Male':1, 'Female':2}, inplace = True)
+df.replace({"I don't understand this question":0}, inplace = True)
+df.replace({'Response':'0'}, inplace = True)
+df.replace('', 0, inplace=True)
+df.replace('nan', 0, inplace=True)
+df.replace('NaN', 0, inplace=True)
+df.replace("n/a", 0, inplace=True)
+df.replace("N/A", 0, inplace=True)
+df.replace("NA", 0, inplace=True)
+df.replace("?", 0, inplace=True)
+
+df.seen_I.loc[df['seen_I'] != 0] = 1
+df.seen_II.loc[df['seen_II'] != 0] = 1
+df.seen_III.loc[df['seen_III'] != 0] = 1
+df.seen_IV.loc[df['seen_IV'] != 0] = 1
+df.seen_V.loc[df['seen_V'] != 0] = 1
+df.seen_VI.loc[df['seen_VI'] != 0] = 1
+
+df.shot_first.loc[df['shot_first'] == 'Han'] = 1
+df.shot_first.loc[df['shot_first'] == 'Greedo'] = 2
+
+df.education.loc[df['education'] == 'Less than high school degree'] = 1
+df.education.loc[df['education'] == 'High school degree'] = 2
+df.education.loc[df['education'] == 'Some college or Associate degree'] = 3
+df.education.loc[df['education'] == 'Bachelor degree'] = 4
+df.education.loc[df['education'] == 'Graduate degree'] = 5
+
+df.income.loc[df['income'] == '$0 - $24,999'] = 1
+df.income.loc[df['income'] == '$25,000 - $49,999'] = 2
+df.income.loc[df['income'] == '$50,000 - $99,999'] = 3
+df.income.loc[df['income'] == '$100,000 - $149,999'] = 4
+df.income.loc[df['income'] == '	$150,000+'] = 4
+df.income.loc[df['income'] == '$150,000+'] = 4
+
+df.age.loc[df['age'] == '18-29'] = 1
+df.age.loc[df['age'] == '30-44'] = 2
+
+df.location.loc[df['location'] == 'New England'] = 1
+df.location.loc[df['location'] == 'Middle Atlantic'] = 2
+df.location.loc[df['location'] == 'South Atlantic'] = 3
+df.location.loc[df['location'] == 'East North Central'] = 4
+df.location.loc[df['location'] == '	Mountain'] = 5
+df.location.loc[df['location'] == 'Mountain'] = 5
+df.location.loc[df['location'] == 'Pacific'] = 6
+df.location.loc[df['location'] == 'West North Central'] = 7
+df.location.loc[df['location'] == 'East South Central'] = 8
+df.location.loc[df['location'] == 'West South Central'] = 9
+
+df.replace("Very favorably", 4, inplace=True)
+df.replace("Somewhat favorably", 3, inplace=True)
+df.replace("Neither favorably nor unfavorably (neutral)", 2, inplace=True)
+df.replace("	Unfamiliar (N/A)", 2, inplace=True)
+df.replace("Unfamiliar (N/A)", 2, inplace=True)
+df.replace("Somewhat unfavorably", 1, inplace=True)
+df.replace("Very unfavorably", 0, inplace=True)
+
+df['seen_total'] = df.seen_I + df.seen_II + df.seen_III + df.seen_IV + df.seen_V + df.seen_VI
+df['seen_1'] = np.where(df['seen_total'] == 1, 1, 0)
+df['seen_2'] = np.where(df['seen_total'] == 2, 1, 0)
+df['seen_3'] = np.where(df['seen_total'] == 3, 1, 0)
+df['seen_4'] = np.where(df['seen_total'] == 4, 1, 0)
+df['seen_5'] = np.where(df['seen_total'] == 5, 1, 0)
+df['seen_6'] = np.where(df['seen_total'] == 6, 1, 0)
+df.drop(columns=['seen_total'], inplace=True)
+
+df.reset_index(drop=True, inplace=True)
+Markdown(df.head(5).to_markdown())
+#%%
+
+
+#%%
+# one hot encoding
+df = pd.get_dummies(data=df, columns=['rank_I'])
+df = pd.get_dummies(data=df, columns=['rank_II'])
+df = pd.get_dummies(data=df, columns=['rank_III'])
+df = pd.get_dummies(data=df, columns=['rank_IV'])
+df = pd.get_dummies(data=df, columns=['rank_V'])
+df = pd.get_dummies(data=df, columns=['rank_VI'])
+
+df = pd.get_dummies(data=df, columns=['han'])
+df = pd.get_dummies(data=df, columns=['luke'])
+df = pd.get_dummies(data=df, columns=['leia'])
+df = pd.get_dummies(data=df, columns=['anakin'])
+df = pd.get_dummies(data=df, columns=['obiwan'])
+df = pd.get_dummies(data=df, columns=['emperor'])
+df = pd.get_dummies(data=df, columns=['darth'])
+df = pd.get_dummies(data=df, columns=['lando'])
+df = pd.get_dummies(data=df, columns=['boba'])
+df = pd.get_dummies(data=df, columns=['c3po'])
+df = pd.get_dummies(data=df, columns=['r2d2'])
+df = pd.get_dummies(data=df, columns=['jarjar'])
+df = pd.get_dummies(data=df, columns=['padme'])
+df = pd.get_dummies(data=df, columns=['yoda'])
+
+df = pd.get_dummies(data=df, columns=['shot_first'])
+df = pd.get_dummies(data=df, columns=['age'])
+df = pd.get_dummies(data=df, columns=['education'])
+df = pd.get_dummies(data=df, columns=['location'])
+
+df.reset_index(drop=True, inplace=True)
+Markdown(df.head(5).to_markdown())
+#%%
+
 
 
 
